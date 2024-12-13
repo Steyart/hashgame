@@ -8,6 +8,11 @@
         ...mapGetters(["indexNav", "showLeft"]),
     },
     props:{
+        hasHe: {
+            default:()=>{
+                return false
+            }
+        },
         lists1: {
             default: ()=>{
                 return []
@@ -46,7 +51,7 @@
             </div>
             <div class="leading-[.19rem] flex items-center">2</div>
         </div>
-        <div class="flex items-center"><!-- 和 -->
+        <div class="flex items-center" v-if="hasHe"><!-- 和 -->
             <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#FDC300] rounded-full mr-6">
             I
             </div>
