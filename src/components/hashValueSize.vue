@@ -17,18 +17,7 @@ export default {
 
 <template>
   <div>
-    <div class="relative mt-6">
-      <img
-        class="w-319 m-auto"
-        src="@/assets/images/home/btn-bg-big.png"
-        alt=""
-      />
-      <span
-        class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
-        >启动钱包</span
-      >
-    </div>
-    <div class="relative bg-[#EBEBEE] mt-12 rounded-md">
+    <div class="relative bg-[#EBEBEE] mt-17 rounded-md">
       <div
         class="relative flex items-center justify-center flex-col bg-[url('@/assets/images/home/transfer-bg1.png')] bg-[length:100%_100%] bg-no-repeat"
       >
@@ -50,37 +39,42 @@ export default {
         <div class="text-base-color text-xs">作为游戏开奖结果</div>
         <div class="flex items-center text-base-color text-xs">
           如:
-          <div class="text-beige">KyhL…ljlk523h</div>
+          <div class="text-beige">KyhL…ljla5b55</div>
           <img
-            class="w-50 absolute right-[1.32rem] bottom-[0.5rem]"
-            src="@/assets/images/home/search.png"
+            class="h-28 mx-4"
+            src="@/assets/images/home/search-5.png"
+            alt=""
+          />
+          <div class="text-beige">KyhL…ljla5b55</div>
+          <img
+            class="h-28 ml-4"
+            src="@/assets/images/home/search-5.png"
             alt=""
           />
         </div>
         <div class="text-base-color text-base mt-3 mb-10">获奖规则</div>
       </div>
       <div
-        class="mt-7 mx-7 pt-9 pb-6 pl-41 bg-[url('@/assets/images/home/transfer-bg2.png')] bg-[length:100%_100%] bg-no-repeat"
+        class="mt-7 mx-7 pt-9 pb-6 pl-30 bg-[url('@/assets/images/home/transfer-bg2.png')] bg-[length:100%_100%] bg-no-repeat"
       >
-        <div class="flex items-center text-xs text-base-color">
+        <div class="flex text-xs text-base-color">
           投注玩法
-          <div class="text-ll ml-7">
-            转账金额个位 1,3,5,7,9押<span class="text-beige">单</span
-            >,0,2,4,6,8押<span class="text-beige">双</span>
+          <div class="text-ll ml-7 w-220">
+            转账交易区块和该区块的下一个区块的区块哈希值的最后一个数字之和，0,1,2,3,4为小，5,6,7,8,9为大
           </div>
         </div>
-        <div class="flex items-center text-xs text-base-color">
+        <div class="flex text-xs text-base-color">
           开奖结果
           <div class="text-ll ml-7">
-            1,3,5,7,9为<span class="text-beige">单</span>,0,2,4,6,8为<span
+            0,1,2,3,4为押<span class="text-beige">小</span>,5,6,7,8,9为押<span
               class="text-beige"
-              >双</span
+              >大</span
             >
           </div>
         </div>
       </div>
       <img
-        class="absolute h-13 left-[3.3rem] top-[2.3rem]"
+        class="absolute h-13 left-[3.3rem] top-[2.5rem]"
         src="@/assets/images/home/down.png"
         alt=""
       />

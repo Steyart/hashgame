@@ -17,7 +17,7 @@ export default {
           inactiveIcon: "bet-inactive",
         },
       ],
-      active: 1,
+      active: 0,
     };
   },
   components: { Bet, TransferBet,},
@@ -44,7 +44,6 @@ export default {
           {{ item.name }}
         </div>
       </div>
-      <div></div>
     </div>
     <template v-if="active==0">
       <TransferBet />
