@@ -29,14 +29,16 @@ export default {
       showChangeGamePop: false,
       showMenuPop: false,
       menuList: [
-        { name: "大厅", icon: "dt", path: "" },
-        { name: "在线客服", icon: "kf", path: "" },
-        { name: "投注记录", icon: "kf", path: "" },
-        { name: "游戏规则", icon: "gz", path: "" },
+        { name: "大厅", icon: "dating", path: "" },
+        { name: "在线客服", icon: "zxkf", path: "" },
+        { name: "投注记录", icon: "tzjl", path: "" },
+        { name: "游戏规则", icon: "yxgz", path: "" },
       ],
+      menuIndex: 0,
       showRulePop: false,
       ruleTab: ["哈希单双", "哈希大小", "哈希牛牛", "哈希庄闲","哈希和值大小"],
       ruleIndex: 0,
+      ruleName: "",
       headSwiper: "",
       tabData: [
         {
@@ -170,7 +172,7 @@ export default {
 <template>
   <div class="mx-7">
     <div class="bg-[#27272D] rounded-default mt-3 pb-8">
-      <div class="text-xl text-center text-white pt-7 mb-9">
+      <div class="text-xl text-center text-white pt-7 mb-9" @click="showGameResult=true">
         哈希单双
       </div>
       <div class="flex justify-between mx-24">
@@ -337,84 +339,31 @@ export default {
           </div>
         </div>
       </div>
-      <div class="bg-[#141316] rounded-md flex justify-between items-center text-sm text-white bg-white rounded-default px-18 py-5 mt-6 mx-19">
-        <img class="h-25" src="@/assets/images/home/change.png" alt="" />
+      <div class="bg-[#141316] rounded-md flex justify-between items-center text-sm text-white rounded-default px-18 py-5 mt-6 mx-19">
+        <img @click="showChangeGamePop = true" class="h-25" src="@/assets/images/home/change-black.png" alt="" />
         <div class="flex">
           <div class="flex items-center">
             <div>撤销</div>
-            <img class="h-25 ml-8" src="@/assets/images/home/return.png" alt="" />
+            <img class="h-25 ml-8" src="@/assets/images/home/return-black.png" alt="" />
           </div>
           <BetAmount />
           <div class="flex items-center">
-            <img class="h-25 mr-8" src="@/assets/images/home/submit.png" alt="" />
+            <img class="h-25 mr-8" src="@/assets/images/home/submit-black.png" alt="" />
             <div>确定</div>
           </div>
         </div>
         <img
           @click="showMenuPop = true"
           class="h-25"
-          src="@/assets/images/home/menu.png"
+          src="@/assets/images/home/menu-black.png"
           alt=""
         />
       </div>
       <bet-record :lists1="tabData" :lists2="tabData2"/>
-      <div class="text-base text-white mt-4 ml-6">限红<span class="text-beige ml-9">1-15000</span></div>
+      <div @click="showRulePop = true" class="text-base text-white mt-4 ml-6 mb-36">限红<span class="text-beige ml-9">1-15000</span></div>
     </div>
 
   </div>
-
-  <van-dialog
-    v-model:show="showDialog"
-    :closeOnClickOverlay="true"
-    title=""
-    :show-confirm-button="false"
-  >
-    <div class="w-full pop-bg bg-white">
-      <div class="w-full h-254 mt-9 relative">
-        <img
-          class="absolute left-137 z-2 bottom-0 w-44 h-44"
-          src="@/assets/images/home/1.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'one' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/1.png"
-          alt=""
-        />
-        <img
-          :class="['transition-transform', showDialog ? 'five' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/5.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'ten' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/10.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'fifty' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/50.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'hundred' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/100.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'zdy' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/zdy.png"
-          alt=""
-        />
-      </div>
-    </div>
-  </van-dialog>
 
   <van-overlay
     :show="showGameResult"
@@ -422,17 +371,17 @@ export default {
     z-index="100"
   >
     <div class="wrapper flex items-center justify-center h-full">
-      <div class="relative">
-        <img class="h-610" src="@/assets/images/home/pop-bg.png" alt="" />
-        <div class="absolute top-15 left-15 right-15 m-auto">
+      <div class="bg-[#27272D] rounded-xl">
+        <div class="top-15 left-15 right-15 m-auto">
           <div class="px-15">
             <div class="flex items-center justify-between mt-22 mx-38">
               <img class="h-27" src="@/assets/images/home/star.png" alt="" />
-              <div class="text-2.5xl text-blackish-green">很遗憾,你输了</div>
+              <div class="text-2.5xl text-white">很遗憾,你输了</div>
               <img class="h-27" src="@/assets/images/home/star.png" alt="" />
             </div>
             <div class="text-wathet-deep text-4xl text-center">单</div>
-            <div class="text-lg text-blackish-green text-center">
+            <!-- <div class="text-tomato-yellow text-4xl text-center">双</div> -->
+            <div class="text-lg white text-center">
               本期开奖结果
             </div>
             <div class="flex items-center justify-center">
@@ -441,13 +390,13 @@ export default {
                 src="@/assets/images/home/count.png"
                 alt=""
               />
-              <div class="text-blackish-green text-2.5xl">-666</div>
+              <div class="text-white text-2.5xl">-666</div>
             </div>
-            <div class="text-base text-blackish-green mt-25 mb-8">交易哈希</div>
+            <div class="text-base text-white mt-25 mb-8">交易哈希</div>
             <div
-              class="flex justify-between items-center bg-[#F3F4F2] border border-[#707070] rounded-lg pt-9 pb-8 mb-18"
+              class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8 mb-18"
             >
-              <div class="text-blackish-green text-sm ml-11">
+              <div class="text-white text-sm ml-11">
                 KyhLudjL……jkljlka5234
               </div>
               <div class="flex items-center">
@@ -469,22 +418,22 @@ export default {
                 </div>
               </div>
             </div>
-            <div class="text-base text-blackish-green mb-8">开奖区块</div>
+            <div class="text-base text-white mb-8">开奖区块</div>
             <div
-              class="flex justify-between items-center bg-[#F3F4F2] border border-[#707070] rounded-lg pt-9 pb-8 mb-18"
+              class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8 mb-18"
             >
-              <div class="text-blackish-green text-sm ml-11">32458458</div>
+              <div class="text-white text-sm ml-11">32458458</div>
               <img
                 class="h-16 mr-11"
                 src="@/assets/images/home/copy.png"
                 alt=""
               />
             </div>
-            <div class="text-base text-blackish-green mb-8">开奖区块哈希</div>
+            <div class="text-base text-white mb-8">开奖区块哈希</div>
             <div
-              class="flex justify-between items-center bg-[#F3F4F2] border border-[#707070] rounded-lg pt-9 pb-8"
+              class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8"
             >
-              <div class="text-blackish-green text-sm ml-11">
+              <div class="text-white text-sm ml-11">
                 IUY45LudjL……jdgyk52d
               </div>
               <div class="flex items-center">
@@ -508,7 +457,7 @@ export default {
             </div>
           </div>
           <div
-            class="flex justify-center text-lg text-beige border-t-2 border-[#F3F4F2] mt-31 pt-12 mx-2"
+            class="flex justify-center text-lg text-beige border-t border-[#F3F4F2] mt-15 mb-18 pt-12 mx-2"
           >
             我知道了
           </div>
@@ -518,15 +467,15 @@ export default {
   </van-overlay>
 
   <van-popup v-model:show="showChangeGamePop" round position="bottom">
-    <div class="bg-[#EBEBEE] pl-17 pt-15 pb-89">
+    <div class="bg-[#27272D] pl-17 pt-15 pb-89">
       <div
-        class="flex justify-between items-center text-blackish-green text-xl mb-14"
+        class="flex justify-between items-center text-white text-xl mb-14"
       >
         游戏切换
         <img
           @click="showChangeGamePop = false"
           class="w-14 mr-17"
-          src="@/assets/images/home/close.png"
+          src="@/assets/images/home/close-white.png"
           alt=""
         />
       </div>
@@ -538,27 +487,28 @@ export default {
   </van-popup>
 
   <van-popup v-model:show="showMenuPop" round position="bottom">
-    <div class="bg-[#EBEBEE] pl-17 pt-15 pb-36">
+    <div class="bg-[#27272D] pl-17 pt-15 pb-36">
       <div
-        class="flex justify-between items-center text-blackish-green text-xl mb-14"
+        class="flex justify-between items-center text-white text-xl mb-14"
       >
         选单
         <img
           @click="showMenuPop = false"
           class="w-14 mr-17"
-          src="@/assets/images/home/close.png"
+          src="@/assets/images/home/close-white.png"
           alt=""
         />
       </div>
       <div class="flex flex-wrap">
-        <div
-          class="w-111 bg-white rounded-2xl pt-13 pb-10 mb-14 flex items-center justify-center flex-col mr-14 text-xs text-blackish-green"
+        <div :class="{'text-blackish-green' : menuIndex == index}"
+          class="w-111 bg-[#0B0B0C] rounded-2xl pt-13 pb-10 mb-14 flex items-center justify-center flex-col mr-14 text-xs text-base-color"
           v-for="(item, index) in menuList"
           :key="index"
+          @click="menuIndex = index"
         >
           <img
             class="h-30 mb-12"
-            :src="getRequireImg(`home/${item.icon}.png`)"
+            :src="getRequireImg(`home/${item.icon}_${menuIndex == index?'active':'inactive'}.png`)"
             alt=""
           />
           {{ item.name }}
@@ -571,11 +521,11 @@ export default {
     v-model:show="showRulePop"
     round
     position="bottom"
-    :style="{ height: '60%' }"
+    :style="{ height: '80%' }"
   >
-    <div class="bg-[#EBEBEE] px-17 pt-8 pb-25">
+    <div class="bg-[#27272D] px-17 pt-8 pb-25">
       <div class="flex justify-end mb-7" @click="showRulePop = false">
-        <img class="w-14" src="@/assets/images/home/close.png" alt="" />
+        <img class="w-14" src="@/assets/images/home/close-white.png" alt="" />
       </div>
       <swiper
         class="swiper-nav"
@@ -590,14 +540,14 @@ export default {
           :stop-propagation="false"
         >
           <div
-            class="text-sm mr-8 bg-white rounded-lg pt-14 pb-11 px-15"
-            :class="ruleIndex == index ? 'text-beige' : 'text-blackish-green'"
+            class="text-sm mr-8 bg-[#141316] rounded-lg pt-14 pb-11 px-15"
+            :class="ruleIndex == index ? 'text-beige' : 'text-white'"
           >
             {{ item }}
           </div>
         </swiper-slide>
       </swiper>
-      <RulePop />
+      <RulePop :ruleName="ruleTab[ruleIndex]" />
     </div>
   </van-popup>
 </template>
