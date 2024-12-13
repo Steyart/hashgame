@@ -53,17 +53,23 @@
             <div class="leading-[.19rem] flex items-center">2</div>
         </div>
         <div class="flex gap-x-10">
-            <div class="text-tomato-yellow flex items-center bg-[#5164FF] rounded-2xl py-4 px-8">
-            <span class="text-white mr-8">0</span>
-            <div class="w-7 h-7 border border-[#FF5C01] rounded-full mr-6"></div>
-            <div class="w-7 h-7 bg-[#FF5C01] rounded-full mr-5"></div>
-            <span>/</span>
+            <div class="text-tomato-yellow  relative">
+                <div class="text-white mr-8 absolute left-8 top-0 bottom-0 flex items-center leading-[.34rem]">0</div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="18" viewBox="0 0 60 18" fill="none" >
+                    <rect width="60" height="18" rx="9" fill="#5164FF" ></rect>
+                    <circle cx="25" cy="9" r="3" stroke="#FF5C01" ></circle>
+                    <circle cx="35" cy="9" r="3.5" fill="#FF5C01" ></circle>
+                    <path d="M47.3535 7.35352L42.3535 12.3535" stroke="#FF5C01" stroke-linecap="round" ></path>
+                </svg>
             </div>
-            <div class="text-wathet-deep flex items-center bg-[#FF5C01] rounded-2xl py-4 px-8">
-            <span class="text-white mr-8">E</span>
-            <div class="w-7 h-7 border border-[#5164FF] rounded-full mr-6"></div>
-            <div class="w-7 h-7 bg-[#5164FF] rounded-full mr-5"></div>
-            <span>/</span>
+            <div class="text-wathet-deep relative">
+                <div class="text-white mr-8 absolute left-8 top-0 bottom-0 flex items-center leading-[.34rem]">E</div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="18" viewBox="0 0 60 18" fill="none" >
+                    <rect width="60" height="18" rx="9" fill="#FF5C01" ></rect>
+                    <circle cx="25" cy="9" r="3" stroke="#5164FF" ></circle>
+                    <circle cx="35" cy="9" r="3.5" fill="#5164FF" ></circle>
+                    <path d="M47.3535 7.35352L42.3535 12.3535" stroke="#5164FF" stroke-linecap="round" ></path>
+                </svg>
             </div>
         </div>
         </div>
