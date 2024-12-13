@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/home/index.vue'
+import Size from '../views/size/index.vue' //哈希大小
 import More from '../views/more/index.vue'
 
 
@@ -10,6 +11,14 @@ const indexRouter = [
     component: Home,
     meta: { 
       auth: true, level:'1', title: '首页', countTitle: '首页', child: true, isNav: false,
+    },
+  },
+  {
+    path: '/Size',
+    name: 'Size',
+    component: Size,
+    meta: { 
+      auth: true, level:'1', title: '哈希大小', countTitle: '哈希大小', child: true, isNav: false,
     },
   },
 ]
