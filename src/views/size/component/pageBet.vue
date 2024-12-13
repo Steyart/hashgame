@@ -40,111 +40,8 @@ export default {
       ruleIndex: 0,
       ruleName: "",
       headSwiper: "",
-      tabData: [
-        {
-          value1: "E",
-          value2: "0",
-          value3: "",
-          value4: "",
-        },
-        {
-          value1: "E",
-          value2: "0",
-          value3: "",
-          value4: "",
-        },
-        {
-          value1: "0",
-          value2: "",
-          value3: "",
-          value4: "",
-        },
-        {
-          value1: "0",
-          value2: "",
-          value3: "",
-          value4: "",
-        },
-        {
-          value1: "0",
-          value2: "",
-          value3: "",
-          value4: "",
-        },{}
-      ],
-      tabData2: [
-        {
-          value1: "has",
-          value2: "has",
-          value3: "has",
-          value4: "",
-          value5: "",
-          value6: "",
-          value7: "",
-          value8: "",
-          value9: "",
-          value10: "",
-          value11: "",
-          value12: "",
-        },
-        {
-          value1: "",
-          value2: "has",
-          value3: "",
-          value4: "",
-          value5: "",
-          value6: "",
-          value7: "",
-          value8: "",
-          value9: "",
-          value10: "",
-          value11: "",
-          value12: "",
-        },
-        {
-          value1: "",
-          value2: "has",
-          value3: "",
-          value4: "",
-          value5: "",
-          value6: "",
-          value7: "",
-          value8: "",
-          value9: "",
-          value10: "",
-          value11: "",
-          value12: "",
-        },
-        {
-          value1: "",
-          value2: "has",
-          value3: "",
-          value4: "",
-          value5: "",
-          value6: "",
-          value7: "",
-          value8: "",
-          value9: "",
-          value10: "",
-          value11: "",
-          value12: "",
-        },
-        {
-          value1: "",
-          value2: "has",
-          value3: "",
-          value4: "",
-          value5: "",
-          value6: "",
-          value7: "",
-          value8: "",
-          value9: "",
-          value10: "",
-          value11: "",
-          value12: "",
-        },
-        {},{},{},{},{},{},{}
-      ],
+      tabData1: [],
+      tabData2: [],
     };
   },
   components: { Swiper, SwiperSlide, RulePop, BetAmount, BetRecord },
@@ -160,7 +57,23 @@ export default {
       return this.currentRate2.toFixed(0) + "%";
     },
   },
-  mounted() {},
+  created() {
+    let obj1 = {}
+    let a = new Array(4).fill(obj1)
+    let obj2 = {}
+    let b = new Array(12).fill(obj2)
+    let arr1 = []
+    let arr2 = []
+
+    new Array(6).fill(a).forEach(v=>{
+      arr1.push(v)
+    })
+    new Array(12).fill(b).forEach(v=>{
+      arr2.push(v)
+    })
+    this.tabData1 = arr1
+    this.tabData2 = arr2
+  },
   methods: {
     onSwiper(swiper) {
       this.headSwiper = swiper;

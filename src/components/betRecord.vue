@@ -8,6 +8,11 @@
         ...mapGetters(["indexNav", "showLeft"]),
     },
     props:{
+        hasHe: {
+            default:()=>{
+                return false
+            }
+        },
         lists1: {
             default: ()=>{
                 return []
@@ -46,24 +51,30 @@
             </div>
             <div class="leading-[.19rem] flex items-center">2</div>
         </div>
-        <div class="flex items-center"><!-- 和 -->
+        <div class="flex items-center" v-if="hasHe"><!-- 和 -->
             <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#FDC300] rounded-full mr-6">
             I
             </div>
             <div class="leading-[.19rem] flex items-center">2</div>
         </div>
         <div class="flex gap-x-10">
-            <div class="text-tomato-yellow flex items-center bg-[#5164FF] rounded-2xl py-4 px-8">
-            <span class="text-white mr-8">0</span>
-            <div class="w-7 h-7 border border-[#FF5C01] rounded-full mr-6"></div>
-            <div class="w-7 h-7 bg-[#FF5C01] rounded-full mr-5"></div>
-            <span>/</span>
+            <div class="text-tomato-yellow  relative">
+                <div class="text-white mr-8 absolute left-8 top-0 bottom-0 flex items-center leading-[.34rem]">0</div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="18" viewBox="0 0 60 18" fill="none" >
+                    <rect width="60" height="18" rx="9" fill="#5164FF" ></rect>
+                    <circle cx="25" cy="9" r="3" stroke="#FF5C01" ></circle>
+                    <circle cx="35" cy="9" r="3.5" fill="#FF5C01" ></circle>
+                    <path d="M47.3535 7.35352L42.3535 12.3535" stroke="#FF5C01" stroke-linecap="round" ></path>
+                </svg>
             </div>
-            <div class="text-wathet-deep flex items-center bg-[#FF5C01] rounded-2xl py-4 px-8">
-            <span class="text-white mr-8">E</span>
-            <div class="w-7 h-7 border border-[#5164FF] rounded-full mr-6"></div>
-            <div class="w-7 h-7 bg-[#5164FF] rounded-full mr-5"></div>
-            <span>/</span>
+            <div class="text-wathet-deep relative">
+                <div class="text-white mr-8 absolute left-8 top-0 bottom-0 flex items-center leading-[.34rem]">E</div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="18" viewBox="0 0 60 18" fill="none" >
+                    <rect width="60" height="18" rx="9" fill="#FF5C01" ></rect>
+                    <circle cx="25" cy="9" r="3" stroke="#5164FF" ></circle>
+                    <circle cx="35" cy="9" r="3.5" fill="#5164FF" ></circle>
+                    <path d="M47.3535 7.35352L42.3535 12.3535" stroke="#5164FF" stroke-linecap="round" ></path>
+                </svg>
             </div>
         </div>
         </div>
@@ -71,82 +82,24 @@
             <table class="rounded-lg overflow-hidden text-xs text-white bg-[#141316]" >
             <tbody >
                 <tr v-for="(tab, i) in lists1" :key="i">
-                <td >
-                    <div class="td-box1">
-                        <div :class="{ 'bg-[#FF5C01]': tab.value1 == 'E', 'bg-[#5164FF]': tab.value1 == '0', }" class="left-number" >
-                        {{ tab.value1 }}
+                    <td v-for="(v, k) in tab" :key="k">
+                        <div class="td-box1">
+                            <div v-if="v.has != 3" :class="{ 'bg-[#FF5C01]': v.has == '1', 'bg-[#5164FF]': v.has == '2', }" class="left-number" >
+                            {{ v.has }}
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td >
-                    <div class="td-box1">
-                        <div :class="{ 'bg-[#5164FF]': tab.value2 == '0' }" class="left-number">
-                        {{ tab.value2 }}
-                        </div>
-                    </div>
-                </td>
-                <td >
-                    <div class="td-box1">
-                        <div :class="{ 'bg-[#5164FF]': tab.value3 == '0' }" class="left-number">
-                        {{ tab.value3 }}
-                        </div>
-                    </div>
-                </td>
-                <td >
-                    <div class="td-box1">
-                        <div :class="{ 'bg-[#5164FF]': tab.value4 == '0' }" class="left-number">
-                        {{ tab.value4 }}
-                        </div>
-                    </div>
-                </td>
+                    </td>
                 </tr>
             </tbody>
             </table>
             <table class="rounded-lg overflow-hidden text-xs text-white bg-[#141316]" >
             <tbody>
                 <tr v-for="(val, i) in lists2" :key="i">
-                <td >
-                    <div :class="{ 'border-2 border-[#FF5C01]': val.value1 == 'has' }" class="td-box2"></div>
-                </td>
-                <td >
-                    <div :class="{ 'border-2 border-[#5164FF]': val.value2 == 'has' }" class="td-box2"></div>
-                </td>
-                <td >
-                    <div :class="{ 'border-2 border-[#FF5C01]': val.value3 == 'has' }" class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
-                <td >
-                    <div class="td-box2"></div>
-                </td>
+                    <td v-for="(v, k) in val" :key="k">
+                        <div class="td-box2">
+                            <div :class="{ 'border-2 border-[#FF5C01]': v.has == '1', 'border-2 border-[#5164FF]': v.has == '2'}" ></div>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
             </table>
@@ -165,5 +118,8 @@ td{
 }
 .td-box2{
   @apply w-14 h-14 m-1 rounded-full
+}
+.td-box2 > div{
+  @apply w-full h-full rounded-full
 }
 </style>
