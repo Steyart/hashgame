@@ -1,0 +1,258 @@
+
+
+@font-face {
+  font-family: 'ALIBABAPUHUITI';
+  src: url('./fontFamily/ALIBABAPUHUITI-2-65-MEDIUM.TTF') format('truetype'),
+}
+@font-face {
+  font-family: 'SHANHAILIULIANGMIMA';
+  src: url('./fontFamily/SHANHAILIULIANGMIMA.TTF') format('truetype'),
+}
+@font-face {
+  font-family: 'AAYUANWEITUSI';
+  src: url('./fontFamily/AAYUANWEITUSI-2.TTF') format('truetype'),
+}
+@font-face {
+  font-family: 'ALIMAMAFANGYUANTIVF';
+  src: url('./fontFamily/ALIMAMAFANGYUANTIVF-THIN.TTF') format('truetype'),
+}
+html, body{
+  background-color: #E8E8EA;
+  font-family: "ALIMAMAFANGYUANTIVF" !important;
+  overscroll-behavior: none;
+}
+html[data-device-nodesktop="0"]{
+  font-size: calc(100vw /(750 / 100));
+}
+html[data-device-nodesktop="1"]{
+  max-width: 535px;
+  font-size: calc(535px / (750/ 100))!important;
+  margin: auto;
+  background: #ccc;
+  overflow-x: hidden;
+}
+html[data-device-nodesktop="0"] .dialog-popup-box .van-popup__close-icon{
+  @apply right-16
+}
+html[data-device-nodesktop="1"] .dialog-popup-box .van-popup__close-icon{
+  @apply right-24
+}
+html[data-device-nodesktop="1"] footer{
+  max-width: 535px;
+  margin: auto;
+
+}
+html[data-device-nodesktop="1"] .homeNav,
+html[data-device-nodesktop="1"] header{
+  max-width: 535px;
+  margin: auto;
+}
+html[data-device-nodesktop="1"] .popoverBox .van-popover,
+html[data-device-nodesktop="1"] .popoverBox1 .van-dropdown-item,
+html[data-device-nodesktop="1"] .popoverBox2 .van-dropdown-item,
+html[data-device-nodesktop="1"] .popoverRepotBox .van-dropdown-item,
+html[data-device-nodesktop="1"] .popoverWalletBox .van-dropdown-item,
+html[data-device-nodesktop="1"] .loadingBox .loading,
+html[data-device-nodesktop="1"] .pagination-bottom{
+  max-width: 535px;
+  right: 0 !important;
+  left: 0 !important;
+  margin: auto !important;
+}
+html[data-device-nodesktop="0"] .popoverBox .van-popover,
+html[data-device-nodesktop="0"] .popoverBox1 .van-dropdown-item,
+html[data-device-nodesktop="0"] .popoverBox2 .van-dropdown-item,
+html[data-device-nodesktop="0"] .popoverRepotBox .van-dropdown-item,
+html[data-device-nodesktop="0"] .popoverWalletBox .van-dropdown-item,
+html[data-device-nodesktop="0"] .loadingBox .loading,
+html[data-device-nodesktop="0"] .pagination-bottom{
+  right: 0;
+  left: 0;
+  margin: auto;
+}
+
+
+.loadingBox .van-overlay{
+  @apply w-full h-screen bg-[#ccc];
+}
+
+.swiper-slide{
+  width: auto !important;
+  max-width: 100%;
+}
+#app {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 0;
+  font-weight: normal;
+  width: 100%;
+  min-height: 100vh;
+}
+::-webkit-scrollbar{width:0;height:0;}
+
+.van-popup {
+  background-color: transparent !important;
+}
+.fail-toast-box,
+.success-toast-box{
+  background-color: var(--van-toast-background) !important;
+}
+.SHANHAILIULIANGMIMA{
+  @apply font-[SHANHAILIULIANGMIMA] !important;
+}
+.AAYUANWEITUSI{
+  @apply font-[AAYUANWEITUSI] !important;
+}
+.ALIBABAPUHUITI-1{
+  @apply font-[ALIBABAPUHUITI] !important;
+}
+.ALIMAMAFANGYUANTIVF{
+  @apply font-[ALIMAMAFANGYUANTIVF] !important;
+}
+input, label{
+  @apply font-[ALIBABAPUHUITI] !important;
+}
+.text{
+  @apply text-[#333];
+}
+/* 基础颜色 */
+.text-base-color{
+  color: #827F87;
+}
+.text-white{
+  color: #FFFFFF;
+}
+/* 灰色 */
+.text-dark-grey-l{
+  color: #707070;
+}
+.text-dark-grey-ll{
+  color: #89878D;
+}
+.text-dark-grey-lll{
+  color: #AAACAF;
+}
+.text-dark-grey-llll{
+  color: #C2C1C6;
+}
+.text-deeper-dark-grey-ll{
+  color: #9B9BA5;
+}
+.text-light-grey{
+  color: #E5E5E5;
+}
+.text-light-grey-l{
+  color: #94919B;
+}
+
+/* 灰紫色 */
+.text-extra-deep-grey-purple{
+  color: #656272;
+}
+.text-deep-grey-purple{
+  color: #AAA5B2;
+}
+.text-deeper-grey-purple{
+  color: #89878E;
+}
+.text-grey-purple-ll{
+  color: #CEC9D6;
+}
+.text-grey-purple-lll{
+  color: #BCB7C4;
+}
+/* 淡紫色 */
+.text-lavender-l{
+  color: #9F96F1;
+}
+
+/* 姜黄色 */
+.text-deeper-beige{
+  color: #FF8500;
+}
+.text-beige{
+  color: #FFA602;
+}
+.text-orange{
+  color: #FFC000;
+}
+
+/* 墨绿色 */
+.text-deeper-blackish-green{
+  color: #2D3B30;
+}
+.text-blackish-green{
+  color: #2F3F33;
+}
+.text-blackish-green-l{
+  color: #28382C;
+}
+.text-blackish-green-ll{
+  color: #4A584E;
+}
+.text-blackish-green-lll{
+  color: #3F5144;
+}
+.text-blue-green-l{
+  color: #6A8892;
+}
+.text-bottle-green{
+  color: #2F4836;
+}
+/* 嫩绿色 */
+.text-peak-green{
+  color: #6ADD05;
+}
+.text-peak-green-l{
+  color: #11FF00;
+}
+/* 淡蓝色 */
+.text-wathet{
+  color: #489CFF;
+}
+.text-wathet-deep{
+  color: #5164FF;
+}
+/* 玫红色 */
+.text-rose-red{
+  color: #F8005A;
+}
+.text-tomato-yellow{
+  color: #FF5C01;
+}
+
+.text-bronze{
+  color: #B55C39;
+}
+.text-silver{
+  color: #7896C1;
+}
+.text-gold{
+  color: #AABC00;
+}
+.text-platinum{
+  color: #998E84;
+}
+.text-platinum-any{
+  color: #5DB9FF;
+}
+.text-masonry{
+  color: #B44AFF;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+  }
+
+  footer {
+    max-width: 668px;
+  }
+}

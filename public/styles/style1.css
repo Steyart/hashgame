@@ -1,0 +1,119 @@
+
+.text{
+    @apply text-[#111];
+  }
+  /* 基础颜色 */
+  .text-base-color{
+    color: aqua;
+  }
+  .text-white{
+    @apply text-[#000];
+  }
+  /* 灰色 */
+  .text-dark-grey-l{
+    @apply text-[#707070];
+  }
+  .text-dark-grey-ll{
+    @apply text-[#89878D];
+  }
+  .text-dark-grey-lll{
+    @apply text-[#AAACAF];
+  }
+  .text-dark-grey-llll{
+    @apply text-[#C2C1C6];
+  }
+  .text-deeper-dark-grey-ll{
+    @apply text-[#9B9BA5];
+  }
+  .text-light-grey{
+    @apply text-[#E5E5E5];
+  }
+  
+  /* 灰紫色 */
+  .text-extra-deep-grey-purple{
+    @apply text-[#656272];
+  }
+  .text-deep-grey-purple{
+    @apply text-[#AAA5B2];
+  }
+  .text-deeper-grey-purple{
+    @apply text-[#89878E];
+  }
+  .text-grey-purple-ll{
+    @apply text-[#CEC9D6];
+  }
+  .text-grey-purple-lll{
+    @apply text-[#BCB7C4];
+  }
+  /* 淡紫色 */
+  .text-lavender-l{
+    @apply text-[#9F96F1];
+  }
+  
+  /* 姜黄色 */
+  .text-deeper-beige{
+    @apply text-[#FF8500];
+  }
+  .text-beige{
+    @apply text-[#FFA602];
+  }
+  .text-orange{
+    @apply text-[#FFC000];
+  }
+  
+  /* 墨绿色 */
+  .text-deeper-blackish-green{
+    @apply text-[#2D3B30];
+  }
+  .text-blackish-green{
+    @apply text-[#2F3F33];
+  }
+  .text-blackish-green-l{
+    @apply text-[#28382C];
+  }
+  .text-blackish-green-ll{
+    @apply text-[#4A584E];
+  }
+  .text-blackish-green-lll{
+    @apply text-[#3F5144];
+  }
+  .text-blue-green-l{
+    @apply text-[#6A8892];
+  }
+  .text-bottle-green{
+    @apply text-[#2F4836];
+  }
+  /* 嫩绿色 */
+  .text-peak-green{
+    @apply text-[#6ADD05];
+  }
+  .text-peak-green-l{
+    @apply text-[#11FF00];
+  }
+  /* 淡蓝色 */
+  .text-wathet{
+    @apply text-[#489CFF];
+  }
+  /* 玫红色 */
+  .text-rose-red{
+    @apply text-[#F8005A];
+  }
+  
+  .text-bronze{
+    @apply text-[#B55C39];
+  }
+  .text-silver{
+    @apply text-[#7896C1];
+  }
+  .text-gold{
+    @apply text-[#AABC00];
+  }
+  .text-platinum{
+    @apply text-[#998E84];
+  }
+  .text-platinum-any{
+    @apply text-[#5DB9FF];
+  }
+  .text-masonry{
+    @apply text-[#B44AFF];
+  }

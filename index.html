@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Hash Go</title>
+  
+  <style type="text/css">
+    #Loading {
+      max-width: 535px;
+      top: 50%;
+      left: 50%;
+      position: absolute;
+      -webkit-transform: translateY(-50%) translateX(-50%);
+      transform: translateY(-50%) translateX(-50%);
+      z-index: 100;
+    }
+    #Loading .loading-body{
+      position: relative;
+      flex-direction: column;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #Loading .loading-1{
+      margin: auto;
+      width: 150px;
+      display: block;
+    }
+    #Loading .loading-2{
+      width: 50px;
+      display: block;
+      position: relative;
+      top: -20px;
+      left: -10px;
+    }
+
+    @-webkit-keyframes ball-beat {
+      50% {
+        opacity: 0.2;
+        -webkit-transform: scale(0.75);
+        transform: scale(0.75);
+      }
+
+      100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+      }
+    }
+
+    @keyframes ball-beat {
+      50% {
+        opacity: 0.2;
+        -webkit-transform: scale(0.75);
+        transform: scale(0.75);
+      }
+
+      100% {
+        opacity: 1;
+        -webkit-transform: scale(1);
+        transform: scale(1);
+      }
+    }
+
+    .ball-beat>div {
+      background-color: #4999ff;
+      width: 10px;
+      height: 10px;
+      border-radius: 100% !important;
+      margin: 2px;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+      display: inline-block;
+      -webkit-animation: ball-beat 0.7s 0s infinite linear;
+      animation: ball-beat 0.7s 0s infinite linear;
+    }
+
+    .ball-beat>div:nth-child(2n-1) {
+      -webkit-animation-delay: 0.35s !important;
+      animation-delay: 0.35s !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="Loading">
+    <div class="loading-body">
+      <img class="loading-1" src="/public/images/gameloading.gif" alt="" srcset="">
+      <img class="loading-2" src="/public/images/loading.gif" alt="" srcset="">
+    </div>
+  </div>
+  <div id="app"></div>
+  <div class="popoverBox"></div>
+  <div class="popoverBox1"></div>
+  <div class="popoverBox2"></div>
+  <div class="popoverRepotBox"></div>
+  <div class="popoverWalletBox"></div>
+  <div class="menuBox"></div>
+  <div class="loadingBox"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
