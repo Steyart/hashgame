@@ -357,41 +357,6 @@ export default {
           alt=""
         />
       </div>
-      <div class="flex justify-between items-center text-ll mt-12 mb-9 text-white">
-        <div class="ml-7"><span class="mr-7">#</span><span>7</span></div>
-        <div class="flex items-center">
-          <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#031BDD] rounded-full mr-6" >
-            0
-          </div>
-          <div  class="leading-[.19rem] flex items-center">5</div>
-        </div>
-        <div class="flex items-center">
-          <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#FF5C01] rounded-full mr-6">
-            E
-          </div>
-          <div class="leading-[.19rem] flex items-center">2</div>
-        </div>
-        <div class="flex items-center"><!-- 和 -->
-          <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#FDC300] rounded-full mr-6">
-            I
-          </div>
-          <div class="leading-[.19rem] flex items-center">2</div>
-        </div>
-        <div class="flex gap-x-10">
-          <div class="text-tomato-yellow flex items-center bg-[#5164FF] rounded-2xl py-4 px-8">
-            <span class="text-white mr-8">0</span>
-            <div class="w-7 h-7 border border-[#FF5C01] rounded-full mr-6"></div>
-            <div class="w-7 h-7 bg-[#FF5C01] rounded-full mr-5"></div>
-            <span>/</span>
-          </div>
-          <div class="text-wathet-deep flex items-center bg-[#FF5C01] rounded-2xl py-4 px-8">
-            <span class="text-white mr-8">E</span>
-            <div class="w-7 h-7 border border-[#5164FF] rounded-full mr-6"></div>
-            <div class="w-7 h-7 bg-[#5164FF] rounded-full mr-5"></div>
-            <span>/</span>
-          </div>
-        </div>
-      </div>
       <bet-record :lists1="tabData" :lists2="tabData2"/>
       <div class="text-base text-white mt-4 ml-6">限红<span class="text-beige ml-9">1-15000</span></div>
     </div>

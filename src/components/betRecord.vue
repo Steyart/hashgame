@@ -31,90 +31,127 @@
     };
 </script>
 <template>
-    <div class="flex overflow-x-auto">
-        <table class="rounded-lg overflow-hidden text-xs text-white bg-[#141316]" >
-          <tbody >
-            <tr v-for="(tab, i) in lists1" :key="i">
-              <td >
-                <div class="td-box1">
-                    <div :class="{ 'bg-[#FF5C01]': tab.value1 == 'E', 'bg-[#5164FF]': tab.value1 == '0', }" class="left-number" >
-                    {{ tab.value1 }}
+    <div>
+        <div class="flex justify-between items-center text-ll mt-12 mb-9 text-white">
+        <div class="ml-7"><span class="mr-7">#</span><span>7</span></div>
+        <div class="flex items-center">
+            <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#031BDD] rounded-full mr-6" >
+            0
+            </div>
+            <div  class="leading-[.19rem] flex items-center">5</div>
+        </div>
+        <div class="flex items-center">
+            <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#FF5C01] rounded-full mr-6">
+            E
+            </div>
+            <div class="leading-[.19rem] flex items-center">2</div>
+        </div>
+        <div class="flex items-center"><!-- 和 -->
+            <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#FDC300] rounded-full mr-6">
+            I
+            </div>
+            <div class="leading-[.19rem] flex items-center">2</div>
+        </div>
+        <div class="flex gap-x-10">
+            <div class="text-tomato-yellow flex items-center bg-[#5164FF] rounded-2xl py-4 px-8">
+            <span class="text-white mr-8">0</span>
+            <div class="w-7 h-7 border border-[#FF5C01] rounded-full mr-6"></div>
+            <div class="w-7 h-7 bg-[#FF5C01] rounded-full mr-5"></div>
+            <span>/</span>
+            </div>
+            <div class="text-wathet-deep flex items-center bg-[#FF5C01] rounded-2xl py-4 px-8">
+            <span class="text-white mr-8">E</span>
+            <div class="w-7 h-7 border border-[#5164FF] rounded-full mr-6"></div>
+            <div class="w-7 h-7 bg-[#5164FF] rounded-full mr-5"></div>
+            <span>/</span>
+            </div>
+        </div>
+        </div>
+        <div class="flex overflow-x-auto">
+            <table class="rounded-lg overflow-hidden text-xs text-white bg-[#141316]" >
+            <tbody >
+                <tr v-for="(tab, i) in lists1" :key="i">
+                <td >
+                    <div class="td-box1">
+                        <div :class="{ 'bg-[#FF5C01]': tab.value1 == 'E', 'bg-[#5164FF]': tab.value1 == '0', }" class="left-number" >
+                        {{ tab.value1 }}
+                        </div>
                     </div>
-                </div>
-              </td>
-              <td >
-                <div class="td-box1">
-                    <div :class="{ 'bg-[#5164FF]': tab.value2 == '0' }" class="left-number">
-                    {{ tab.value2 }}
+                </td>
+                <td >
+                    <div class="td-box1">
+                        <div :class="{ 'bg-[#5164FF]': tab.value2 == '0' }" class="left-number">
+                        {{ tab.value2 }}
+                        </div>
                     </div>
-                </div>
-              </td>
-              <td >
-                <div class="td-box1">
-                    <div :class="{ 'bg-[#5164FF]': tab.value3 == '0' }" class="left-number">
-                    {{ tab.value3 }}
+                </td>
+                <td >
+                    <div class="td-box1">
+                        <div :class="{ 'bg-[#5164FF]': tab.value3 == '0' }" class="left-number">
+                        {{ tab.value3 }}
+                        </div>
                     </div>
-                </div>
-              </td>
-              <td >
-                <div class="td-box1">
-                    <div :class="{ 'bg-[#5164FF]': tab.value4 == '0' }" class="left-number">
-                    {{ tab.value4 }}
+                </td>
+                <td >
+                    <div class="td-box1">
+                        <div :class="{ 'bg-[#5164FF]': tab.value4 == '0' }" class="left-number">
+                        {{ tab.value4 }}
+                        </div>
                     </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <table class="rounded-lg overflow-hidden text-xs text-white bg-[#141316]" >
-          <tbody>
-            <tr v-for="(val, i) in lists2" :key="i">
-              <td >
-                <div :class="{ 'border-2 border-[#FF5C01]': val.value1 == 'has' }" class="td-box2"></div>
-              </td>
-              <td >
-                <div :class="{ 'border-2 border-[#5164FF]': val.value2 == 'has' }" class="td-box2"></div>
-              </td>
-              <td >
-                <div :class="{ 'border-2 border-[#FF5C01]': val.value3 == 'has' }" class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-              <td >
-                <div class="td-box2"></div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+            <table class="rounded-lg overflow-hidden text-xs text-white bg-[#141316]" >
+            <tbody>
+                <tr v-for="(val, i) in lists2" :key="i">
+                <td >
+                    <div :class="{ 'border-2 border-[#FF5C01]': val.value1 == 'has' }" class="td-box2"></div>
+                </td>
+                <td >
+                    <div :class="{ 'border-2 border-[#5164FF]': val.value2 == 'has' }" class="td-box2"></div>
+                </td>
+                <td >
+                    <div :class="{ 'border-2 border-[#FF5C01]': val.value3 == 'has' }" class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                <td >
+                    <div class="td-box2"></div>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    </div>
 </template>
 <style scoped>
 td{
