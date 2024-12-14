@@ -6,6 +6,33 @@
     watch: {},
     computed: {
         ...mapGetters(["indexNav", "showLeft"]),
+        newlists1(){
+            let arr = this.lists1
+            let a = []
+            let b = []
+            let c = []
+            let d = []
+            let e = []
+            let f = []
+            arr.forEach((v,k)=>{
+                if(k < 5){
+                    a.push(v)
+                }else if(k >= 5 &&k < 10){
+                    b.push(v)
+                }else if(k >= 10 &&k < 15){
+                    c.push(v)
+                }else if(k >= 15 &&k < 20){
+                    d.push(v)
+                }else if(k >= 20 &&k < 25){
+                    e.push(v)
+                }else if(k >= 25 &&k < 30){
+                    f.push(v)
+                }
+            })
+            let aa = [a,b,c,d,e,f]
+            console.log(aa)
+            return aa
+        }
     },
     props:{
         hasHe: {
@@ -81,11 +108,11 @@
         <div class="flex overflow-x-auto">
             <table class="rounded-lg overflow-hidden text-xs text-white bg-[#141316]" >
             <tbody >
-                <tr v-for="(tab, i) in lists1" :key="i">
+                <tr v-for="(tab, i) in newlists1" :key="i">
                     <td v-for="(v, k) in tab" :key="k">
                         <div class="td-box1">
-                            <div v-if="v.has != 3" :class="{ 'bg-[#FF5C01]': v.has == '1', 'bg-[#5164FF]': v.has == '2', }" class="left-number" >
-                            {{ v.has }}
+                            <div v-if="tab.has != 3" :class="{ 'bg-[#FF5C01]': tab.has == '1', 'bg-[#5164FF]': tab.has == '2', }" class="left-number" >
+                            {{ tab.has }}
                             </div>
                         </div>
                     </td>

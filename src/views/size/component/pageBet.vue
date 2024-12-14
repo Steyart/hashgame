@@ -40,6 +40,7 @@ export default {
       headSwiper: "",
       tabData1: [],
       tabData2: [],
+      key: [],
     };
   },
   components: { Swiper, SwiperSlide, RulePop, BetAmount, BetRecord },
@@ -56,19 +57,29 @@ export default {
     },
   },
   created() {
-    let obj1 = {}
-    let a = new Array(4).fill(obj1)
+    let obj1 = {
+      has: ''
+    }
+    let a = new Array(5).fill(obj1)
     let obj2 = {}
     let b = new Array(12).fill(obj2)
     let arr1 = []
     let arr2 = []
 
-    new Array(6).fill(a).forEach(v=>{
-      arr1.push(v)
-    })
-    new Array(12).fill(b).forEach(v=>{
-      arr2.push(v)
-    })
+
+    for(let i = 0; i< 30; i++){
+      arr1.push({has: ''})
+    }
+    for(let i = 0; i< 12; i++){
+      let arr = []
+      for(let j = 0; j < 12; j++){
+        arr.push({
+          has: ''
+        })
+      }
+      arr2.push(arr)
+    }
+
     this.tabData1 = arr1
     this.tabData2 = arr2
   },
@@ -77,6 +88,29 @@ export default {
       this.headSwiper = swiper;
     },
     onSlideChange: (i) => {},
+
+    findFirstGreaterThan(arr, key = []){
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr[i].length; j++) {
+          const value = arr[i][j];
+          if (value.has == '') {
+            key[0] = i
+            key[1] = j
+            return key
+          }
+        }
+      }
+      return null; // 如果没有找到，返回null
+    },
+    touzhu(){
+      let value = ''
+      let key = this.key
+      let arr = this.tabData1
+
+      key = this.findFirstGreaterThan(arr, this.key)
+      this.key = key
+      arr.unshift({has: 1})
+    },
   },
 };
 </script>
@@ -258,7 +292,7 @@ export default {
             <img class="h-25 ml-8" src="@/assets/images/home/return.png" alt="" />
           </div>
           <BetAmount />
-          <div class="flex items-center">
+          <div class="flex items-center" @click="touzhu">
             <img class="h-25 mr-8" src="@/assets/images/home/submit.png" alt="" />
             <div>确定</div>
           </div>
