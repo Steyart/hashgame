@@ -30,6 +30,7 @@ export default {
     checkBetAmount(item) {
       this.betImg = item.icon;
       this.amount = item.amount;
+      this.$emit("changeAmount", this.amount)
       this.animate = false
     },
   },

@@ -1,5 +1,7 @@
 <script>
 import RulePop from "@/components/rulePop.vue";
+import GamePop from "@/components/gamePop.vue";
+import MenuPop from "@/components/menuPop.vue";
 import BetAmount from "@/components/betAmount.vue";
 import BetRecord from "@/components/betRecord.vue";
 import toHref from "@/mixins/toHref";
@@ -8,6 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 export default {
   data() {
     return {
+      gameType: "哈希单双",
       currentRate: 30,
       currentRate1: 50,
       currentRate2: 75,
@@ -28,17 +31,10 @@ export default {
       showDialog: false,
       animate: false,
       btnList: ["1", "50", "10", "100", "zdy"],
+      amount: 1,
       showGameResult: false,
-      gameList: ["daxiao", "danshuang", "niuniu", "zhuangxian", "hezhidaxiao"],
       showChangeGamePop: false,
       showMenuPop: false,
-      menuList: [
-        { name: "大厅", icon: "dating", path: "" },
-        { name: "在线客服", icon: "zxkf", path: "" },
-        { name: "投注记录", icon: "tzjl", path: "" },
-        { name: "游戏规则", icon: "yxgz", path: "" },
-      ],
-      menuIndex: 0,
       showRulePop: false,
       ruleTab: ["哈希单双", "哈希大小", "哈希牛牛", "哈希庄闲", "哈希和值大小"],
       ruleIndex: 0,
@@ -48,7 +44,15 @@ export default {
       tabData2: [],
     };
   },
-  components: { Swiper, SwiperSlide, RulePop, BetAmount, BetRecord },
+  components: {
+    Swiper,
+    SwiperSlide,
+    RulePop,
+    GamePop,
+    MenuPop,
+    BetAmount,
+    BetRecord,
+  },
   mixins: [toHref, postInfo],
   computed: {
     text() {
@@ -79,13 +83,48 @@ export default {
     this.tabData2 = arr2;
   },
   mounted() {
-    
+    this.getBlockNum();
+    this.getBalance({
+      action: 6,
+      ts: Date.now(),
+      uid: "game_37039042",
+    });
   },
   methods: {
     onSwiper(swiper) {
       this.headSwiper = swiper;
     },
     onSlideChange: (i) => {},
+    changeGame(name) {
+      this.gameType = name;
+      this.ruleIndex = this.ruleTab.indexOf(name);
+    },
+    changeAmount(num) {
+      this.amount = num;
+    },
+
+    // 下注
+    handleBetting() {
+      const params = {
+        action: 6,
+        ts: Date.now(),
+        uid: "game_37039042",
+        amount: this.amount,
+        number: 67833064,
+        range: 2,
+        session: this.sessionIndex + 1,
+      };
+      this.$http
+        .post(`/game/putBet`, params)
+        .then(({ data }) => {
+          if (data.code === 200) {
+            console.log(data, "res===");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>
@@ -94,9 +133,9 @@ export default {
     <div class="bg-[#27272D] rounded-default mt-3 pb-8">
       <div
         class="text-xl text-center text-white pt-7 mb-9"
-        @click="showGameResult = true"
+        @click="showRulePop = true"
       >
-        哈希单双
+        {{ gameType }}
       </div>
       <div class="flex justify-between mx-24">
         <div class="text-xs flex items-center justify-center flex-col">
@@ -146,7 +185,10 @@ export default {
         </div>
       </div>
       <div class="rounded-default gap-x-7 flex text-white">
-        <div class="flex-1 bg-[#141316] p-8 rounded-md">
+        <div
+          class="flex-1 bg-[#141316] p-8 rounded-md"
+          v-if="gameType !== '哈希牛牛'"
+        >
           <!-- 大 -->
           <div class="flex justify-between items-center">
             <div class="text-ll mt-8">
@@ -192,7 +234,15 @@ export default {
               />
               <div class="text-ll">0</div>
             </div>
-            <div class="text-4xl text-wathet-deep mt-5 mb-7">大</div>
+            <div class="text-4xl text-wathet-deep mt-5 mb-7">
+              {{
+                gameType == "哈希单双"
+                  ? "单"
+                  : gameType == "哈希庄闲"
+                  ? "庄"
+                  : "大"
+              }}
+            </div>
             <div
               class="text-center text-xs bg-[#27272D] pl-18 pr-16 py-4 mb-30 rounded-2xl border border-[#70697C] text-white"
             >
@@ -200,7 +250,10 @@ export default {
             </div>
           </div>
         </div>
-        <div class="flex-1 bg-[#141316] p-8 rounded-md">
+        <div
+          class="flex-1 bg-[#141316] p-8 rounded-md"
+          v-if="gameType == '哈希庄闲'"
+        >
           <!-- 和 -->
           <div class="flex justify-between items-center">
             <div class="text-ll mt-8">
@@ -298,7 +351,17 @@ export default {
               />
               <div class="text-ll">0</div>
             </div>
-            <div class="text-4xl text-tomato-yellow mt-5 mb-7">小</div>
+            <div class="text-4xl text-tomato-yellow mt-5 mb-7">
+              {{
+                gameType == "哈希单双"
+                  ? "双"
+                  : gameType == "哈希牛牛"
+                  ? "牛闲"
+                  : gameType == "哈希庄闲"
+                  ? "闲"
+                  : "小"
+              }}
+            </div>
             <div
               class="text-center text-xs bg-[#27272D] pl-18 pr-16 py-4 mb-30 rounded-2xl border border-[#70697C] text-white"
             >
@@ -325,8 +388,8 @@ export default {
               alt=""
             />
           </div>
-          <BetAmount />
-          <div class="flex items-center">
+          <BetAmount @changeAmount="changeAmount" />
+          <div class="flex items-center" @click="handleBetting">
             <img
               class="h-25 mr-8"
               src="@/assets/images/home/submit-black.png"
@@ -344,13 +407,23 @@ export default {
       </div>
       <bet-record :lists1="tabData1" :lists2="tabData2" />
       <div
-        @click="showRulePop = true"
+        @click="showGameResult = true"
         class="text-base text-white mt-4 ml-6 mb-36"
       >
         限红<span class="text-beige ml-9">1-15000</span>
       </div>
     </div>
   </div>
+  <GamePop
+    :showChangeGamePop="showChangeGamePop"
+    @update:showChangeGamePop="showChangeGamePop = $event"
+    @changeGame="changeGame"
+  />
+
+  <MenuPop
+    :showMenuPop="showMenuPop"
+    @update:showMenuPop="showMenuPop = $event"
+  />
 
   <van-overlay
     :show="showGameResult"
@@ -448,70 +521,6 @@ export default {
   </van-overlay>
 
   <van-popup
-    v-model:show="showChangeGamePop"
-    round
-    position="bottom"
-    :style="{ height: '37%' }"
-  >
-    <div class="bg-[#27272D] pl-17 pt-15">
-      <div class="flex justify-between items-center text-white text-xl mb-14">
-        游戏切换
-        <img
-          @click="showChangeGamePop = false"
-          class="w-14 mr-17"
-          src="@/assets/images/home/close-white.png"
-          alt=""
-        />
-      </div>
-      <div class="flex flex-wrap gap-x-36">
-        <div v-for="(val, index) in gameList" :key="index">
-          <img
-            class="h-130 mb-25"
-            :src="getRequireImg(`home/Hash_${val}.png`)"
-            alt=""
-          />
-        </div>
-      </div>
-    </div>
-  </van-popup>
-
-  <van-popup v-model:show="showMenuPop" round position="bottom">
-    <div class="bg-[#27272D] pl-17 pt-15 pb-36">
-      <div class="flex justify-between items-center text-white text-xl mb-14">
-        选单
-        <img
-          @click="showMenuPop = false"
-          class="w-14 mr-17"
-          src="@/assets/images/home/close-white.png"
-          alt=""
-        />
-      </div>
-      <div class="flex flex-wrap">
-        <div
-          :class="{ 'text-blackish-green': menuIndex == index }"
-          class="w-111 bg-[#0B0B0C] rounded-2xl pt-13 pb-10 mb-14 flex items-center justify-center flex-col mr-14 text-xs text-base-color"
-          v-for="(item, index) in menuList"
-          :key="index"
-          @click="menuIndex = index"
-        >
-          <img
-            class="h-30 mb-12"
-            :src="
-              getRequireImg(
-                `home/${item.icon}_${
-                  menuIndex == index ? 'active' : 'inactive'
-                }.png`
-              )
-            "
-            alt=""
-          />
-          {{ item.name }}
-        </div>
-      </div>
-    </div>
-  </van-popup>
-
-  <van-popup
     v-model:show="showRulePop"
     round
     position="bottom"
@@ -549,26 +558,5 @@ export default {
 :deep(.circle-text) .van-circle__text {
   --van-circle-text-color: #fff;
   @apply text-ll flex items-center top-0 bottom-0 m-auto transform-none;
-}
-.pop-bg {
-  /* background: radial-gradient( 10% 0% at 50% 50%, #B1AEB7 0%, rgba(201,198,201,0.75) 67%, rgba(203,203,206,0.65) 100%); */
-}
-.one {
-  transform: translate(-100px, 0px) rotate(360deg);
-}
-.zdy {
-  transform: translate(100px, 0px) rotate(360deg);
-}
-.five {
-  transform: translate(-80px, -70px) rotate(360deg);
-}
-.hundred {
-  transform: translate(80px, -70px) rotate(360deg);
-}
-.ten {
-  transform: translate(-35px, -125px) rotate(360deg);
-}
-.fifty {
-  transform: translate(35px, -125px) rotate(360deg);
 }
 </style>

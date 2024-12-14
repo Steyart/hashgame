@@ -9,8 +9,6 @@ import { getCookie } from '@/service/util.service'
 // $instance基本配置
 let $instance = axios.create({
   headers: {
-    'language': 'zh',
-    'host-url': location.host,
     'token': '',
     'Content-Type': 'application/json;charset=UTF-8'
   },
@@ -29,8 +27,10 @@ $instance.__retryCount = 0;
 $instance.setParams = (posted = false, query = {}) => {
   if ($instance.session_id === undefined && posted) {
   }
-  let user = getCookie('user') && JSON.parse(getCookie('user'))
-  $instance.defaults.headers.token = user && user.token ? user.token : ''
+  
+   // 从cookie中获取token
+   const token = getCookie('token');
+   $instance.defaults.headers.token = token || '';
   $instance.defaults.data = {}
   // 全局需要
   let env = import.meta.env
@@ -47,13 +47,13 @@ $instance.interceptors.request.use((config) => {
     return config;
   }
   let query = {};
-  query = router.currentRoute._value.query
+  // query = router.currentRoute._value.query
   $instance.setParams(false, query);
 
 
-  Object.assign($instance.defaults.data, config.data);
+  // Object.assign($instance.defaults.data, config.data);
 
-  Object.assign(config.data, $instance.defaults.data);
+  // Object.assign(config.data, $instance.defaults.data);
   // cookie被清理，分页请求需要登录的跳转到登录页面
   // if (router.currentRoute._value.meta.auth) {
   //   return window.location.replace(`/login?redirect=${router.currentRoute._value.path}`);
@@ -79,24 +79,25 @@ $instance.interceptors.response.use((response) => {
       return window.location.replace(`/login?redirect=${router.currentRoute._value.path}`);
     }, 2000)
   }
+  console.log(response);
   return response;
 }, function (error) {
-  // console.log(error);
+  console.log(error);
   // console.log(error.name); // ReferenceError
   // console.log(error.message); // lalala is not defined
   // console.log(error.stack); // ReferenceError: lalala is not defined at ...
 
 
-  if (!error.config || !$instance.retry || $instance.__retryCount >= $instance.retry) return Promise.reject(error);
-  $instance.__retryCount++;
-  let backoff = new Promise(function (resolve) {
-    setTimeout(function () {
-      resolve();
-    }, $instance.retryDelay || 1);
-  });
-  return backoff.then(function () {
-    return $instance(error.config);
-  });
+  // if (!error.config || !$instance.retry || $instance.__retryCount >= $instance.retry) return Promise.reject(error);
+  // $instance.__retryCount++;
+  // let backoff = new Promise(function (resolve) {
+  //   setTimeout(function () {
+  //     resolve();
+  //   }, $instance.retryDelay || 1);
+  // });
+  // return backoff.then(function () {
+  //   return $instance(error.config);
+  // });
   // return Promise.reject(error);
 });
 

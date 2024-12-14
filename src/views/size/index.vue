@@ -1,5 +1,6 @@
 <script>
 import toHref from "@/mixins/toHref";
+import postInfo from "@/mixins/postInfo";
 import Bet from "./component/pageBet.vue";
 import TransferBet from "./component/transferBet.vue";
 export default {
@@ -21,12 +22,27 @@ export default {
     };
   },
   components: { Bet, TransferBet,},
-  mixins: [toHref],
+  mixins: [toHref, postInfo],
   computed: {
     
   },
-  mounted() {},
-  methods: {},
+  mounted() {
+    const token = this.getCookie('token'); // 获取cookie中的token
+    if (!token) {
+      this.getTokenInfo({
+        ts: Date.now(),
+        uid: 'game_37039042',
+      });
+    }
+  },
+  methods: {
+    // 获取cookie
+    getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    },
+  },
 };
 </script>
 <template>
