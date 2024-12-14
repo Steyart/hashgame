@@ -13,6 +13,7 @@ export default {
       btnList: ["1", "50", "10", "100", "zdy"],
       showGameResult: false,
       showChangeGamePop: false,
+      gameList: ["daxiao","danshuang","niuniu","zhuangxian","hezhidaxiao"],
       showMenuPop: false,
       menuList: [
         { name: "大厅", icon: "dt", path: "" },
@@ -561,9 +562,10 @@ export default {
           alt=""
         />
       </div>
-      <div class="flex">
-        <img class="h-130 mr-25" src="@/assets/images/home/game1.png" alt="" />
-        <img class="h-130" src="@/assets/images/home/game2.png" alt="" />
+      <div class="flex flex-wrap justify-between">
+        <div v-for="(val,index) in gameList" :key="index">
+          <img class="h-130" :src="getRequireImg(`home/Hash_${val}.png`)" alt="">
+        </div>
       </div>
     </div>
   </van-popup>
