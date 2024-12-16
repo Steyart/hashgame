@@ -9,9 +9,6 @@ import { getCookie } from '@/service/util.service'
 // $instance基本配置
 let $instance = axios.create({
   headers: {
-    'language': 'zh',
-    'host-url': location.host,
-    'token': '',
     'Content-Type': 'application/json;charset=UTF-8'
   },
   withCredentials: false,
@@ -81,7 +78,7 @@ $instance.interceptors.response.use((response) => {
   }
   return response;
 }, function (error) {
-  // console.log(error);
+  console.log(error);
   // console.log(error.name); // ReferenceError
   // console.log(error.message); // lalala is not defined
   // console.log(error.stack); // ReferenceError: lalala is not defined at ...

@@ -3,6 +3,7 @@ import RulePop from "@/components/rulePop.vue";
 import BetAmount from "@/components/betAmount.vue";
 import BetRecord from "@/components/betRecord.vue";
 import toHref from "@/mixins/toHref";
+import postInfo from "@/mixins/postInfo";
 import { Swiper, SwiperSlide } from "swiper/vue";
 export default {
   data() {
@@ -22,29 +23,38 @@ export default {
         "0%": "rgba(253, 195, 0, 0.39)",
         "100%": "rgba(253, 195, 0, 1)",
       },
+      betSessionTab: ["初级场", "中级场"],
+      sessionIndex: 0,
       showDialog: false,
       animate: false,
       btnList: ["1", "50", "10", "100", "zdy"],
       showGameResult: false,
+      gameList: ["daxiao", "danshuang", "niuniu", "zhuangxian", "hezhidaxiao"],
       showChangeGamePop: false,
       showMenuPop: false,
       menuList: [
-        { name: "大厅", icon: "dt", path: "" },
-        { name: "在线客服", icon: "kf", path: "" },
-        { name: "投注记录", icon: "kf", path: "" },
-        { name: "游戏规则", icon: "gz", path: "" },
+        { name: "大厅", icon: "dating", path: "" },
+        { name: "在线客服", icon: "zxkf", path: "" },
+        { name: "投注记录", icon: "tzjl", path: "" },
+        { name: "游戏规则", icon: "yxgz", path: "" },
       ],
+      menuIndex: 0,
       showRulePop: false,
-      ruleTab: ["哈希单双", "哈希大小", "哈希牛牛", "哈希庄闲","哈希和值大小"],
+      ruleTab: ["哈希单双", "哈希大小", "哈希牛牛", "哈希庄闲", "哈希和值大小"],
       ruleIndex: 0,
+      ruleName: "",
       headSwiper: "",
+      tabDataAll: [],
       tabData1: [],
       tabData2: [],
-      key: [],
+      key1: 0,
+      prveVal: 0,
+      x_index: 0,
+      y_index: 0,
     };
   },
   components: { Swiper, SwiperSlide, RulePop, BetAmount, BetRecord },
-  mixins: [toHref],
+  mixins: [toHref, postInfo],
   computed: {
     text() {
       return this.currentRate.toFixed(0) + "%";
@@ -56,60 +66,138 @@ export default {
       return this.currentRate2.toFixed(0) + "%";
     },
   },
+  watch:{
+  },
   created() {
-    let obj1 = {
-      has: ''
-    }
-    let a = new Array(5).fill(obj1)
-    let obj2 = {}
-    let b = new Array(12).fill(obj2)
-    let arr1 = []
-    let arr2 = []
+    
+    let arr = [];
+    let arr1 = [];
+    let arr2 = [];
 
-
-    for(let i = 0; i< 30; i++){
-      arr1.push({has: ''})
-    }
     for(let i = 0; i< 12; i++){
+      arr.push(Math.random(10) * 10 > 4 ? 1 : 2)
+    }
+    for(let i = 0; i< 24; i++){
+      arr1.push('')
+    }
+    for(let i = 0; i< 10; i++){
       let arr = []
       for(let j = 0; j < 12; j++){
-        arr.push({
-          has: ''
-        })
+        arr.push('')
       }
       arr2.push(arr)
     }
 
-    this.tabData1 = arr1
+    if(arr.length < 24){
+      arr = this.padArray(arr, 24, 0)
+    }
+
+    this.tabDataAll = arr
+    this.key1 = arr.length - 1
+    this.tabData1 = arr.slice(arr.length - 24, arr.length)
     this.tabData2 = arr2
+    this.setArrRight(arr, arr2, 10)
+  },
+  mounted() {
+
   },
   methods: {
+    setArrRight(all, arr, length){
+      all.forEach(item=>{
+        if(item){
+          this.findFGreaterThan(all, 'right', item)
+        }
+      })
+    },
+    padArray(arr, length, padValue) {
+        while (arr.length < length) {
+            arr.push(padValue);
+        }
+        return arr;
+    },
     onSwiper(swiper) {
       this.headSwiper = swiper;
     },
     onSlideChange: (i) => {},
-
-    findFirstGreaterThan(arr, key = []){
-      for (let i = 0; i < arr.length; i++) {
-        for (let j = 0; j < arr[i].length; j++) {
-          const value = arr[i][j];
-          if (value.has == '') {
-            key[0] = i
-            key[1] = j
-            return key
+    
+    findFGreaterThan(arr, type, v){
+      if(type == 'left'){
+        for (let i = 0; i < arr.length; i++) {
+          const value = arr[i];
+          if (value == '') {
+            this.key1 = i
+            return this.key1
           }
         }
+        return this.key1 + 1; 
+      }else{
+        if(this.x_index >= 9){
+          if(this.prveVal != v || this.y_index >= 11){
+            let c = this.tabData2.shift()
+            let l = []
+            for(let j = 0; j < 12; j++){
+              l.push('')
+            }
+            this.tabData2.push(l)
+          }
+          
+          if(this.tabData2[9][this.y_index]){
+            if(this.prveVal == v){
+              if(this.y_index >= 11){
+                this.x_index += 1
+              }else{
+                this.y_index += 1
+              }
+            }else{
+              this.x_index = 9
+              this.y_index = 0
+            }
+          }else{
+            if(this.prveVal == v){
+              if(this.y_index >= 11){
+                this.x_index += 1
+              }else{
+                this.y_index = 0
+              }
+            }else{
+              this.x_index = 9
+              this.y_index = 0
+            }
+          }
+        }else{
+          if(this.tabData2[this.x_index][this.y_index]){
+            if(this.prveVal == v){
+              if(this.y_index >= 11){
+                this.x_index += 1
+              }else{
+                this.y_index += 1
+              }
+            }else{
+              this.x_index += 1
+              this.y_index = 0
+            }
+          }
+        }
+          
+        this.prveVal = v
+        let x = this.x_index >=9 ? 9 : this.x_index
+        let y = this.y_index >=11 ? 11 : this.y_index
+        this.tabData2[x][y] = v  
       }
-      return null; // 如果没有找到，返回null
     },
     touzhu(){
-      let value = ''
-      let key = this.key
-      let arr = this.tabData1
+      let arr = this.tabDataAll
+      let key1 = this.findFGreaterThan(arr, 'left')
+      let val = Math.random(10) * 10 > 2 ? 1 : 2
+      if(key1 < 24){
+        arr[key1] = val
+        this.tabData1 = this.tabDataAll
+      }else{
+        arr.push(val)
+        this.tabData1 = this.tabDataAll.slice(this.tabDataAll.length - 24, this.tabDataAll.length)
+      }
 
-      key = this.findFirstGreaterThan(arr, this.key)
-      this.key = key
-      arr.unshift({has: 1})
+      this.findFGreaterThan(arr, 'right', val)
     },
   },
 };
@@ -117,40 +205,68 @@ export default {
 <template>
   <div class="mx-7">
     <div class="bg-[#27272D] rounded-default mt-3 pb-8">
-      <div class="text-xl text-center text-white pt-7 mb-9">
+      <div
+        class="text-xl text-center text-white pt-7 mb-9"
+        @click="showGameResult = true"
+      >
         哈希单双
       </div>
       <div class="flex justify-between mx-24">
         <div class="text-xs flex items-center justify-center flex-col">
           <div class="text-base-color">目前区块</div>
-          <div class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]">
-            <img class="h-15 mr-6" src="@/assets/images/home/block.png" />
-            <div class=" text-white font-bold">89573956</div>
-          </div>
-          <div class="relative mt-7 mb-12">
-            <img class="w-119 h-38 m-auto" src="@/assets/images/home/btn-bg.png" />
-            <span class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white">初级场</span>
+          <div
+            class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]"
+          >
+            <img class="h-15 mr-6" src="@/assets/images/home/block-white.png" />
+            <div class="text-white font-bold">89573956</div>
           </div>
         </div>
         <div class="text-xs flex items-center justify-center flex-col">
           <div class="text-base-color">下一区块</div>
-          <div class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]">
-            <img class="h-15 mr-6" src="@/assets/images/home/block.png" />
+          <div
+            class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]"
+          >
+            <img class="h-15 mr-6" src="@/assets/images/home/block-white.png" />
             <div class="text-beige font-bold">89573956</div>
           </div>
-          <div class="relative w-119 h-38 rounded-2xl border border-[#707070] mt-7 mb-12" >
-            <span class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-wathet">中级场</span>
+        </div>
+      </div>
+      <div class="flex justify-between mx-24 items-center">
+        <div
+          v-for="(stab, index) in betSessionTab"
+          :key="index"
+          @click="sessionIndex = index"
+        >
+          <div v-if="sessionIndex == index" class="relative mt-15 mb-12">
+            <img
+              class="w-119 h-38 m-auto"
+              src="@/assets/images/home/btn-bg.png"
+            />
+            <span
+              class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
+              >{{ stab }}</span
+            >
+          </div>
+          <div
+            v-else
+            class="relative w-119 h-38 rounded-2xl border border-[#707070] mt-15 mb-12"
+          >
+            <span
+              class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-wathet"
+              >{{ stab }}</span
+            >
           </div>
         </div>
       </div>
       <div class="rounded-default gap-x-7 flex text-white">
-        <div class="flex-1 bg-[#141316] p-8 rounded-md"><!-- 大 -->
-          <div class="flex justify-between items-center ">
+        <div class="flex-1 bg-[#141316] p-8 rounded-md">
+          <!-- 大 -->
+          <div class="flex justify-between items-center">
             <div class="text-ll mt-8">
               <div class="flex">
                 <img
                   class="h-12 mr-3"
-                  src="@/assets/images/home/dollar.png"
+                  src="@/assets/images/home/dollar-white.png"
                   alt=""
                 />
                 73956
@@ -182,10 +298,14 @@ export default {
             <div
               class="flex pt-4 pb-2 pl-5 pr-14 bg-[#27272D] rounded-2xl border border-[#70697C]"
             >
-              <img class="h-12 mr-8" src="@/assets/images/home/dollar.png" alt="" />
+              <img
+                class="h-12 mr-8"
+                src="@/assets/images/home/dollar-white.png"
+                alt=""
+              />
               <div class="text-ll">0</div>
             </div>
-            <div class="text-4xl text-wathet-deep  mt-5 mb-7">大</div>
+            <div class="text-4xl text-wathet-deep mt-5 mb-7">大</div>
             <div
               class="text-center text-xs bg-[#27272D] pl-18 pr-16 py-4 mb-30 rounded-2xl border border-[#70697C] text-white"
             >
@@ -193,11 +313,15 @@ export default {
             </div>
           </div>
         </div>
-        <div class="flex-1 bg-[#141316] p-8 rounded-md"><!-- 和 -->
-          <div class="flex justify-between items-center ">
+        <div class="flex-1 bg-[#141316] p-8 rounded-md">
+          <!-- 和 -->
+          <div class="flex justify-between items-center">
             <div class="text-ll mt-8">
               <div class="flex">
-                <img class="h-12 mr-3" src="@/assets/images/home/dollar.png" />
+                <img
+                  class="h-12 mr-3"
+                  src="@/assets/images/home/dollar-white.png"
+                />
                 73956
               </div>
               <div class="flex items-center text-wathet mt-9">
@@ -227,7 +351,11 @@ export default {
             <div
               class="flex pt-4 pb-2 pl-5 pr-14 bg-[#27272D] rounded-2xl border border-[#70697C]"
             >
-              <img class="h-12 mr-8" src="@/assets/images/home/dollar.png" alt="" />
+              <img
+                class="h-12 mr-8"
+                src="@/assets/images/home/dollar-white.png"
+                alt=""
+              />
               <div class="text-ll">0</div>
             </div>
             <div class="text-4xl text-orange mt-5 mb-7">和</div>
@@ -238,11 +366,15 @@ export default {
             </div>
           </div>
         </div>
-        <div class="flex-1 bg-[#141316] p-8 rounded-md"><!-- 小 -->
+        <div class="flex-1 bg-[#141316] p-8 rounded-md">
+          <!-- 小 -->
           <div class="flex justify-between items-center flex-row-reverse">
             <div class="text-ll mt-8">
               <div class="flex">
-                <img class="h-12 mr-3" src="@/assets/images/home/dollar.png" />
+                <img
+                  class="h-12 mr-3"
+                  src="@/assets/images/home/dollar-white.png"
+                />
                 73956
               </div>
               <div class="flex items-center text-wathet mt-9">
@@ -272,7 +404,11 @@ export default {
             <div
               class="flex pt-4 pb-2 pl-5 pr-14 bg-[#27272D] rounded-2xl border border-[#70697C]"
             >
-              <img class="h-12 mr-8" src="@/assets/images/home/dollar.png" alt="" />
+              <img
+                class="h-12 mr-8"
+                src="@/assets/images/home/dollar-white.png"
+                alt=""
+              />
               <div class="text-ll">0</div>
             </div>
             <div class="text-4xl text-tomato-yellow mt-5 mb-7">小</div>
@@ -284,84 +420,50 @@ export default {
           </div>
         </div>
       </div>
-      <div class="bg-[#141316] rounded-md flex justify-between items-center text-sm text-white bg-white rounded-default px-18 py-5 mt-6 mx-19">
-        <img class="h-25" src="@/assets/images/home/change.png" alt="" />
+      <div
+        class="bg-[#141316] rounded-md flex justify-between items-center text-sm text-white rounded-default px-18 py-5 mt-6 mx-19"
+      >
+        <img
+          @click="showChangeGamePop = true"
+          class="h-25"
+          src="@/assets/images/home/change-black.png"
+          alt=""
+        />
         <div class="flex">
           <div class="flex items-center">
             <div>撤销</div>
-            <img class="h-25 ml-8" src="@/assets/images/home/return.png" alt="" />
+            <img
+              class="h-25 ml-8"
+              src="@/assets/images/home/return-black.png"
+              alt=""
+            />
           </div>
           <BetAmount />
           <div class="flex items-center" @click="touzhu">
-            <img class="h-25 mr-8" src="@/assets/images/home/submit.png" alt="" />
+            <img
+              class="h-25 mr-8"
+              src="@/assets/images/home/submit-black.png"
+              alt=""
+            />
             <div>确定</div>
           </div>
         </div>
         <img
           @click="showMenuPop = true"
           class="h-25"
-          src="@/assets/images/home/menu.png"
+          src="@/assets/images/home/menu-black.png"
           alt=""
         />
       </div>
-      <bet-record :lists1="tabData1" :lists2="tabData2"/>
-      <div class="text-base text-white mt-4 ml-6">限红<span class="text-beige ml-9">1-15000</span></div>
+      <bet-record :allList="tabDataAll" :lists1="tabData1" :lists2="tabData2" />
+      <div
+        @click="showRulePop = true"
+        class="text-base text-white mt-4 ml-6 mb-36"
+      >
+        限红<span class="text-beige ml-9">1-15000</span>
+      </div>
     </div>
-
   </div>
-
-  <van-dialog
-    v-model:show="showDialog"
-    :closeOnClickOverlay="true"
-    title=""
-    :show-confirm-button="false"
-  >
-    <div class="w-full pop-bg bg-white">
-      <div class="w-full h-254 mt-9 relative">
-        <img
-          class="absolute left-137 z-2 bottom-0 w-44 h-44"
-          src="@/assets/images/home/1.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'one' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/1.png"
-          alt=""
-        />
-        <img
-          :class="['transition-transform', showDialog ? 'five' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/5.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'ten' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/10.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'fifty' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/50.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'hundred' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/100.png"
-          alt=""
-        />
-        <img
-        :class="['transition-transform', showDialog ? 'zdy' : '']"
-          class="absolute left-137 bottom-0 w-44 h-44"
-          src="@/assets/images/home/zdy.png"
-          alt=""
-        />
-      </div>
-    </div>
-  </van-dialog>
 
   <van-overlay
     :show="showGameResult"
@@ -369,34 +471,30 @@ export default {
     z-index="100"
   >
     <div class="wrapper flex items-center justify-center h-full">
-      <div class="relative">
-        <img class="h-610" src="@/assets/images/home/pop-bg.png" alt="" />
-        <div class="absolute top-15 left-15 right-15 m-auto">
+      <div class="bg-[#27272D] rounded-xl">
+        <div class="top-15 left-15 right-15 m-auto">
           <div class="px-15">
             <div class="flex items-center justify-between mt-22 mx-38">
               <img class="h-27" src="@/assets/images/home/star.png" alt="" />
-              <div class="text-2.5xl text-blackish-green">很遗憾,你输了</div>
+              <div class="text-2.5xl text-white">很遗憾,你输了</div>
               <img class="h-27" src="@/assets/images/home/star.png" alt="" />
             </div>
             <div class="text-wathet-deep text-4xl text-center">单</div>
-            <div class="text-lg text-blackish-green text-center">
-              本期开奖结果
-            </div>
+            <!-- <div class="text-tomato-yellow text-4xl text-center">双</div> -->
+            <div class="text-lg white text-center">本期开奖结果</div>
             <div class="flex items-center justify-center">
               <img
                 class="h-29 mr-11"
                 src="@/assets/images/home/count.png"
                 alt=""
               />
-              <div class="text-blackish-green text-2.5xl">-666</div>
+              <div class="text-white text-2.5xl">-666</div>
             </div>
-            <div class="text-base text-blackish-green mt-25 mb-8">交易哈希</div>
+            <div class="text-base text-white mt-25 mb-8">交易哈希</div>
             <div
-              class="flex justify-between items-center bg-[#F3F4F2] border border-[#707070] rounded-lg pt-9 pb-8 mb-18"
+              class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8 mb-18"
             >
-              <div class="text-blackish-green text-sm ml-11">
-                KyhLudjL……jkljlka5234
-              </div>
+              <div class="text-white text-sm ml-11">KyhLudjL……jkljlka5234</div>
               <div class="flex items-center">
                 <img
                   class="h-16 mr-4"
@@ -416,24 +514,22 @@ export default {
                 </div>
               </div>
             </div>
-            <div class="text-base text-blackish-green mb-8">开奖区块</div>
+            <div class="text-base text-white mb-8">开奖区块</div>
             <div
-              class="flex justify-between items-center bg-[#F3F4F2] border border-[#707070] rounded-lg pt-9 pb-8 mb-18"
+              class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8 mb-18"
             >
-              <div class="text-blackish-green text-sm ml-11">32458458</div>
+              <div class="text-white text-sm ml-11">32458458</div>
               <img
                 class="h-16 mr-11"
                 src="@/assets/images/home/copy.png"
                 alt=""
               />
             </div>
-            <div class="text-base text-blackish-green mb-8">开奖区块哈希</div>
+            <div class="text-base text-white mb-8">开奖区块哈希</div>
             <div
-              class="flex justify-between items-center bg-[#F3F4F2] border border-[#707070] rounded-lg pt-9 pb-8"
+              class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8"
             >
-              <div class="text-blackish-green text-sm ml-11">
-                IUY45LudjL……jdgyk52d
-              </div>
+              <div class="text-white text-sm ml-11">IUY45LudjL……jdgyk52d</div>
               <div class="flex items-center">
                 <img
                   class="h-16 mr-4"
@@ -455,7 +551,7 @@ export default {
             </div>
           </div>
           <div
-            class="flex justify-center text-lg text-beige border-t-2 border-[#F3F4F2] mt-31 pt-12 mx-2"
+            class="flex justify-center text-lg text-beige border-t border-[#F3F4F2] mt-15 mb-18 pt-12 mx-2"
           >
             我知道了
           </div>
@@ -464,48 +560,62 @@ export default {
     </div>
   </van-overlay>
 
-  <van-popup v-model:show="showChangeGamePop" round position="bottom">
-    <div class="bg-[#EBEBEE] pl-17 pt-15 pb-89">
-      <div
-        class="flex justify-between items-center text-blackish-green text-xl mb-14"
-      >
+  <van-popup
+    v-model:show="showChangeGamePop"
+    round
+    position="bottom"
+    :style="{ height: '37%' }"
+  >
+    <div class="bg-[#27272D] pl-17 pt-15">
+      <div class="flex justify-between items-center text-white text-xl mb-14">
         游戏切换
         <img
           @click="showChangeGamePop = false"
           class="w-14 mr-17"
-          src="@/assets/images/home/close.png"
+          src="@/assets/images/home/close-white.png"
           alt=""
         />
       </div>
-      <div class="flex">
-        <img class="h-130 mr-25" src="@/assets/images/home/game1.png" alt="" />
-        <img class="h-130" src="@/assets/images/home/game2.png" alt="" />
+      <div class="flex flex-wrap gap-x-36">
+        <div v-for="(val, index) in gameList" :key="index">
+          <img
+            class="h-130 mb-25"
+            :src="getRequireImg(`home/Hash_${val}.png`)"
+            alt=""
+          />
+        </div>
       </div>
     </div>
   </van-popup>
 
   <van-popup v-model:show="showMenuPop" round position="bottom">
-    <div class="bg-[#EBEBEE] pl-17 pt-15 pb-36">
-      <div
-        class="flex justify-between items-center text-blackish-green text-xl mb-14"
-      >
+    <div class="bg-[#27272D] pl-17 pt-15 pb-36">
+      <div class="flex justify-between items-center text-white text-xl mb-14">
         选单
         <img
           @click="showMenuPop = false"
           class="w-14 mr-17"
-          src="@/assets/images/home/close.png"
+          src="@/assets/images/home/close-white.png"
           alt=""
         />
       </div>
       <div class="flex flex-wrap">
         <div
-          class="w-111 bg-white rounded-2xl pt-13 pb-10 mb-14 flex items-center justify-center flex-col mr-14 text-xs text-blackish-green"
+          :class="{ 'text-blackish-green': menuIndex == index }"
+          class="w-111 bg-[#0B0B0C] rounded-2xl pt-13 pb-10 mb-14 flex items-center justify-center flex-col mr-14 text-xs text-base-color"
           v-for="(item, index) in menuList"
           :key="index"
+          @click="menuIndex = index"
         >
           <img
             class="h-30 mb-12"
-            :src="getRequireImg(`home/${item.icon}.png`)"
+            :src="
+              getRequireImg(
+                `home/${item.icon}_${
+                  menuIndex == index ? 'active' : 'inactive'
+                }.png`
+              )
+            "
             alt=""
           />
           {{ item.name }}
@@ -518,11 +628,11 @@ export default {
     v-model:show="showRulePop"
     round
     position="bottom"
-    :style="{ height: '60%' }"
+    :style="{ height: '80%' }"
   >
-    <div class="bg-[#EBEBEE] px-17 pt-8 pb-25">
+    <div class="bg-[#27272D] px-17 pt-8 pb-25">
       <div class="flex justify-end mb-7" @click="showRulePop = false">
-        <img class="w-14" src="@/assets/images/home/close.png" alt="" />
+        <img class="w-14" src="@/assets/images/home/close-white.png" alt="" />
       </div>
       <swiper
         class="swiper-nav"
@@ -537,14 +647,14 @@ export default {
           :stop-propagation="false"
         >
           <div
-            class="text-sm mr-8 bg-white rounded-lg pt-14 pb-11 px-15"
-            :class="ruleIndex == index ? 'text-beige' : 'text-blackish-green'"
+            class="text-sm mr-8 bg-[#141316] rounded-lg pt-14 pb-11 px-15"
+            :class="ruleIndex == index ? 'text-beige' : 'text-white'"
           >
             {{ item }}
           </div>
         </swiper-slide>
       </swiper>
-      <RulePop />
+      <RulePop :ruleName="ruleTab[ruleIndex]" />
     </div>
   </van-popup>
 </template>
