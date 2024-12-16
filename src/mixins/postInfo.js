@@ -7,34 +7,25 @@ import { mapGetters } from "vuex";
 var postInfo = {
   data() {
     return {
-      codeDisable: false,
-
-      indexLists: [],
-      indexFactoryLists: [],
-      itemObj: {},
-      pagination: {},
-      listLoading: false,
-
-      betList: [],
-      betRaceList: [],
-      betSumList: [],
-      orderList: [],
-      
       skeleton: true,
       skeletonTimeShow: null,
       skeletonTimeHide: null,
+
+      currentBlock: null,
+      nextBlock: null,
+      interval: null,
     }
   },
   created() {
   },
   computed: {
     ...mapGetters(['language', "indexNav", "factoryList", "bannerList", "user", "is_all", "swiperTimerList", "isLogged", "vipInfo"]),
-    myAvatar(){
+    myAvatar() {
       let img = ""
-      if(this.user.avatar){
+      if (this.user.avatar) {
         img = this.user.avatar.replace(/\/default\/avatar\//g, "");
         img = img.replace(/\.png/g, "");
-      }else{
+      } else {
         img = 'img0'
       }
       return this.myImg[`head_${img}`]
@@ -43,33 +34,37 @@ var postInfo = {
   mounted() {
 
   },
+  beforeDestroy() {
+    // 组件销毁前清除定时器
+    clearInterval(this.interval);
+  },
   methods: {
     /* 骨架请求防抖 */
-    getSkeleton(type){
-      if(type){
+    getSkeleton(type) {
+      if (type) {
         this.skeleton = true
-      }else{
-        if(this.skeletonTimeHide) clearTimeout(this.skeletonTimeHide)
-        this.skeletonTimeHide = setTimeout(()=>{
+      } else {
+        if (this.skeletonTimeHide) clearTimeout(this.skeletonTimeHide)
+        this.skeletonTimeHide = setTimeout(() => {
           this.skeletonTimeHide = null
           this.skeleton = false
-        },300)
+        }, 300)
       }
     },
     /**
      * 复制
      * @param {*} text 
      */
-    onCopy(text){
+    onCopy(text) {
       if (navigator.clipboard) {
         // 使用 navigator.clipboard 的现代方式
-        navigator.clipboard.writeText(text).then(function(e) {
+        navigator.clipboard.writeText(text).then(function (e) {
           showToast({
             type: 'success',
             message: '复制成功',
             className: 'success-toast-box'
           })
-        }).catch(function(error) {
+        }).catch(function (error) {
           console.error('复制失败', error);
         });
       } else {
@@ -88,62 +83,68 @@ var postInfo = {
       }
     },
 
-     // 获取token
-  getTokenInfo(params) {
-    this.$http
-    .post(`/gameLike/link`, params)
-    .then(({ data }) => {
-      if (data.code === 200) {
-        const url = new URL(data.data.game_link);
-        const token = url.searchParams.get('token');
-        if (token) {
-          this.setCookie('token', token, 1); // 设置cookie
-        }
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  },
+    // 获取token
+    getTokenInfo(params) {
+      this.$http
+        .post(`/gameLike/link`, params)
+        .then(({ data }) => {
+          if (data.code === 200) {
+            const url = new URL(data.data.game_link);
+            const token = url.searchParams.get('token');
+            if (token) {
+              this.setCookie('token', token, 1); // 设置cookie
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
 
-  // 设置cookie
-  setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-      const date = new Date();
-      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-      expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
-  },
+    // 设置cookie
+    setCookie(name, value, days) {
+      let expires = "";
+      if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    },
 
     // 获取区块号
-    getBlockNum(){
+    getBlockNum() {
       this.$http
-      .get(`/tron/getBlockByLatestNum`)
-      .then(({data}) => {
-        if (data.code === 200) {
-          console.log(data,"res===");
-          
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      });
+        .get(`/tron/getBlockByLatestNum`)
+        .then(({ data }) => {
+          if (data.code == 200) {
+            this.currentBlock = 67888179
+            this.nextBlock = this.currentBlock + 1
+            // 设置定时器，每3秒更新区块
+            this.interval = setInterval(this.updateBlocks, 3000);
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    },
+    updateBlocks() {
+      this.currentBlock = this.nextBlock;
+      // 更新下一区块为当前区块 + 1
+      this.nextBlock = Number(this.currentBlock) + 1;
     },
     // 获取余额
-    getBalance(params){
+    getBalance(params) {
       this.$http
-      .post(`/game/blance`, params)
-      .then(({data}) => {
-        if (data.code === 200) {
-          console.log(data,"res===");
-          
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      });
+        .post(`/game/blance`, params)
+        .then(({ data }) => {
+          if (data.code === 200) {
+
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        });
     },
   }
 }

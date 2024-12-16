@@ -11,9 +11,6 @@ export default {
   data() {
     return {
       gameType: "哈希单双",
-      currentRate: 30,
-      currentRate1: 50,
-      currentRate2: 75,
       gradientColor: {
         "0%": "rgba(81, 100, 255, 0.38)",
         "100%": "rgba(81, 100, 255, 1)",
@@ -39,6 +36,55 @@ export default {
       ruleTab: ["哈希单双", "哈希大小", "哈希牛牛", "哈希庄闲", "哈希和值大小"],
       ruleIndex: 0,
       ruleName: "",
+      DanShaung: [
+        {
+          name: "单",
+          betValue: 0,
+          color: "text-wathet-deep",
+          acountAmount: 73956,
+          userCount: 756,
+          proportion: "1:1.95",
+          schedule: 30,
+          circlePos: "right",
+          circleColor: this.gradientColor2,
+        },
+        {
+          name: "双",
+          betValue: 0,
+          color: "text-tomato-yellow",
+          acountAmount: 73956,
+          userCount: 756,
+          proportion: "1:1.95",
+          schedule: 30,
+          circlePos: "left",
+          circleColor: this.gradientColor1,
+        },
+      ],
+      DaXiao: [
+        {
+          name: "大",
+          betValue: 0,
+          color: "text-wathet-deep",
+          acountAmount: 73956,
+          userCount: 756,
+          proportion: "1:1.95",
+          schedule: 30,
+          circlePos: "right",
+          circleColor: this.gradientColor2,
+        },
+        {
+          name: "小",
+          betValue: 0,
+          color: "text-tomato-yellow",
+          acountAmount: 73956,
+          userCount: 756,
+          proportion: "1:1.95",
+          schedule: 30,
+          circlePos: "left",
+          circleColor: this.gradientColor1,
+        },
+      ],
+      cardIndex: null,
       headSwiper: "",
       tabDataAll: [],
       tabData1: [],
@@ -60,149 +106,157 @@ export default {
   },
   mixins: [toHref, postInfo],
   computed: {
-    text() {
-      return this.currentRate.toFixed(0) + "%";
-    },
-    text1() {
-      return this.currentRate1.toFixed(0) + "%";
-    },
-    text2() {
-      return this.currentRate2.toFixed(0) + "%";
-    },
   },
-  watch:{
-  },
+  watch: {},
   created() {
-    
+    this.getBlockNum();
+
     let arr = [];
     let arr1 = [];
     let arr2 = [];
 
-    for(let i = 0; i< 12; i++){
-      arr.push(Math.random(10) * 10 > 4 ? 1 : 2)
+    for (let i = 0; i < 12; i++) {
+      arr.push(Math.random(10) * 10 > 4 ? 1 : 2);
     }
-    for(let i = 0; i< 24; i++){
-      arr1.push('')
+    for (let i = 0; i < 24; i++) {
+      arr1.push("");
     }
-    for(let i = 0; i< 10; i++){
-      let arr = []
-      for(let j = 0; j < 12; j++){
-        arr.push('')
+    for (let i = 0; i < 10; i++) {
+      let arr = [];
+      for (let j = 0; j < 12; j++) {
+        arr.push("");
       }
-      arr2.push(arr)
+      arr2.push(arr);
     }
 
-    if(arr.length < 24){
-      arr = this.padArray(arr, 24, 0)
+    if (arr.length < 24) {
+      arr = this.padArray(arr, 24, 0);
     }
 
-    this.tabDataAll = arr
-    this.key1 = arr.length - 1
-    this.tabData1 = arr.slice(arr.length - 24, arr.length)
-    this.tabData2 = arr2
-    this.setArrRight(arr, arr2, 10)
+    this.tabDataAll = arr;
+    this.key1 = arr.length - 1;
+    this.tabData1 = arr.slice(arr.length - 24, arr.length);
+    this.tabData2 = arr2;
+    this.setArrRight(arr, arr2, 10);
   },
+
   mounted() {
-    this.getBlockNum();
-    this.getBalance({
-      action: 6,
-      ts: Date.now(),
-      uid: "game_37039042",
-    });
+    // this.getBalance({
+    //   action: 6,
+    //   ts: Date.now(),
+    //   uid: "game_37039042",
+    // });
   },
   methods: {
 
-    findFGreaterThan(arr, type, v){
-      if(type == 'left'){
+    handleCard(i) {
+      if (this.cardIndex == i) {
+        this.DanShaung[i].betValue += 1;
+        // 投注值+1
+      } else {
+        if (this.cardIndex != null) {
+          this.DanShaung[this.cardIndex].betValue = 0;
+        }
+        this.cardIndex = i;
+        // 设定投注值
+        this.DanShaung[i].betValue = this.amount;
+      }
+    },
+
+    findFGreaterThan(arr, type, v) {
+      if (type == "left") {
         for (let i = 0; i < arr.length; i++) {
           const value = arr[i];
-          if (value == '') {
-            this.key1 = i
-            return this.key1
+          if (value == "") {
+            this.key1 = i;
+            return this.key1;
           }
         }
-        return this.key1 + 1; 
-      }else{
-        if(this.x_index >= 9){
-          if(this.prveVal != v || this.y_index >= 11){
-            let c = this.tabData2.shift()
-            let l = []
-            for(let j = 0; j < 12; j++){
-              l.push('')
+        return this.key1 + 1;
+      } else {
+        if (this.x_index >= 9) {
+          if (this.prveVal != v || this.y_index >= 11) {
+            let c = this.tabData2.shift();
+            let l = [];
+            for (let j = 0; j < 12; j++) {
+              l.push("");
             }
-            this.tabData2.push(l)
+            this.tabData2.push(l);
           }
-          
-          if(this.tabData2[9][this.y_index]){
-            if(this.prveVal == v){
-              if(this.y_index >= 11){
-                this.x_index += 1
-              }else{
-                this.y_index += 1
+
+          if (this.tabData2[9][this.y_index]) {
+            if (this.prveVal == v) {
+              if (this.y_index >= 11) {
+                this.x_index += 1;
+              } else {
+                this.y_index += 1;
               }
-            }else{
-              this.x_index = 9
-              this.y_index = 0
+            } else {
+              this.x_index = 9;
+              this.y_index = 0;
             }
-          }else{
-            if(this.prveVal == v){
-              if(this.y_index >= 11){
-                this.x_index += 1
-              }else{
-                this.y_index = 0
+          } else {
+            if (this.prveVal == v) {
+              if (this.y_index >= 11) {
+                this.x_index += 1;
+              } else {
+                this.y_index = 0;
               }
-            }else{
-              this.x_index = 9
-              this.y_index = 0
+            } else {
+              this.x_index = 9;
+              this.y_index = 0;
             }
           }
-        }else{
-          if(this.tabData2[this.x_index][this.y_index]){
-            if(this.prveVal == v){
-              if(this.y_index >= 11){
-                this.x_index += 1
-              }else{
-                this.y_index += 1
+        } else {
+          if (this.tabData2[this.x_index][this.y_index]) {
+            if (this.prveVal == v) {
+              if (this.y_index >= 11) {
+                this.x_index += 1;
+              } else {
+                this.y_index += 1;
               }
-            }else{
-              this.x_index += 1
-              this.y_index = 0
+            } else {
+              this.x_index += 1;
+              this.y_index = 0;
             }
           }
         }
-          
-        this.prveVal = v
-        let x = this.x_index >=9 ? 9 : this.x_index
-        let y = this.y_index >=11 ? 11 : this.y_index
-        this.tabData2[x][y] = v  
+
+        this.prveVal = v;
+        let x = this.x_index >= 9 ? 9 : this.x_index;
+        let y = this.y_index >= 11 ? 11 : this.y_index;
+        this.tabData2[x][y] = v;
       }
     },
-    touzhu(){
-      let arr = this.tabDataAll
-      let key1 = this.findFGreaterThan(arr, 'left')
-      let val = Math.random(10) * 10 > 2 ? 1 : 2
-      if(key1 < 24){
-        arr[key1] = val
-        this.tabData1 = this.tabDataAll
-      }else{
-        arr.push(val)
-        this.tabData1 = this.tabDataAll.slice(this.tabDataAll.length - 24, this.tabDataAll.length)
+    touzhu() {
+      let arr = this.tabDataAll;
+      let key1 = this.findFGreaterThan(arr, "left");
+      let val = Math.random(10) * 10 > 2 ? 1 : 2;
+      if (key1 < 24) {
+        arr[key1] = val;
+        this.tabData1 = this.tabDataAll;
+      } else {
+        arr.push(val);
+        this.tabData1 = this.tabDataAll.slice(
+          this.tabDataAll.length - 24,
+          this.tabDataAll.length
+        );
       }
 
-      this.findFGreaterThan(arr, 'right', val)
+      this.findFGreaterThan(arr, "right", val);
     },
-    setArrRight(all, arr, length){
-      all.forEach(item=>{
-        if(item){
-          this.findFGreaterThan(all, 'right', item)
+    setArrRight(all, arr, length) {
+      all.forEach((item) => {
+        if (item) {
+          this.findFGreaterThan(all, "right", item);
         }
-      })
+      });
     },
     padArray(arr, length, padValue) {
-        while (arr.length < length) {
-            arr.push(padValue);
-        }
-        return arr;
+      while (arr.length < length) {
+        arr.push(padValue);
+      }
+      return arr;
     },
     onSwiper(swiper) {
       this.headSwiper = swiper;
@@ -217,27 +271,27 @@ export default {
     },
 
     // 下注
-    handleBetting() {
-      const params = {
-        action: 6,
-        ts: Date.now(),
-        uid: "game_37039042",
-        amount: this.amount,
-        number: 67833064,
-        range: 2,
-        session: this.sessionIndex + 1,
-      };
-      this.$http
-        .post(`/game/putBet`, params)
-        .then(({ data }) => {
-          if (data.code === 200) {
-            console.log(data, "res===");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    // handleBetting() {
+    //   const params = {
+    //     action: 6,
+    //     ts: Date.now(),
+    //     uid: "game_37039042",
+    //     amount: this.amount,
+    //     number: 67833064,
+    //     range: 2,
+    //     session: this.sessionIndex + 1,
+    //   };
+    //   this.$http
+    //     .post(`/game/putBet`, params)
+    //     .then(({ data }) => {
+    //       if (data.code === 200) {
+    //         console.log(data, "res===");
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
   },
 };
 </script>
@@ -257,7 +311,7 @@ export default {
             class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]"
           >
             <img class="h-15 mr-6" src="@/assets/images/home/block-white.png" />
-            <div class="text-white font-bold">89573956</div>
+            <div class="text-white font-bold">{{ currentBlock }}</div>
           </div>
         </div>
         <div class="text-xs flex items-center justify-center flex-col">
@@ -266,7 +320,7 @@ export default {
             class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]"
           >
             <img class="h-15 mr-6" src="@/assets/images/home/block-white.png" />
-            <div class="text-beige font-bold">89573956</div>
+            <div class="text-beige font-bold">{{ nextBlock }}</div>
           </div>
         </div>
       </div>
@@ -300,10 +354,15 @@ export default {
       <div class="rounded-default gap-x-7 flex text-white">
         <div
           class="flex-1 bg-[#141316] p-8 rounded-md"
-          v-if="gameType !== '哈希牛牛'"
+          :class="{ 'border border[#70697C]': cardIndex == i }"
+          v-for="(card, i) in DanShaung"
+          :key="i"
+          @click="handleCard(i)"
         >
-          <!-- 大 -->
-          <div class="flex justify-between items-center">
+          <div
+            class="flex justify-between items-center"
+            v-if="card.circlePos == 'right'"
+          >
             <div class="text-ll mt-8">
               <div class="flex">
                 <img
@@ -311,7 +370,7 @@ export default {
                   src="@/assets/images/home/dollar-white.png"
                   alt=""
                 />
-                73956
+                {{ card.acountAmount }}
               </div>
               <div class="flex items-center text-wathet mt-9">
                 <img
@@ -319,21 +378,57 @@ export default {
                   src="@/assets/images/home/icon_person.png"
                   alt=""
                 />
-                756
+                {{ card.userCount }}
               </div>
             </div>
             <div class="text-ll mt-8">
               <van-circle
                 class="circle-text"
-                v-model:current-rate="currentRate"
+                v-model:current-rate="card.schedule"
                 size="27px"
                 :stroke-width="60"
-                :rate="currentRate"
+                :rate="card.schedule"
                 :speed="100"
                 layer-color="#C6C6C6"
                 :color="gradientColor"
-                :text="text"
+                :text="`${card.schedule.toFixed(0)}%`"
               />
+            </div>
+          </div>
+          <div
+            class="flex justify-between items-center"
+            v-if="card.circlePos == 'left'"
+          >
+            <div class="text-ll mt-8">
+              <van-circle
+                class="circle-text"
+                v-model:current-rate="card.schedule"
+                size="27px"
+                :stroke-width="60"
+                :rate="card.schedule"
+                :speed="100"
+                layer-color="#C6C6C6"
+                :color="card.circleColor"
+                :text="`${card.schedule.toFixed(0)}%`"
+              />
+            </div>
+            <div class="text-ll mt-8">
+              <div class="flex">
+                <img
+                  class="h-12 mr-3"
+                  src="@/assets/images/home/dollar-white.png"
+                  alt=""
+                />
+                {{ card.acountAmount }}
+              </div>
+              <div class="flex items-center text-wathet mt-9">
+                <img
+                  class="h-9 mr-3"
+                  src="@/assets/images/home/icon_person.png"
+                  alt=""
+                />
+                {{ card.userCount }}
+              </div>
             </div>
           </div>
           <div class="flex items-center justify-center flex-col mt-23">
@@ -345,140 +440,15 @@ export default {
                 src="@/assets/images/home/dollar-white.png"
                 alt=""
               />
-              <div class="text-ll">0</div>
+              <div class="text-ll">{{ card.betValue }}</div>
             </div>
-            <div class="text-4xl text-wathet-deep mt-5 mb-7">
-              {{
-                gameType == "哈希单双"
-                  ? "单"
-                  : gameType == "哈希庄闲"
-                  ? "庄"
-                  : "大"
-              }}
+            <div :class="card.color" class="text-4xl mt-5 mb-7">
+              {{ card.name }}
             </div>
             <div
               class="text-center text-xs bg-[#27272D] pl-18 pr-16 py-4 mb-30 rounded-2xl border border-[#70697C] text-white"
             >
-              1 : 1.95
-            </div>
-          </div>
-        </div>
-        <div
-          class="flex-1 bg-[#141316] p-8 rounded-md"
-          v-if="gameType == '哈希庄闲'"
-        >
-          <!-- 和 -->
-          <div class="flex justify-between items-center">
-            <div class="text-ll mt-8">
-              <div class="flex">
-                <img
-                  class="h-12 mr-3"
-                  src="@/assets/images/home/dollar-white.png"
-                />
-                73956
-              </div>
-              <div class="flex items-center text-wathet mt-9">
-                <img
-                  class="h-9 mr-3"
-                  src="@/assets/images/home/icon_person.png"
-                  alt=""
-                />
-                756
-              </div>
-            </div>
-            <div class="text-ll mt-8">
-              <van-circle
-                class="circle-text"
-                v-model:current-rate="currentRate2"
-                size="27px"
-                :stroke-width="60"
-                :rate="currentRate2"
-                :speed="100"
-                layer-color="#C6C6C6"
-                :color="gradientColor2"
-                :text="text2"
-              />
-            </div>
-          </div>
-          <div class="flex items-center justify-center flex-col mt-53">
-            <div
-              class="flex pt-4 pb-2 pl-5 pr-14 bg-[#27272D] rounded-2xl border border-[#70697C]"
-            >
-              <img
-                class="h-12 mr-8"
-                src="@/assets/images/home/dollar-white.png"
-                alt=""
-              />
-              <div class="text-ll">0</div>
-            </div>
-            <div class="text-4xl text-orange mt-5 mb-7">和</div>
-            <div
-              class="text-center text-xs bg-[#27272D] pl-18 pr-16 py-4 mb-30 rounded-2xl border border-[#70697C] text-white"
-            >
-              1 : 1.95
-            </div>
-          </div>
-        </div>
-        <div class="flex-1 bg-[#141316] p-8 rounded-md">
-          <!-- 小 -->
-          <div class="flex justify-between items-center flex-row-reverse">
-            <div class="text-ll mt-8">
-              <div class="flex">
-                <img
-                  class="h-12 mr-3"
-                  src="@/assets/images/home/dollar-white.png"
-                />
-                73956
-              </div>
-              <div class="flex items-center text-wathet mt-9">
-                <img
-                  class="h-9 mr-3"
-                  src="@/assets/images/home/icon_person.png"
-                  alt=""
-                />
-                756
-              </div>
-            </div>
-            <div class="text-ll mt-8">
-              <van-circle
-                class="circle-text"
-                v-model:current-rate="currentRate1"
-                size="27px"
-                :stroke-width="60"
-                :rate="currentRate1"
-                :speed="100"
-                layer-color="#C6C6C6"
-                :color="gradientColor1"
-                :text="text1"
-              />
-            </div>
-          </div>
-          <div class="flex items-center justify-center flex-col mt-23">
-            <div
-              class="flex pt-4 pb-2 pl-5 pr-14 bg-[#27272D] rounded-2xl border border-[#70697C]"
-            >
-              <img
-                class="h-12 mr-8"
-                src="@/assets/images/home/dollar-white.png"
-                alt=""
-              />
-              <div class="text-ll">0</div>
-            </div>
-            <div class="text-4xl text-tomato-yellow mt-5 mb-7">
-              {{
-                gameType == "哈希单双"
-                  ? "双"
-                  : gameType == "哈希牛牛"
-                  ? "牛闲"
-                  : gameType == "哈希庄闲"
-                  ? "闲"
-                  : "小"
-              }}
-            </div>
-            <div
-              class="text-center text-xs bg-[#27272D] pl-18 pr-16 py-4 mb-30 rounded-2xl border border-[#70697C] text-white"
-            >
-              1 : 1.95
+              {{ card.proportion }}
             </div>
           </div>
         </div>

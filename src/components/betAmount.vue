@@ -17,9 +17,30 @@ export default {
         { name: "fff", icon: "100", amount: 100 },
         { name: "ggg", icon: "zdy", amount: 0 },
       ],
+      zdyList: [
+        { icon: "1", amount: 1, select: true },
+        { icon: "5", amount: 5, select: true },
+        { icon: "10", amount: 10, select: true },
+        { icon: "50", amount: 50, select: true },
+        { icon: "100", amount: 100, select: true },
+        { icon: "200", amount: 200, select: false },
+        { icon: "500", amount: 500, select: false },
+        { icon: "1k", amount: "1k", select: false },
+        { icon: "5k", amount: "5k", select: false },
+        { icon: "10k", amount: "10k", select: false },
+        { icon: "zdy-num", amount: 0, select: false },
+        { icon: "zdy-num", amount: 0, select: false },
+        { icon: "zdy-num", amount: 0, select: false },
+        { icon: "zdy-num", amount: 0, select: false },
+        { icon: "zdy-num", amount: 0, select: false },
+      ],
+      zdyValue: "自定义",
+      updatedSelectedImgs: [],
       betImg: "1",
-      amount:1,
+      amount: 1,
       animate: false,
+      zdyChipPop: false,
+      showKeyboard: false,
     };
   },
   components: {},
@@ -28,10 +49,48 @@ export default {
   methods: {
     // 投注金额
     checkBetAmount(item) {
-      this.betImg = item.icon;
-      this.amount = item.amount;
-      this.$emit("changeAmount", this.amount)
-      this.animate = false
+      if (item.icon == "zdy") {
+        this.zdyChipPop = true;
+      } else {
+        this.betImg = item.icon;
+        this.amount = item.amount;
+        this.$emit("changeAmount", this.amount);
+      }
+      this.animate = false;
+    },
+    changeSelect(val, i) {
+      // 获取当前选择的数量
+      const selectedCount = this.zdyList.filter((item) => item.select).length;
+
+      // 最多选择5个筹码
+      if (selectedCount >= 5 && !val.select) {
+        // showFailToast('最多只能选择5个筹码');
+        return;
+      }
+      // 切换选择状态
+      this.zdyList[i].select = !val.select;
+
+      const selectedItems = this.zdyList
+      .map((item, index) => ({ ...item, originalIndex: index }))
+      .filter((item) => item.select)
+      .sort((a, b) => a.originalIndex - b.originalIndex);
+      
+      const names = ["bbb", "ccc", "ddd", "eee", "fff"];
+      // 添加 name 属性
+      this.updatedSelectedImgs = selectedItems.map((item, index) => {
+        return {
+          ...item,
+          name: names[index] || item.name,
+        };
+      });
+      this.updatedSelectedImgs.push({ name: "ggg", icon: "zdy", amount: 0 });
+    },
+    changeAmountImg() {
+      if (this.updatedSelectedImgs.length < 6) {
+        return;
+      }
+      this.imgList = this.updatedSelectedImgs;
+      this.zdyChipPop = false;
     },
   },
 };
@@ -59,6 +118,66 @@ export default {
       @click="animate = false"
     ></div>
   </div>
+
+  <!-- 筹码切换 -->
+  <van-popup :show="zdyChipPop" round position="bottom">
+    <div class="bg-[#27272D] pl-17 pt-15 pb-100">
+      <div class="flex justify-between items-center text-white text-xl mb-14">
+        设定筹码
+        <img
+          @click="zdyChipPop = false"
+          class="w-14 mr-17"
+          src="@/assets/images/home/close-white.png"
+          alt=""
+        />
+      </div>
+      <div class="flex flex-wrap gap-x-22">
+        <div
+          class="flex items-center justify-center flex-col mb-29"
+          v-for="(val, i) in zdyList"
+          :key="i"
+          @click="changeSelect(val, i)"
+        >
+          <img v-if="val.icon !== 'zdy-num'"
+            class="h-54"
+            :src="getRequireImg(`home/${val.icon}.png`)"
+            alt=""
+          />
+          <div v-else class="relative" @click="changeAmountImg">
+            <img
+              class="w-54 h-54 m-auto"
+              src="@/assets/images/home/zdy-num.png"
+            />
+            <van-field class="inputbox absolute w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
+             v-model="val.amount" readonly clickable @touchstart.stop="showKeyboard = true" />
+          </div>
+          <img
+            class="h-21 mt-7"
+            :src="
+              getRequireImg(`home/${val.select ? 'select' : 'unselect'}.png`)
+            "
+            alt=""
+          />
+        </div>
+      </div>
+      <div class="relative mt-16" @click="changeAmountImg">
+        <img class="w-119 h-38 m-auto" src="@/assets/images/home/btn-bg.png" />
+        <span
+          class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
+          >确定</span
+        >
+      </div>
+
+      <van-number-keyboard class="text-[#27272D]"
+  :show="showKeyboard"
+  v-model="zdyValue"
+  close-button-text="完成"
+  @blur="showKeyboard = false"
+  @input="onInput"
+  @delete="onDelete"
+/>
+    </div>
+  </van-popup>
 </template>
 
 <style scoped>
@@ -81,6 +200,15 @@ export default {
   transform: translate(-50%, -50%);
   animation: opmaskAnimaOn 0.5s linear;
   @apply w-393 h-393 absolute rounded-full;
+}
+
+:deep(.inputbox){
+  background: none !important;
+  @apply absolute w-full h-full top-0 left-0 flex items-center justify-center p-0 text-ll text-white;
+}
+:deep(.inputbox) .van-field__control{
+  color: #fff !important;
+  text-align: center;
 }
 
 @keyframes opmaskAnimaOn {
