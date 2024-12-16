@@ -9,7 +9,6 @@ import { getCookie } from '@/service/util.service'
 // $instance基本配置
 let $instance = axios.create({
   headers: {
-    'token': '',
     'Content-Type': 'application/json;charset=UTF-8'
   },
   withCredentials: false,

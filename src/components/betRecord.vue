@@ -12,33 +12,54 @@
             let b = []
             let c = []
             let d = []
-            let e = []
-            let f = []
             arr.forEach((v,k)=>{
-                if(k < 5){
+                if(k < 6){
                     a.push(v)
-                }else if(k >= 5 &&k < 10){
+                }else if(k >= 6 &&k < 12){
                     b.push(v)
-                }else if(k >= 10 &&k < 15){
+                }else if(k >= 12 &&k < 18){
                     c.push(v)
-                }else if(k >= 15 &&k < 20){
+                }else if(k >= 18 &&k < 24){
                     d.push(v)
-                }else if(k >= 20 &&k < 25){
-                    e.push(v)
-                }else if(k >= 25 &&k < 30){
-                    f.push(v)
                 }
             })
-            let aa = [a,b,c,d,e,f]
-            console.log(aa)
+            let aa = [a,b,c,d]
             return aa
-        }
+        },
+        newlists2(){
+            let arr = this.all
+            let a = []
+            let b = []
+            let c = []
+            let d = []
+            let e = []
+            arr.forEach((v,k)=>{
+                if(k < 6){
+                    a.push(v)
+                }else if(k >= 6 &&k < 12){
+                    b.push(v)
+                }else if(k >= 12 &&k < 18){
+                    c.push(v)
+                }else if(k >= 18 &&k < 24){
+                    d.push(v)
+                }else if(k >= 24 &&k < 30){
+                    e.push(v)
+                }
+            })
+            let aa = [a,b,c,d,e]
+            return aa
+        },
     },
     props:{
         hasHe: {
             default:()=>{
                 return false
             }
+        },
+        allList: {
+            default: ()=>{
+                return []
+            },
         },
         lists1: {
             default: ()=>{
@@ -107,12 +128,12 @@
         </div>
         <div class="flex overflow-x-auto">
             <table class="rounded-lg overflow-hidden text-xs text-white bg-[#141316]" >
-            <tbody >
-                <tr v-for="(tab, i) in newlists1" :key="i">
+            <tbody class="flex ">
+                <tr class="flex flex-col" v-for="(tab, i) in newlists1" :key="i" >
                     <td v-for="(v, k) in tab" :key="k">
                         <div class="td-box1">
-                            <div v-if="tab.has != 3" :class="{ 'bg-[#FF5C01]': tab.has == '1', 'bg-[#5164FF]': tab.has == '2', }" class="left-number" >
-                            {{ tab.has }}
+                            <div v-if="v" :class="{ 'bg-[#FF5C01]': v == '1', 'bg-[#5164FF]': v == '2', }" class="left-number" >
+                            {{ v }}
                             </div>
                         </div>
                     </td>
@@ -120,11 +141,11 @@
             </tbody>
             </table>
             <table class="rounded-lg overflow-hidden text-xs text-white bg-[#141316]" >
-            <tbody>
-                <tr v-for="(val, i) in lists2" :key="i">
+            <tbody class="flex ">
+                <tr class="flex flex-col" v-for="(val, i) in lists2" :key="i">
                     <td v-for="(v, k) in val" :key="k">
                         <div class="td-box2">
-                            <div :class="{ 'border-2 border-[#FF5C01]': v.has == '1', 'border-2 border-[#5164FF]': v.has == '2'}" ></div>
+                            <div :class="{ 'border-2 border-[#FF5C01]': v == '1', 'border-2 border-[#5164FF]': v == '2'}" ></div>
                         </div>
                     </td>
                 </tr>

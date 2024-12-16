@@ -40,8 +40,13 @@ export default {
       ruleIndex: 0,
       ruleName: "",
       headSwiper: "",
+      tabDataAll: [],
       tabData1: [],
       tabData2: [],
+      key1: 0,
+      prveVal: 0,
+      x_index: 0,
+      y_index: 0,
     };
   },
   components: {
@@ -65,22 +70,37 @@ export default {
       return this.currentRate2.toFixed(0) + "%";
     },
   },
+  watch:{
+  },
   created() {
-    let obj1 = {};
-    let a = new Array(4).fill(obj1);
-    let obj2 = {};
-    let b = new Array(12).fill(obj2);
+    
+    let arr = [];
     let arr1 = [];
     let arr2 = [];
 
-    new Array(6).fill(a).forEach((v) => {
-      arr1.push(v);
-    });
-    new Array(12).fill(b).forEach((v) => {
-      arr2.push(v);
-    });
-    this.tabData1 = arr1;
-    this.tabData2 = arr2;
+    for(let i = 0; i< 12; i++){
+      arr.push(Math.random(10) * 10 > 4 ? 1 : 2)
+    }
+    for(let i = 0; i< 24; i++){
+      arr1.push('')
+    }
+    for(let i = 0; i< 10; i++){
+      let arr = []
+      for(let j = 0; j < 12; j++){
+        arr.push('')
+      }
+      arr2.push(arr)
+    }
+
+    if(arr.length < 24){
+      arr = this.padArray(arr, 24, 0)
+    }
+
+    this.tabDataAll = arr
+    this.key1 = arr.length - 1
+    this.tabData1 = arr.slice(arr.length - 24, arr.length)
+    this.tabData2 = arr2
+    this.setArrRight(arr, arr2, 10)
   },
   mounted() {
     this.getBlockNum();
@@ -91,6 +111,99 @@ export default {
     });
   },
   methods: {
+
+    findFGreaterThan(arr, type, v){
+      if(type == 'left'){
+        for (let i = 0; i < arr.length; i++) {
+          const value = arr[i];
+          if (value == '') {
+            this.key1 = i
+            return this.key1
+          }
+        }
+        return this.key1 + 1; 
+      }else{
+        if(this.x_index >= 9){
+          if(this.prveVal != v || this.y_index >= 11){
+            let c = this.tabData2.shift()
+            let l = []
+            for(let j = 0; j < 12; j++){
+              l.push('')
+            }
+            this.tabData2.push(l)
+          }
+          
+          if(this.tabData2[9][this.y_index]){
+            if(this.prveVal == v){
+              if(this.y_index >= 11){
+                this.x_index += 1
+              }else{
+                this.y_index += 1
+              }
+            }else{
+              this.x_index = 9
+              this.y_index = 0
+            }
+          }else{
+            if(this.prveVal == v){
+              if(this.y_index >= 11){
+                this.x_index += 1
+              }else{
+                this.y_index = 0
+              }
+            }else{
+              this.x_index = 9
+              this.y_index = 0
+            }
+          }
+        }else{
+          if(this.tabData2[this.x_index][this.y_index]){
+            if(this.prveVal == v){
+              if(this.y_index >= 11){
+                this.x_index += 1
+              }else{
+                this.y_index += 1
+              }
+            }else{
+              this.x_index += 1
+              this.y_index = 0
+            }
+          }
+        }
+          
+        this.prveVal = v
+        let x = this.x_index >=9 ? 9 : this.x_index
+        let y = this.y_index >=11 ? 11 : this.y_index
+        this.tabData2[x][y] = v  
+      }
+    },
+    touzhu(){
+      let arr = this.tabDataAll
+      let key1 = this.findFGreaterThan(arr, 'left')
+      let val = Math.random(10) * 10 > 2 ? 1 : 2
+      if(key1 < 24){
+        arr[key1] = val
+        this.tabData1 = this.tabDataAll
+      }else{
+        arr.push(val)
+        this.tabData1 = this.tabDataAll.slice(this.tabDataAll.length - 24, this.tabDataAll.length)
+      }
+
+      this.findFGreaterThan(arr, 'right', val)
+    },
+    setArrRight(all, arr, length){
+      all.forEach(item=>{
+        if(item){
+          this.findFGreaterThan(all, 'right', item)
+        }
+      })
+    },
+    padArray(arr, length, padValue) {
+        while (arr.length < length) {
+            arr.push(padValue);
+        }
+        return arr;
+    },
     onSwiper(swiper) {
       this.headSwiper = swiper;
     },
@@ -405,7 +518,7 @@ export default {
           alt=""
         />
       </div>
-      <bet-record :lists1="tabData1" :lists2="tabData2" />
+      <bet-record :allList="tabDataAll" :lists1="tabData1" :lists2="tabData2" />
       <div
         @click="showGameResult = true"
         class="text-base text-white mt-4 ml-6 mb-36"
