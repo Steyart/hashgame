@@ -4,13 +4,17 @@ import GamePop from "@/components/gamePop.vue";
 import MenuPop from "@/components/menuPop.vue";
 import BetAmount from "@/components/betAmount.vue";
 import BetRecord from "@/components/betRecord.vue";
+import ComRollNumber from "@/components/comRollNumber.vue";
 import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
 import { Swiper, SwiperSlide } from "swiper/vue";
 export default {
   data() {
     return {
-      gameType: "哈希单双",
+      gameType:{
+        name: "哈希单双",
+        icon: 'danshuang'
+      },
       gradientColor: {
         "0%": "rgba(81, 100, 255, 0.38)",
         "100%": "rgba(81, 100, 255, 1)",
@@ -36,7 +40,7 @@ export default {
       ruleTab: ["哈希单双", "哈希大小", "哈希牛牛", "哈希庄闲", "哈希和值大小"],
       ruleIndex: 0,
       ruleName: "",
-      DanShaung: [
+      danshuang: [
         {
           name: "单",
           betValue: 0,
@@ -46,7 +50,6 @@ export default {
           proportion: "1:1.95",
           schedule: 30,
           circlePos: "right",
-          circleColor: this.gradientColor2,
         },
         {
           name: "双",
@@ -57,10 +60,9 @@ export default {
           proportion: "1:1.95",
           schedule: 30,
           circlePos: "left",
-          circleColor: this.gradientColor1,
         },
       ],
-      DaXiao: [
+      daxiao: [
         {
           name: "大",
           betValue: 0,
@@ -70,7 +72,6 @@ export default {
           proportion: "1:1.95",
           schedule: 30,
           circlePos: "right",
-          circleColor: this.gradientColor2,
         },
         {
           name: "小",
@@ -81,7 +82,50 @@ export default {
           proportion: "1:1.95",
           schedule: 30,
           circlePos: "left",
-          circleColor: this.gradientColor1,
+        },
+      ],
+      niuniu: [
+        {
+          name: "牛闲",
+          betValue: 0,
+          color: "text-tomato-yellow",
+          acountAmount: 73956,
+          userCount: 756,
+          proportion: "1:1.95",
+          schedule: 30,
+          circlePos: "right",
+        },
+      ],
+      zhuangxian:[
+        {
+          name: "庄",
+          betValue: 0,
+          color: "text-wathet-deep",
+          acountAmount: 73956,
+          userCount: 756,
+          proportion: "1:1.95",
+          schedule: 30,
+          circlePos: "right",
+        },
+        {
+          name: "和",
+          betValue: 0,
+          color: "text-orange-l",
+          acountAmount: 73956,
+          userCount: 756,
+          proportion: "1:1.95",
+          schedule: 30,
+          circlePos: "right",
+        },
+        {
+          name: "闲",
+          betValue: 0,
+          color: "text-tomato-yellow",
+          acountAmount: 73956,
+          userCount: 756,
+          proportion: "1:1.95",
+          schedule: 30,
+          circlePos: "left",
         },
       ],
       cardIndex: null,
@@ -103,9 +147,25 @@ export default {
     MenuPop,
     BetAmount,
     BetRecord,
+    ComRollNumber,
   },
   mixins: [toHref, postInfo],
   computed: {
+    currentCards() {
+      if (this.gameType.icon === 'daxiao' || this.gameType.icon === 'hezhidaxiao') {
+        return this.daxiao;
+      }
+      switch (this.gameType.icon) {
+        case 'danshuang':
+          return this.danshuang;
+        case 'niuniu':
+          return this.niuniu;
+        case 'zhuangxian':
+          return this.zhuangxian;
+        default:
+          return [];
+      }
+    }
   },
   watch: {},
   created() {
@@ -148,18 +208,17 @@ export default {
     // });
   },
   methods: {
-
     handleCard(i) {
       if (this.cardIndex == i) {
-        this.DanShaung[i].betValue += 1;
+        this.currentCards[i].betValue += 1;
         // 投注值+1
       } else {
         if (this.cardIndex != null) {
-          this.DanShaung[this.cardIndex].betValue = 0;
+          this.currentCards[this.cardIndex].betValue = 0;
         }
         this.cardIndex = i;
         // 设定投注值
-        this.DanShaung[i].betValue = this.amount;
+        this.currentCards[i].betValue = this.amount;
       }
     },
 
@@ -262,11 +321,12 @@ export default {
       this.headSwiper = swiper;
     },
     onSlideChange: (i) => {},
-    changeGame(name) {
-      this.gameType = name;
-      this.ruleIndex = this.ruleTab.indexOf(name);
+    changeGame(item) {
+      this.gameType = item;
+      this.ruleIndex = this.ruleTab.indexOf(item.name);
     },
     changeAmount(num) {
+      this.cardIndex = null;
       this.amount = num;
     },
 
@@ -302,7 +362,7 @@ export default {
         class="text-xl text-center text-white pt-7 mb-9"
         @click="showRulePop = true"
       >
-        {{ gameType }}
+        {{ gameType.name }}
       </div>
       <div class="flex justify-between mx-24">
         <div class="text-xs flex items-center justify-center flex-col">
@@ -311,7 +371,10 @@ export default {
             class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]"
           >
             <img class="h-15 mr-6" src="@/assets/images/home/block-white.png" />
-            <div class="text-white font-bold">{{ currentBlock }}</div>
+            <div class="text-white font-bold">
+              <!-- <ComRollNumber :value="currentBlock" :time="0" :animate="true"/> -->
+              {{ currentBlock }}
+              </div>
           </div>
         </div>
         <div class="text-xs flex items-center justify-center flex-col">
@@ -320,7 +383,10 @@ export default {
             class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]"
           >
             <img class="h-15 mr-6" src="@/assets/images/home/block-white.png" />
-            <div class="text-beige font-bold">{{ nextBlock }}</div>
+            <div class="text-beige font-bold">
+              <!-- <ComRollNumber :value="nextBlock" :time="0" :animate="true"/> -->
+              {{ nextBlock }}
+              </div>
           </div>
         </div>
       </div>
@@ -354,8 +420,8 @@ export default {
       <div class="rounded-default gap-x-7 flex text-white">
         <div
           class="flex-1 bg-[#141316] p-8 rounded-md"
-          :class="{ 'border border[#70697C]': cardIndex == i }"
-          v-for="(card, i) in DanShaung"
+          :class="{ 'border border-[#70697C]': cardIndex == i }"
+          v-for="(card, i) in currentCards"
           :key="i"
           @click="handleCard(i)"
         >
@@ -382,7 +448,7 @@ export default {
               </div>
             </div>
             <div class="text-ll mt-8">
-              <van-circle
+              <van-circle  v-if="card.name!=='牛闲'"
                 class="circle-text"
                 v-model:current-rate="card.schedule"
                 size="27px"
@@ -390,7 +456,15 @@ export default {
                 :rate="card.schedule"
                 :speed="100"
                 layer-color="#C6C6C6"
-                :color="gradientColor"
+                :color="
+                  card.color === 'text-wathet-deep'
+                    ? gradientColor
+                    : card.color === 'text-tomato-yellow'
+                    ? gradientColor1
+                    : card.color === 'text-orange-l'
+                    ? gradientColor2
+                    : gradientColor
+                "
                 :text="`${card.schedule.toFixed(0)}%`"
               />
             </div>
@@ -400,7 +474,7 @@ export default {
             v-if="card.circlePos == 'left'"
           >
             <div class="text-ll mt-8">
-              <van-circle
+              <van-circle v-if="card.name!=='牛闲'"
                 class="circle-text"
                 v-model:current-rate="card.schedule"
                 size="27px"
@@ -408,7 +482,9 @@ export default {
                 :rate="card.schedule"
                 :speed="100"
                 layer-color="#C6C6C6"
-                :color="card.circleColor"
+                :color="
+                  card.color == 'text-orange-l' ? gradientColor : gradientColor1
+                "
                 :text="`${card.schedule.toFixed(0)}%`"
               />
             </div>
@@ -431,7 +507,7 @@ export default {
               </div>
             </div>
           </div>
-          <div class="flex items-center justify-center flex-col mt-23">
+          <div class="flex items-center justify-center flex-col" :class="card.name == '和'?'mt-50':'mt-22'">
             <div
               class="flex pt-4 pb-2 pl-5 pr-14 bg-[#27272D] rounded-2xl border border-[#70697C]"
             >
@@ -488,7 +564,7 @@ export default {
           alt=""
         />
       </div>
-      <bet-record :allList="tabDataAll" :lists1="tabData1" :lists2="tabData2" />
+      <BetRecord :allList="tabDataAll" :lists1="tabData1" :lists2="tabData2" />
       <div
         @click="showGameResult = true"
         class="text-base text-white mt-4 ml-6 mb-36"

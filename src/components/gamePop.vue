@@ -21,7 +21,7 @@ export default {
         {name: "哈希庄闲", icon: "zhuangxian"},
         {name: "哈希和值大小", icon: "hezhidaxiao"},
       ],
-      gameActive: 0,
+      gameActive: null,
     };
   },
   components: {},
@@ -33,7 +33,7 @@ export default {
     },
     changeGame(item,index){
       this.gameActive = index
-      this.$emit('changeGame', item.name)
+      this.$emit('changeGame', item)
       this.handleClickOverlay()
     }
   },

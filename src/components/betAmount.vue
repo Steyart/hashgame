@@ -34,25 +34,48 @@ export default {
         { icon: "zdy-num", amount: 0, select: false },
         { icon: "zdy-num", amount: 0, select: false },
       ],
-      zdyValue: "自定义",
+      zdyValue: "",
       updatedSelectedImgs: [],
-      betImg: "1",
-      amount: 1,
+      betImg: {},
+      amount: null,
       animate: false,
       zdyChipPop: false,
       showKeyboard: false,
+      keyboardChangeIndex: null,
+      keyboardChangeValue: {},
     };
   },
   components: {},
   created() {},
-  mounted() {},
+  mounted() {
+    if (this.imgList.length > 0) {
+      this.betImg = this.imgList[0];
+      this.amount = this.imgList[0].amount;
+      this.$emit("changeAmount", this.amount);
+    }
+  },
   methods: {
     // 投注金额
     checkBetAmount(item) {
       if (item.icon == "zdy") {
         this.zdyChipPop = true;
+
+        this.zdyList.forEach((item) => {
+          const match = this.imgList.find(
+            (imgItem) =>
+              imgItem.icon === item.icon && imgItem.amount == item.amount
+          );
+          if (match !== undefined) {
+            item.select = true;
+          } else {
+            item.select = false;
+            if (item.icon === "zdy-num") {
+              item.amount = 0;
+            }
+          }
+        });
       } else {
-        this.betImg = item.icon;
+        this.betImg = item;
         this.amount = item.amount;
         this.$emit("changeAmount", this.amount);
       }
@@ -62,19 +85,25 @@ export default {
       // 获取当前选择的数量
       const selectedCount = this.zdyList.filter((item) => item.select).length;
 
-      // 最多选择5个筹码
+      // 如果已经选择了5个筹码且当前点击的筹码未被选中，则取消第一个被选中的筹码
       if (selectedCount >= 5 && !val.select) {
-        // showFailToast('最多只能选择5个筹码');
-        return;
+        const firstSelectedIndex = this.zdyList.findIndex(
+          (item) => item.select
+        );
+        if (firstSelectedIndex !== -1) {
+          this.zdyList[firstSelectedIndex].select = false;
+        }
       }
       // 切换选择状态
+      if (!val.amount) {
+        return;
+      }
       this.zdyList[i].select = !val.select;
-
       const selectedItems = this.zdyList
-      .map((item, index) => ({ ...item, originalIndex: index }))
-      .filter((item) => item.select)
-      .sort((a, b) => a.originalIndex - b.originalIndex);
-      
+        .map((item, index) => ({ ...item, originalIndex: index }))
+        .filter((item) => item.select)
+        .sort((a, b) => a.originalIndex - b.originalIndex);
+
       const names = ["bbb", "ccc", "ddd", "eee", "fff"];
       // 添加 name 属性
       this.updatedSelectedImgs = selectedItems.map((item, index) => {
@@ -85,12 +114,32 @@ export default {
       });
       this.updatedSelectedImgs.push({ name: "ggg", icon: "zdy", amount: 0 });
     },
+
+    // 点击确认后
     changeAmountImg() {
       if (this.updatedSelectedImgs.length < 6) {
         return;
       }
       this.imgList = this.updatedSelectedImgs;
+      this.betImg = this.imgList[0];
+      this.amount = this.imgList[0].amount;
       this.zdyChipPop = false;
+      this.$emit("changeAmount", this.amount);
+    },
+
+    showKeyBoardFn(val, i) {
+      val.select = false;
+      this.showKeyboard = true;
+      this.keyboardChangeIndex = i;
+      this.keyboardChangeValue = val;
+    },
+    changeVal() {
+      this.showKeyboard = false;
+      this.zdyList[this.keyboardChangeIndex].amount = Number(this.zdyValue);
+      this.changeSelect(this.keyboardChangeValue, this.keyboardChangeIndex); //输入值就更改选中状态
+      this.zdyValue = "";
+      this.keyboardChangeIndex = null;
+      this.keyboardChangeValue = {};
     },
   },
 };
@@ -99,7 +148,18 @@ export default {
   <div class="relative">
     <div class="flex justify-center w-44 h-44 mx-9 items-center relative">
       <div class="w-44 relative z-10" @click="animate = !animate">
-        <img :src="getRequireImg(`home/${betImg}.png`)" alt="" />
+        <img
+          v-if="betImg.icon !== 'zdy-num'"
+          :src="getRequireImg(`home/${betImg.icon}.png`)"
+          alt=""
+        />
+        <div v-else class="relative">
+          <img class="m-auto" src="@/assets/images/home/zdy-num.png" />
+          <span
+            class="absolute zdy-text w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
+            >{{ betImg.amount }}</span
+          >
+        </div>
       </div>
       <div
         v-for="(item, index) in imgList"
@@ -108,7 +168,19 @@ export default {
         :class="[item.name, animate ? 'animate_rotate' : '', 'animate']"
         class="animate w-44 left-0 top-0 absolute"
       >
-        <img :src="getRequireImg(`home/${item.icon}.png`)" alt="" />
+        <img
+          v-if="item.icon !== 'zdy-num'"
+          :src="getRequireImg(`home/${item.icon}.png`)"
+          alt=""
+        />
+
+        <div v-else class="relative">
+          <img class="m-auto" src="@/assets/images/home/zdy-num.png" />
+          <span
+            class="absolute zdy-text w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
+            >{{ item.amount }}</span
+          >
+        </div>
       </div>
     </div>
     <div
@@ -131,25 +203,29 @@ export default {
           alt=""
         />
       </div>
-      <div class="flex flex-wrap gap-x-22">
+      <div class="flex flex-wrap gap-x-22 mb-16">
         <div
           class="flex items-center justify-center flex-col mb-29"
           v-for="(val, i) in zdyList"
           :key="i"
           @click="changeSelect(val, i)"
         >
-          <img v-if="val.icon !== 'zdy-num'"
+          <img
+            v-if="val.icon !== 'zdy-num'"
             class="h-54"
             :src="getRequireImg(`home/${val.icon}.png`)"
             alt=""
           />
-          <div v-else class="relative" @click="changeAmountImg">
+          <div v-else class="relative">
             <img
               class="w-54 h-54 m-auto"
               src="@/assets/images/home/zdy-num.png"
             />
-            <van-field class="inputbox absolute w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
-             v-model="val.amount" readonly clickable @touchstart.stop="showKeyboard = true" />
+            <span
+              @click.stop="showKeyBoardFn(val, i)"
+              class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
+              >{{ val.amount || "自定义" }}</span
+            >
           </div>
           <img
             class="h-21 mt-7"
@@ -160,7 +236,7 @@ export default {
           />
         </div>
       </div>
-      <div class="relative mt-16" @click="changeAmountImg">
+      <div class="relative" @click="changeAmountImg">
         <img class="w-119 h-38 m-auto" src="@/assets/images/home/btn-bg.png" />
         <span
           class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
@@ -168,14 +244,13 @@ export default {
         >
       </div>
 
-      <van-number-keyboard class="text-[#27272D]"
-  :show="showKeyboard"
-  v-model="zdyValue"
-  close-button-text="完成"
-  @blur="showKeyboard = false"
-  @input="onInput"
-  @delete="onDelete"
-/>
+      <van-number-keyboard
+        class="text-[#27272D]"
+        :show="showKeyboard"
+        v-model="zdyValue"
+        close-button-text="完成"
+        @blur="changeVal"
+      />
     </div>
   </van-popup>
 </template>
@@ -189,6 +264,15 @@ export default {
 .animate_rotate {
   transform: rotate(calc(var(--idx) * 200deg / 5 - 191deg)) translateX(1.8rem);
 }
+/* .zdy-text {
+  transform: none !important;
+} */
+
+/* 添加一个更具体的选择器 */
+/* .relative .zdy-text {
+  transform: rotate(calc(var(--idx) * 200deg / 5 + 228deg)) !important;
+} */
+
 .animate img {
   transform: rotate(calc(var(--idx) * 202deg / -5 - 168deg));
 }
@@ -200,15 +284,6 @@ export default {
   transform: translate(-50%, -50%);
   animation: opmaskAnimaOn 0.5s linear;
   @apply w-393 h-393 absolute rounded-full;
-}
-
-:deep(.inputbox){
-  background: none !important;
-  @apply absolute w-full h-full top-0 left-0 flex items-center justify-center p-0 text-ll text-white;
-}
-:deep(.inputbox) .van-field__control{
-  color: #fff !important;
-  text-align: center;
 }
 
 @keyframes opmaskAnimaOn {
