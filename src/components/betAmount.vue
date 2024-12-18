@@ -156,7 +156,7 @@ export default {
         <div v-else class="relative">
           <img class="m-auto" src="@/assets/images/home/zdy-num.png" />
           <span
-            class="absolute zdy-text w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
+            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
             >{{ betImg.amount }}</span
           >
         </div>
@@ -168,16 +168,16 @@ export default {
         :class="[item.name, animate ? 'animate_rotate' : '', 'animate']"
         class="animate w-44 left-0 top-0 absolute"
       >
-        <img
+        <img class="zdy-Img"
           v-if="item.icon !== 'zdy-num'"
           :src="getRequireImg(`home/${item.icon}.png`)"
           alt=""
         />
 
-        <div v-else class="relative">
+        <div v-else class="relative zdy-Img">
           <img class="m-auto" src="@/assets/images/home/zdy-num.png" />
           <span
-            class="absolute zdy-text w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
+            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
             >{{ item.amount }}</span
           >
         </div>
@@ -264,16 +264,8 @@ export default {
 .animate_rotate {
   transform: rotate(calc(var(--idx) * 200deg / 5 - 191deg)) translateX(1.8rem);
 }
-/* .zdy-text {
-  transform: none !important;
-} */
 
-/* 添加一个更具体的选择器 */
-/* .relative .zdy-text {
-  transform: rotate(calc(var(--idx) * 200deg / 5 + 228deg)) !important;
-} */
-
-.animate img {
+.animate .zdy-Img {
   transform: rotate(calc(var(--idx) * 202deg / -5 - 168deg));
 }
 .mask {
@@ -311,5 +303,10 @@ export default {
 }
 .ggg {
   --idx: 5;
+}
+
+.zdy-text span{
+  transform: none !important;
+  transform-origin: center;
 }
 </style>

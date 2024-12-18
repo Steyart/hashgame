@@ -11,9 +11,9 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 export default {
   data() {
     return {
-      gameType:{
+      gameType: {
         name: "哈希单双",
-        icon: 'danshuang'
+        icon: "danshuang",
       },
       gradientColor: {
         "0%": "rgba(81, 100, 255, 0.38)",
@@ -96,7 +96,7 @@ export default {
           circlePos: "right",
         },
       ],
-      zhuangxian:[
+      zhuangxian: [
         {
           name: "庄",
           betValue: 0,
@@ -152,20 +152,23 @@ export default {
   mixins: [toHref, postInfo],
   computed: {
     currentCards() {
-      if (this.gameType.icon === 'daxiao' || this.gameType.icon === 'hezhidaxiao') {
+      if (
+        this.gameType.icon === "daxiao" ||
+        this.gameType.icon === "hezhidaxiao"
+      ) {
         return this.daxiao;
       }
       switch (this.gameType.icon) {
-        case 'danshuang':
+        case "danshuang":
           return this.danshuang;
-        case 'niuniu':
+        case "niuniu":
           return this.niuniu;
-        case 'zhuangxian':
+        case "zhuangxian":
           return this.zhuangxian;
         default:
           return [];
       }
-    }
+    },
   },
   watch: {},
   created() {
@@ -321,11 +324,16 @@ export default {
       this.headSwiper = swiper;
     },
     onSlideChange: (i) => {},
+    
     changeGame(item) {
       this.gameType = item;
       this.ruleIndex = this.ruleTab.indexOf(item.name);
     },
     changeAmount(num) {
+      // 'k'值转换
+      if (typeof num === "string" && num.includes("k")) {
+        num = parseFloat(num.replace("k", "")) * 1000;
+      }
       this.cardIndex = null;
       this.amount = num;
     },
@@ -374,7 +382,7 @@ export default {
             <div class="text-white font-bold">
               <!-- <ComRollNumber :value="currentBlock" :time="0" :animate="true"/> -->
               {{ currentBlock }}
-              </div>
+            </div>
           </div>
         </div>
         <div class="text-xs flex items-center justify-center flex-col">
@@ -386,7 +394,7 @@ export default {
             <div class="text-beige font-bold">
               <!-- <ComRollNumber :value="nextBlock" :time="0" :animate="true"/> -->
               {{ nextBlock }}
-              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -448,7 +456,8 @@ export default {
               </div>
             </div>
             <div class="text-ll mt-8">
-              <van-circle  v-if="card.name!=='牛闲'"
+              <van-circle
+                v-if="card.name !== '牛闲'"
                 class="circle-text"
                 v-model:current-rate="card.schedule"
                 size="27px"
@@ -474,7 +483,8 @@ export default {
             v-if="card.circlePos == 'left'"
           >
             <div class="text-ll mt-8">
-              <van-circle v-if="card.name!=='牛闲'"
+              <van-circle
+                v-if="card.name !== '牛闲'"
                 class="circle-text"
                 v-model:current-rate="card.schedule"
                 size="27px"
@@ -507,7 +517,10 @@ export default {
               </div>
             </div>
           </div>
-          <div class="flex items-center justify-center flex-col" :class="card.name == '和'?'mt-50':'mt-22'">
+          <div
+            class="flex items-center justify-center flex-col"
+            :class="card.name == '和' ? 'mt-50' : 'mt-22'"
+          >
             <div
               class="flex pt-4 pb-2 pl-5 pr-14 bg-[#27272D] rounded-2xl border border-[#70697C]"
             >

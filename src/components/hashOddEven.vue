@@ -17,17 +17,6 @@ export default {
 
 <template>
   <div>
-    <div class="relative mt-6">
-      <img
-        class="w-319 m-auto"
-        src="@/assets/images/home/btn-bg-big.png"
-        alt=""
-      />
-      <span
-        class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
-        >启动钱包</span
-      >
-    </div>
     <div class="relative bg-[#EBEBEE] mt-12 rounded-md">
       <div
         class="relative flex items-center justify-center flex-col bg-[url('@/assets/images/home/transfer-bg1.png')] bg-[length:100%_100%] bg-no-repeat"
