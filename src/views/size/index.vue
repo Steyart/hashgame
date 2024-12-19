@@ -18,7 +18,7 @@ export default {
           inactiveIcon: "bet-inactive",
         },
       ],
-      active: 0,
+      active: 1,
     };
   },
   components: { Bet, TransferBet,},

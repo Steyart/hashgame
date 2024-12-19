@@ -3,7 +3,17 @@ import toHref from "@/mixins/toHref";
 import { mapGetters } from "vuex";
 export default {
   mixins: [toHref],
-  watch: {},
+  watch: {
+    "zdyValue"(val){
+      if(val && val.length <= 6){
+        this.zdyList[this.keyboardChangeIndex].amount = val
+      }else if(val && val.length > 6){
+        this.zdyValue = this.zdyList[this.keyboardChangeIndex].amount.toString()
+      }else{
+        this.zdyList[this.keyboardChangeIndex].amount = 0
+      }
+    },
+  },
   computed: {
     ...mapGetters(["indexNav", "showLeft"]),
   },
@@ -132,12 +142,17 @@ export default {
       this.showKeyboard = true;
       this.keyboardChangeIndex = i;
       this.keyboardChangeValue = val;
+      if(val.amount){
+        this.zdyValue = this.zdyList[this.keyboardChangeIndex].amount.toString();
+      }else{
+        this.zdyValue = "";
+      }
     },
     changeVal() {
       this.showKeyboard = false;
       this.zdyList[this.keyboardChangeIndex].amount = Number(this.zdyValue);
       this.changeSelect(this.keyboardChangeValue, this.keyboardChangeIndex); //输入值就更改选中状态
-      this.zdyValue = "";
+      
       this.keyboardChangeIndex = null;
       this.keyboardChangeValue = {};
     },
@@ -193,7 +208,7 @@ export default {
 
   <!-- 筹码切换 -->
   <van-popup :show="zdyChipPop" round position="bottom">
-    <div class="bg-[#27272D] pl-17 pt-15 pb-100">
+    <div class="bg-[#27272D] pl-17 pt-15 pb-220">
       <div class="flex justify-between items-center text-white text-xl mb-14">
         设定筹码
         <img
@@ -224,7 +239,7 @@ export default {
             <span
               @click.stop="showKeyBoardFn(val, i)"
               class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
-              >{{ val.amount || "自定义" }}</span
+              >{{ val.amount ? getThousandth(val.amount, 3) : "自定义" }}</span
             >
           </div>
           <img
