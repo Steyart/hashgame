@@ -26,7 +26,7 @@ export default {
   computed: {
     
   },
-  mounted() {
+  created(){
     const token = this.getCookie('token'); // 获取cookie中的token
     if (!token) {
       this.getTokenInfo({
@@ -34,6 +34,8 @@ export default {
         uid: 'game_37039042',
       });
     }
+  },
+  mounted() {
   },
   methods: {
     // 获取cookie

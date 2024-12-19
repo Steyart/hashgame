@@ -4,13 +4,14 @@ import { mapGetters } from "vuex";
 export default {
   mixins: [toHref],
   watch: {
-    "zdyValue"(val){
-      if(val && val.length <= 6){
-        this.zdyList[this.keyboardChangeIndex].amount = val
-      }else if(val && val.length > 6){
-        this.zdyValue = this.zdyList[this.keyboardChangeIndex].amount.toString()
-      }else{
-        this.zdyList[this.keyboardChangeIndex].amount = 0
+    zdyValue(val) {
+      if (val && val.length <= 6) {
+        this.zdyList[this.keyboardChangeIndex].amount = val;
+      } else if (val && val.length > 6) {
+        this.zdyValue =
+          this.zdyList[this.keyboardChangeIndex].amount.toString();
+      } else {
+        this.zdyList[this.keyboardChangeIndex].amount = 0;
       }
     },
   },
@@ -47,7 +48,6 @@ export default {
       zdyValue: "",
       updatedSelectedImgs: [],
       betImg: {},
-      amount: null,
       animate: false,
       zdyChipPop: false,
       showKeyboard: false,
@@ -60,8 +60,7 @@ export default {
   mounted() {
     if (this.imgList.length > 0) {
       this.betImg = this.imgList[0];
-      this.amount = this.imgList[0].amount;
-      this.$emit("changeAmount", this.amount);
+      this.$emit("changeAmount", this.imgList[0]);
     }
   },
   methods: {
@@ -86,8 +85,7 @@ export default {
         });
       } else {
         this.betImg = item;
-        this.amount = item.amount;
-        this.$emit("changeAmount", this.amount);
+        this.$emit("changeAmount", item);
       }
       this.animate = false;
     },
@@ -132,9 +130,8 @@ export default {
       }
       this.imgList = this.updatedSelectedImgs;
       this.betImg = this.imgList[0];
-      this.amount = this.imgList[0].amount;
       this.zdyChipPop = false;
-      this.$emit("changeAmount", this.amount);
+      this.$emit("changeAmount", this.imgList[0]);
     },
 
     showKeyBoardFn(val, i) {
@@ -142,9 +139,10 @@ export default {
       this.showKeyboard = true;
       this.keyboardChangeIndex = i;
       this.keyboardChangeValue = val;
-      if(val.amount){
-        this.zdyValue = this.zdyList[this.keyboardChangeIndex].amount.toString();
-      }else{
+      if (val.amount) {
+        this.zdyValue =
+          this.zdyList[this.keyboardChangeIndex].amount.toString();
+      } else {
         this.zdyValue = "";
       }
     },
@@ -152,7 +150,7 @@ export default {
       this.showKeyboard = false;
       this.zdyList[this.keyboardChangeIndex].amount = Number(this.zdyValue);
       this.changeSelect(this.keyboardChangeValue, this.keyboardChangeIndex); //输入值就更改选中状态
-      
+
       this.keyboardChangeIndex = null;
       this.keyboardChangeValue = {};
     },
@@ -160,119 +158,126 @@ export default {
 };
 </script>
 <template>
-  <div class="relative">
-    <div class="flex justify-center w-44 h-44 mx-9 items-center relative">
-      <div class="w-44 relative z-10" @click="animate = !animate">
-        <img
-          v-if="betImg.icon !== 'zdy-num'"
-          :src="getRequireImg(`home/${betImg.icon}.png`)"
-          alt=""
-        />
-        <div v-else class="relative">
-          <img class="m-auto" src="@/assets/images/home/zdy-num.png" />
-          <span
-            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
-            >{{ betImg.amount }}</span
-          >
-        </div>
-      </div>
-      <div
-        v-for="(item, index) in imgList"
-        :key="index"
-        @click="checkBetAmount(item)"
-        :class="[item.name, animate ? 'animate_rotate' : '', 'animate']"
-        class="animate w-44 left-0 top-0 absolute"
-      >
-        <img class="zdy-Img"
-          v-if="item.icon !== 'zdy-num'"
-          :src="getRequireImg(`home/${item.icon}.png`)"
-          alt=""
-        />
-
-        <div v-else class="relative zdy-Img">
-          <img class="m-auto" src="@/assets/images/home/zdy-num.png" />
-          <span
-            class="coin-amount text-ll px-8"
-            >{{ getThousandth(item.amount, 3) }}</span
-          >
-        </div>
-      </div>
-    </div>
-    <div
-      class="mask"
-      :class="animate ? 'maskAnimaOn' : ''"
-      v-show="animate"
-      @click="animate = false"
-    ></div>
-  </div>
-
-  <!-- 筹码切换 -->
-  <van-popup :show="zdyChipPop" round position="bottom">
-    <div class="bg-[#27272D] pl-17 pt-15 pb-220">
-      <div class="flex justify-between items-center text-white text-xl mb-14">
-        设定筹码
-        <img
-          @click="zdyChipPop = false"
-          class="w-14 mr-17"
-          src="@/assets/images/home/close-white.png"
-          alt=""
-        />
-      </div>
-      <div class="flex flex-wrap gap-x-22 mb-16">
-        <div
-          class="flex items-center justify-center flex-col mb-29"
-          v-for="(val, i) in zdyList"
-          :key="i"
-          @click="changeSelect(val, i)"
-        >
+  <div>
+    <div class="relative">
+      <div class="flex justify-center w-44 h-44 mx-9 items-center relative">
+        <div class="w-44 relative z-10" @click="animate = !animate">
           <img
-            v-if="val.icon !== 'zdy-num'"
-            class="h-54"
-            :src="getRequireImg(`home/${val.icon}.png`)"
+            v-if="betImg.icon !== 'zdy-num'"
+            :src="getRequireImg(`home/${betImg.icon}.png`)"
             alt=""
           />
           <div v-else class="relative">
-            <img
-              class="w-54 h-54 m-auto"
-              src="@/assets/images/home/zdy-num.png"
-            />
+            <img class="m-auto" src="@/assets/images/home/zdy-num.png" />
             <span
-              @click.stop="showKeyBoardFn(val, i)"
-              class="coin-amount"
-              :class="val.amount ? 'px-10 text-xs' : 'text-ll'"
-              >{{ val.amount ? getThousandth(val.amount, 3) : "自定义" }}</span
+              class="coin-amount h-full top-0 left-0 flex items-center justify-center text-ll text-white"
+              >{{ getThousandth(betImg.amount, 3) }}</span
             >
           </div>
+        </div>
+        <div
+          v-for="(item, index) in imgList"
+          :key="index"
+          @click="checkBetAmount(item)"
+          :class="[item.name, animate ? 'animate_rotate' : '', 'animate']"
+          class="animate w-44 left-0 top-0 absolute"
+        >
           <img
-            class="h-21 mt-7"
-            :src="
-              getRequireImg(`home/${val.select ? 'select' : 'unselect'}.png`)
-            "
+            class="zdy-Img"
+            v-if="item.icon !== 'zdy-num'"
+            :src="getRequireImg(`home/${item.icon}.png`)"
+            alt=""
+          />
+
+          <div v-else class="relative zdy-Img">
+            <img class="m-auto" src="@/assets/images/home/zdy-num.png" />
+            <span class="coin-amount text-ll px-8">{{
+              getThousandth(item.amount, 3)
+            }}</span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="mask"
+        :class="animate ? 'maskAnimaOn' : ''"
+        v-show="animate"
+        @click="animate = false"
+      ></div>
+    </div>
+
+    <!-- 筹码切换 -->
+    <van-popup :show="zdyChipPop" round position="bottom">
+      <div class="bg-[#27272D] pl-17 pt-15 pb-220">
+        <div class="flex justify-between items-center text-white text-xl mb-14">
+          设定筹码
+          <img
+            @click="zdyChipPop = false"
+            class="w-14 mr-17"
+            src="@/assets/images/home/close-white.png"
             alt=""
           />
         </div>
-      </div>
-      <div class="relative" @click="changeAmountImg">
-        <img class="w-119 h-38 m-auto" src="@/assets/images/home/btn-bg.png" />
-        <span
-          class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white "
-          >确定</span
-        >
-      </div>
+        <div class="flex flex-wrap gap-x-22 mb-16">
+          <div
+            class="flex items-center justify-center flex-col mb-29"
+            v-for="(val, i) in zdyList"
+            :key="i"
+            @click="changeSelect(val, i)"
+          >
+            <img
+              v-if="val.icon !== 'zdy-num'"
+              class="h-54"
+              :src="getRequireImg(`home/${val.icon}.png`)"
+              alt=""
+            />
+            <div v-else class="relative">
+              <img
+                class="w-54 h-54 m-auto"
+                src="@/assets/images/home/zdy-num.png"
+              />
+              <span
+                @click.stop="showKeyBoardFn(val, i)"
+                class="coin-amount"
+                :class="val.amount ? 'px-10 text-xs' : 'text-ll'"
+                >{{
+                  val.amount ? getThousandth(val.amount, 3) : "自定义"
+                }}</span
+              >
+            </div>
+            <img
+              class="h-21 mt-7"
+              :src="
+                getRequireImg(`home/${val.select ? 'select' : 'unselect'}.png`)
+              "
+              alt=""
+            />
+          </div>
+        </div>
+        <div class="relative" @click="changeAmountImg">
+          <img
+            class="w-119 h-38 m-auto"
+            src="@/assets/images/home/btn-bg.png"
+          />
+          <span
+            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
+            >确定</span
+          >
+        </div>
 
-      <van-number-keyboard
-        class="text-[#27272D]"
-        :show="showKeyboard"
-        v-model="zdyValue"
-        close-button-text="完成"
-        @blur="changeVal"
-      />
-    </div>
-  </van-popup>
+        <van-number-keyboard
+          class="text-[#27272D]"
+          :show="showKeyboard"
+          v-model="zdyValue"
+          close-button-text="完成"
+          @blur="changeVal"
+        />
+      </div>
+    </van-popup>
+  </div>
 </template>
 
 <style scoped>
-.coin-amount{
+.coin-amount {
   word-wrap: break-word;
   word-break: break-all;
   @apply text-center absolute w-full h-full top-0 left-0 flex items-center justify-center text-white leading-[.23rem] font-bold;
@@ -326,7 +331,7 @@ export default {
   --idx: 5;
 }
 
-.zdy-text span{
+.zdy-text span {
   transform: none !important;
   transform-origin: center;
 }

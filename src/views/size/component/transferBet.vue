@@ -37,7 +37,6 @@ export default {
     },
     addAddress() {
       const params = {
-        uid: "game_37039042",
         toAddress: "",
       };
       // this.$http

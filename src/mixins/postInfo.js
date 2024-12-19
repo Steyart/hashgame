@@ -89,10 +89,10 @@ var postInfo = {
         .post(`/gameLike/link`, params)
         .then(({ data }) => {
           if (data.code === 200) {
-            const url = new URL(data.data.game_link);
-            const token = url.searchParams.get('token');
+            const token = data.data.token;
             if (token) {
-              this.setCookie('token', token, 1); // 设置cookie
+              // 将 token 存储到 cookie 中
+              this.setCookie('token', token, 1); // 设置 cookie，有效期为 1 天
             }
           }
         })
@@ -115,10 +115,10 @@ var postInfo = {
     // 获取区块号
     getBlockNum() {
       this.$http
-        .get(`/tron/getBlockByLatestNum`)
+        .get(`/tron/block`)
         .then(({ data }) => {
           if (data.code == 200) {
-            this.currentBlock = 67888179
+            this.currentBlock = data.data.block_numbers
             this.nextBlock = this.currentBlock + 1
             // 设置定时器，每3秒更新区块
             this.interval = setInterval(this.updateBlocks, 3000);
