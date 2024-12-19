@@ -192,8 +192,8 @@ export default {
         <div v-else class="relative zdy-Img">
           <img class="m-auto" src="@/assets/images/home/zdy-num.png" />
           <span
-            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
-            >{{ item.amount }}</span
+            class="coin-amount text-ll px-8"
+            >{{ getThousandth(item.amount, 3) }}</span
           >
         </div>
       </div>
@@ -238,7 +238,8 @@ export default {
             />
             <span
               @click.stop="showKeyBoardFn(val, i)"
-              class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-ll text-white"
+              class="coin-amount"
+              :class="val.amount ? 'px-10 text-xs' : 'text-ll'"
               >{{ val.amount ? getThousandth(val.amount, 3) : "自定义" }}</span
             >
           </div>
@@ -254,7 +255,7 @@ export default {
       <div class="relative" @click="changeAmountImg">
         <img class="w-119 h-38 m-auto" src="@/assets/images/home/btn-bg.png" />
         <span
-          class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
+          class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white "
           >确定</span
         >
       </div>
@@ -271,6 +272,11 @@ export default {
 </template>
 
 <style scoped>
+.coin-amount{
+  word-wrap: break-word;
+  word-break: break-all;
+  @apply text-center absolute w-full h-full top-0 left-0 flex items-center justify-center text-white leading-[.23rem] font-bold;
+}
 .animate {
   transition: transform 0.5s;
   transition-delay: 0.1s;
