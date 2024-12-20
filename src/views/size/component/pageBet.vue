@@ -8,12 +8,14 @@ import ComRollNumber from "@/components/comRollNumber.vue";
 import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
 import { Swiper, SwiperSlide } from "swiper/vue";
+import { showToast } from "vant";
 export default {
   data() {
     return {
       gameType: {
-        name: "哈希单双",
-        icon: "danshuang",
+        name: "哈希大小",
+        icon: "daxiao",
+        type: 1,
       },
       gradientColor: {
         "0%": "rgba(81, 100, 255, 0.38)",
@@ -40,7 +42,7 @@ export default {
       showChangeGamePop: false,
       showMenuPop: false,
       showRulePop: false,
-      ruleTab: ["哈希单双", "哈希大小", "哈希牛牛", "哈希庄闲", "哈希和值大小"],
+      ruleTab: ["哈希大小", "哈希单双", "哈希牛牛", "哈希庄闲", "哈希和值大小"],
       ruleIndex: 0,
       ruleName: "",
       danshuang: [
@@ -150,6 +152,9 @@ export default {
       y_index: 0,
       x_length: 9,
       y_length: 11,
+      resultInfoList: [],
+      resultIndex: 0,
+      resultInfo: {},
     };
   },
   components: {
@@ -180,6 +185,21 @@ export default {
           return this.zhuangxian;
         default:
           return [];
+      }
+    },
+    getResultText() {
+      if (this.gameType.type == 1 || this.gameType.type == 5) {
+        return this.resultInfo.range == 1 ? "大" : "小";
+      }
+      switch (this.gameType.type) {
+        case 2:
+          return this.resultInfo.range == 1 ? "单" : "双";
+        case 3:
+          return '牛闲';
+        case 4:
+          return this.resultInfo.range == 1 ? "庄" : this.resultInfo.range == 2 ? "闲" : '和';
+        default:
+          return "";
       }
     },
   },
@@ -224,10 +244,8 @@ export default {
   },
   methods: {
     handleCard(i) {
-
       if (this.cardIndex == i) {
         this.selectBetAmountList.push(this.selectImg);
-
         // 'k'值转换
         if (
           typeof this.selectImg.amount === "string" &&
@@ -367,7 +385,9 @@ export default {
     onSlideChange: (i) => {},
 
     changeGame(item) {
-      this.gameType = item;
+      this.gameType.type = item.gameType;
+      this.gameType.name = item.name
+      this.gameType.icon = item.icon
       this.ruleIndex = this.ruleTab.indexOf(item.name);
     },
     // 撤销
@@ -381,30 +401,88 @@ export default {
       }
     },
     changeAmount(item) {
+      
       this.selectImg = item;
     },
 
     // 下注
-    // handleBetting() {
-    //   const params = {
-    //     action: 6,
-    //     ts: Date.now(),
-    //     amount: this.amount,
-    //     number: 67833064,
-    //     range: 2,
-    //     session: this.sessionIndex + 1,
-    //   };
-    //   this.$http
-    //     .post(`/game/putBet`, params)
-    //     .then(({ data }) => {
-    //       if (data.code === 200) {
-    //         console.log(data, "res===");
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
+    handleBetting() {
+      const params = {
+        action: 9,
+        ts: Date.now(),
+        amount: this.totalBetNum,
+        number: this.nextBlock,
+        gameType: this.gameType.type,
+        range: this.cardIndex + 1,
+        session: this.sessionIndex + 1,
+      };
+      console.log("params==", params);
+      this.$http
+        .post(`/game/putBet`, params)
+        .then(({ data }) => {
+          if (data.code === 200) {
+            showToast({
+              type: "success",
+              message: "投注成功",
+              className: "fail-toast-box",
+            });
+            setTimeout(this.getResultFn(), 3000);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 获取输赢结果
+    getResultFn() {
+      const params = {
+        action: 9,
+        ts: Date.now(),
+        gameType: 1,
+      };
+      this.$http
+        .post(`/game/settle`, params)
+        .then(({ data }) => {
+          if (data.code === 200) {
+            this.resultInfoList.push(...data.data.results);
+            this.openResultPop();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // 验证
+    handleVerify(value) {
+      // 跳转至其他网址
+      // const url = `https://tronscan.org/#/block/${value}`;
+      // this.navigateTo(url);
+    },
+
+    // 展示输赢结果的弹窗
+    openResultPop() {
+      if (this.resultInfoList.length > 0) {
+        this.showNextResult();
+      }
+    },
+
+    // 显示下一条数据
+    showNextResult() {
+      if (this.resultIndex < this.resultInfoList.length) {
+        this.resultInfo = this.resultInfoList[this.resultIndex];
+        this.showGameResult = true;
+      } else {
+        this.showGameResult = false;
+      }
+    },
+    // 关闭弹窗并展示下一条数据
+    closeOverlay() {
+      this.showGameResult = false;
+      this.resultIndex++;
+      this.showNextResult();
+    },
   },
 };
 </script>
@@ -664,6 +742,7 @@ export default {
       :showChangeGamePop="showChangeGamePop"
       @update:showChangeGamePop="showChangeGamePop = $event"
       @changeGame="changeGame"
+      :gameType="gameType.type"
     />
 
     <MenuPop
@@ -671,22 +750,25 @@ export default {
       @update:showMenuPop="showMenuPop = $event"
     />
 
-    <van-overlay
-      :show="showGameResult"
-      @click="showGameResult = false"
-      z-index="100"
-    >
-      <div class="wrapper flex items-center justify-center h-full">
+    <van-overlay :show="showGameResult" @click="closeOverlay" z-index="100">
+      <div class="wrapper flex items-center justify-center h-full" @click.stop>
         <div class="bg-[#27272D] rounded-xl">
           <div class="top-15 left-15 right-15 m-auto">
             <div class="px-15">
               <div class="flex items-center justify-between mt-22 mx-38">
                 <img class="h-27" src="@/assets/images/home/star.png" alt="" />
-                <div class="text-2.5xl text-white">很遗憾,你输了</div>
+                <div class="text-2.5xl text-white">
+                  {{
+                    resultInfo.win_loser == 1
+                      ? "恭喜你,你赢了"
+                      : "很遗憾,你输了"
+                  }}
+                </div>
                 <img class="h-27" src="@/assets/images/home/star.png" alt="" />
               </div>
-              <div class="text-wathet-deep text-4xl text-center">单</div>
-              <!-- <div class="text-tomato-yellow text-4xl text-center">双</div> -->
+              <div class="text-wathet-deep text-4xl text-center">
+                {{ getResultText }}
+              </div>
               <div class="text-lg white text-center">本期开奖结果</div>
               <div class="flex items-center justify-center">
                 <img
@@ -694,7 +776,9 @@ export default {
                   src="@/assets/images/home/count.png"
                   alt=""
                 />
-                <div class="text-white text-2.5xl">-666</div>
+                <div class="text-white text-2.5xl">
+                  {{ resultInfo.netWin }}
+                </div>
               </div>
               <div class="text-base text-white mt-25 mb-8">交易哈希</div>
               <div
@@ -705,11 +789,12 @@ export default {
                 </div>
                 <div class="flex items-center">
                   <img
+                    @click="onCopy('KyhLudjL……jkljlka5234')"
                     class="h-16 mr-4"
                     src="@/assets/images/home/copy.png"
                     alt=""
                   />
-                  <div class="relative mr-3">
+                  <div class="relative mr-3" @click="handleVerify('111')">
                     <img
                       class="w-68 m-auto"
                       src="@/assets/images/home/btn-bg-small.png"
@@ -737,14 +822,20 @@ export default {
               <div
                 class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8"
               >
-                <div class="text-white text-sm ml-11">IUY45LudjL……jdgyk52d</div>
+                <div class="text-white text-sm ml-11 w-200 truncate">
+                  {{ resultInfo.hashValue }}
+                </div>
                 <div class="flex items-center">
                   <img
+                    @click="onCopy(resultInfo.hashValue)"
                     class="h-16 mr-4"
                     src="@/assets/images/home/copy.png"
                     alt=""
                   />
-                  <div class="relative mr-3">
+                  <div
+                    class="relative mr-3"
+                    @click="handleVerify(resultInfo.hashValue)"
+                  >
                     <img
                       class="w-68 m-auto"
                       src="@/assets/images/home/btn-bg-small.png"
@@ -759,6 +850,7 @@ export default {
               </div>
             </div>
             <div
+              @click="closeOverlay"
               class="flex justify-center text-lg text-beige border-t border-[#F3F4F2] mt-15 mb-18 pt-12 mx-2"
             >
               我知道了

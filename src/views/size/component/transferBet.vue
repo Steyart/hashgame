@@ -1,4 +1,5 @@
 <script>
+import { showToast } from 'vant';
 import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
 import HashMagnitude from "@/components/hashMagnitude.vue";
@@ -36,8 +37,16 @@ export default {
       this.showBindAddress = true
     },
     addAddress() {
+      if(!this.addressValue){
+        showToast({
+        type: 'fail',
+        message: '请输入地址',
+        className: 'fail-toast-box'
+      })
+        return
+      }
       const params = {
-        toAddress: "",
+        toAddress: this.addressValue,
       };
       // this.$http
       //   .post(`/game/bindWallet`, params)
@@ -304,7 +313,8 @@ export default {
     <div class="relative w-350 bg-white pt-16 pb-31">
       <!-- <img class="absolute h-650" src="@/assets/images/home/pop-bg.png" alt="" /> -->
       <div
-        class="absolute right-0 top-0 w-4/5 h-300 bg-gradient-to-l from-[#DFFFAD] to-[transparent]"
+        class="absolute right-0 top-0 w-full h-300"
+        style="background: linear-gradient(to bottom left, rgba(223, 255, 173, 1), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));"
       ></div>
       <div class="relative">
         <div
@@ -348,6 +358,7 @@ export default {
             v-model="addressValue"
             placeholder="请输入您的新增地址"
           />
+        
         </div>
         <div class="relative mt-21" @click="addAddress">
           <img
@@ -399,5 +410,8 @@ export default {
 :deep(.field-box) {
   padding: 0;
   @apply bg-[#F2F2F2] px-15 py-10 text-xs text-[#2F3F33];
+}
+.van-field {
+  --van-field-placeholder-text-color: #2F3F33; /* 修改该组件内的 placeholder 颜色 */
 }
 </style>
