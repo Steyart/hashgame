@@ -203,7 +203,12 @@ export default {
       }
     },
   },
-  watch: {},
+  watch: {
+    tabDataAll(val){
+      // console.log(val)
+      this.setArrRight(val);
+    },
+  },
   created() {
     this.getBlockNum();
 
@@ -211,12 +216,7 @@ export default {
     let arr1 = [];
     let arr2 = [];
 
-    for (let i = 0; i < 12; i++) {
-      arr.push(Math.random(10) * 10 > 4 ? 1 : 2);
-    }
-    for (let i = 0; i < 24; i++) {
-      arr1.push("");
-    }
+    
     for (let i = 0; i <= this.x_length; i++) {
       let arr = [];
       for (let j = 0; j <= this.y_length; j++) {
@@ -224,16 +224,13 @@ export default {
       }
       arr2.push(arr);
     }
-
+    
     if (arr.length < 24) {
-      arr = this.padArray(arr, 24, 0);
+      arr = this.padArray(arr, 24, {range:1, session: 1, win_result: 0});
     }
 
-    this.tabDataAll = arr;
-    this.key1 = arr.length - 1;
-    this.tabData1 = arr.slice(arr.length - 24, arr.length);
     this.tabData2 = arr2;
-    this.setArrRight(arr, arr2, 10);
+
   },
 
   mounted() {
@@ -241,6 +238,7 @@ export default {
     //   action: 6,
     //   ts: Date.now(),
     // });
+    this.getWayBill()
   },
   methods: {
     handleCard(i) {
@@ -296,7 +294,8 @@ export default {
         return this.key1 + 1;
       } else {
         if (this.x_index >= 9) {
-          if (this.prveVal != v || this.y_index >= 11) {
+          console.log("111:", this.prveVal.win_result, v.win_result)
+          if (this.prveVal.win_result != v.win_result || this.y_index >= 11) {
             let c = this.tabData2.shift();
             let l = [];
             for (let j = 0; j < 12; j++) {
@@ -305,8 +304,8 @@ export default {
             this.tabData2.push(l);
           }
 
-          if (this.tabData2[9][this.y_index]) {
-            if (this.prveVal == v) {
+          if (this.tabData2[9][this.y_index].win_result) {
+            if (this.prveVal.win_result == v.win_result || v.win_result==3) {
               if (this.y_index >= 11) {
                 this.x_index += 1;
               } else {
@@ -317,7 +316,7 @@ export default {
               this.y_index = 0;
             }
           } else {
-            if (this.prveVal == v) {
+            if (this.prveVal.win_result == v.win_result) {
               if (this.y_index >= 11) {
                 this.x_index += 1;
               } else {
@@ -329,8 +328,8 @@ export default {
             }
           }
         } else {
-          if (this.tabData2[this.x_index][this.y_index]) {
-            if (this.prveVal == v) {
+          if (this.tabData2[this.x_index][this.y_index].win_result) {
+            if (this.prveVal.win_result == v.win_result || v.win_result==3) {
               if (this.y_index >= 11) {
                 this.x_index += 1;
               } else {
@@ -416,7 +415,6 @@ export default {
         range: this.cardIndex + 1,
         session: this.sessionIndex + 1,
       };
-      console.log("params==", params);
       this.$http
         .post(`/game/putBet`, params)
         .then(({ data }) => {
@@ -439,7 +437,7 @@ export default {
       const params = {
         action: 9,
         ts: Date.now(),
-        gameType: 1,
+        gameType: this.gameType.type,
       };
       this.$http
         .post(`/game/settle`, params)
@@ -447,6 +445,31 @@ export default {
           if (data.code === 200) {
             this.resultInfoList.push(...data.data.results);
             this.openResultPop();
+            this.getWayBill()
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 录单
+    getWayBill() {
+      const params = {
+        gameType: this.gameType.type,
+      };
+      this.$http
+        .post(`/game/wayBill`, params)
+        .then(({ data }) => {
+          if (data.code === 200) {
+            console.log(data.data,"data.data===");
+            data.data = data.data.reverse()
+            if (data.data.length < 24) {
+              data.data = this.padArray(data.data, 24, {range:1, session: 1, win_result: 0, win_loser: 0});
+            }
+
+            this.tabDataAll = data.data;
+            this.key1 = data.data.length - 1;
+            this.tabData1 = data.data.slice(data.data.length - 24, data.data.length);
           }
         })
         .catch((err) => {

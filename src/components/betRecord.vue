@@ -26,29 +26,6 @@
             let aa = [a,b,c,d]
             return aa
         },
-        newlists2(){
-            let arr = this.all
-            let a = []
-            let b = []
-            let c = []
-            let d = []
-            let e = []
-            arr.forEach((v,k)=>{
-                if(k < 6){
-                    a.push(v)
-                }else if(k >= 6 &&k < 12){
-                    b.push(v)
-                }else if(k >= 12 &&k < 18){
-                    c.push(v)
-                }else if(k >= 18 &&k < 24){
-                    d.push(v)
-                }else if(k >= 24 &&k < 30){
-                    e.push(v)
-                }
-            })
-            let aa = [a,b,c,d,e]
-            return aa
-        },
     },
     props:{
         hasHe: {
@@ -132,8 +109,8 @@
                 <tr class="flex flex-col" v-for="(tab, i) in newlists1" :key="i" >
                     <td v-for="(v, k) in tab" :key="k">
                         <div class="td-box1">
-                            <div v-if="v" :class="{ 'bg-[#FF5C01]': v == '1', 'bg-[#5164FF]': v == '2', }" class="left-number" >
-                            {{ v }}
+                            <div v-if="v.win_result" :class="{ 'bg-[#FF5C01]': v.win_result == '1', 'bg-[#5164FF]': v.win_result == '2', 'bg-[#FDC300]': v.win_result == '3', }" class="left-number" >
+                            {{ v.win_result==1?'0' : v.win_result==2?'E' : 'I' }}
                             </div>
                         </div>
                     </td>
@@ -145,7 +122,7 @@
                 <tr class="flex flex-col" v-for="(val, i) in lists2" :key="i">
                     <td v-for="(v, k) in val" :key="k">
                         <div class="td-box2">
-                            <div :class="{ 'border-2 border-[#FF5C01]': v == '1', 'border-2 border-[#5164FF]': v == '2'}" ></div>
+                            <div :class="{ 'border-2 border-[#FF5C01]': v.win_result == '1', 'border-2 border-[#5164FF]': v.win_result == '2'}" ></div>
                         </div>
                     </td>
                 </tr>
