@@ -20,6 +20,9 @@ export default {
       ],
       addressValue: "",
       showPopover: false,
+      gameType: 1,
+      addressList: [],  //钱包地址列表
+      betWalletAddress: '',
     };
   },
   components: {
@@ -31,33 +34,68 @@ export default {
   },
   mixins: [toHref, postInfo],
   computed: {},
-  mounted() {},
+  watch: {
+    gameType(newValue, oldValue) {
+      this.betWalletAddress = this.addressList[this.matchedAddressIndex()].address
+    },
+    active(newValue, oldValue) {
+      this.betWalletAddress = this.addressList[this.matchedAddressIndex()].address
+    },
+  },
+  mounted() {
+    this.getWalletAddress()
+  },
   methods: {
+    matchedAddressIndex() {
+      return this.addressList.findIndex(item => 
+        item.gameType === this.gameType && item.range === this.active + 1
+      );
+    },
+    // 获取钱包地址
+    getWalletAddress(){
+      this.$http
+        .get(`/pocket/getDogPayWallet`,{})
+        .then(({ data }) => {
+          if (data.code === 200) {
+            this.addressList = data.data
+            this.betWalletAddress = this.addressList[this.matchedAddressIndex()].address
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     openBindPop(){
       this.showBindAddress = true
     },
     addAddress() {
       if(!this.addressValue){
         showToast({
-        type: 'fail',
-        message: '请输入地址',
-        className: 'fail-toast-box'
-      })
+          type: 'fail',
+          message: '请输入地址',
+          className: 'fail-toast-box'
+        })
         return
       }
       const params = {
         toAddress: this.addressValue,
       };
-      // this.$http
-      //   .post(`/game/bindWallet`, params)
-      //   .then(({ data }) => {
-      //     if (data.code === 200) {
-      //       console.log(data, "res===");
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
+      this.$http
+        .post(`/pocket/bindWallet`, params)
+        .then(({ data }) => {
+          if (data.code === 200) {
+            showToast({
+              type: 'success',
+              message: '绑定成功',
+              className: 'fail-toast-box'
+            })
+            this.addressValue = ''
+            this.showBindAddress = false
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
@@ -87,9 +125,9 @@ export default {
         <div
           class="flex justify-between items-center border border-[#707070] rounded-md text-xs"
         >
-          <div class="pl-7">KyhLudjLulKhljlko09079aF9kdjkljlk5234</div>
+          <div class="pl-7">{{ betWalletAddress }}</div>
           <div
-            @click="onCopy('KyhLudjLulKhljlko09079aF9kdjkljlk5234')"
+            @click="onCopy(betWalletAddress)"
             class="flex items-center text-wathet border-l border-[#707070] rounded-md pt-9 pb-11 px-9"
           >
             <img class="h-13 mr-5" src="@/assets/images/home/copy.png" alt="" />
