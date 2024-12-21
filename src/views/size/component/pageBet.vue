@@ -34,10 +34,9 @@ export default {
       showDialog: false,
       animate: false,
       btnList: ["1", "50", "10", "100", "zdy"],
-      amount: 1,
-      totalBetNum: null,
+      totalBetNum: null, // 总注数
       selectImg: {},
-      selectBetAmountList: [],
+      selectBetAmountList: [], // 选中的投注金额列表
       showGameResult: false,
       showChangeGamePop: false,
       showMenuPop: false,
@@ -195,42 +194,23 @@ export default {
         case 2:
           return this.resultInfo.range == 1 ? "单" : "双";
         case 3:
-          return '牛闲';
+          return "牛闲";
         case 4:
-          return this.resultInfo.range == 1 ? "庄" : this.resultInfo.range == 2 ? "闲" : '和';
+          return this.resultInfo.range == 1
+            ? "庄"
+            : this.resultInfo.range == 2
+            ? "闲"
+            : "和";
         default:
           return "";
       }
     },
   },
   watch: {
-    tabDataAll(val){
-      // console.log(val)
-      this.setArrRight(val);
-    },
   },
   created() {
     this.getBlockNum();
-
-    let arr = [];
-    let arr1 = [];
-    let arr2 = [];
-
-    
-    for (let i = 0; i <= this.x_length; i++) {
-      let arr = [];
-      for (let j = 0; j <= this.y_length; j++) {
-        arr.push("");
-      }
-      arr2.push(arr);
-    }
-    
-    if (arr.length < 24) {
-      arr = this.padArray(arr, 24, {range:1, session: 1, win_result: 0});
-    }
-
-    this.tabData2 = arr2;
-
+    this.reset()
   },
 
   mounted() {
@@ -238,7 +218,7 @@ export default {
     //   action: 6,
     //   ts: Date.now(),
     // });
-    this.getWayBill()
+    this.getWayBill();
   },
   methods: {
     handleCard(i) {
@@ -286,15 +266,15 @@ export default {
       if (type == "left") {
         for (let i = 0; i < arr.length; i++) {
           const value = arr[i];
-          if (value == "") {
+          if (!value.win_result) {
             this.key1 = i;
             return this.key1;
           }
         }
         return this.key1 + 1;
       } else {
+        console.log(this.x_index)
         if (this.x_index >= 9) {
-          console.log("111:", this.prveVal.win_result, v.win_result)
           if (this.prveVal.win_result != v.win_result || this.y_index >= 11) {
             let c = this.tabData2.shift();
             let l = [];
@@ -305,7 +285,7 @@ export default {
           }
 
           if (this.tabData2[9][this.y_index].win_result) {
-            if (this.prveVal.win_result == v.win_result || v.win_result==3) {
+            if (this.prveVal.win_result == v.win_result || v.win_result == 3) {
               if (this.y_index >= 11) {
                 this.x_index += 1;
               } else {
@@ -329,7 +309,7 @@ export default {
           }
         } else {
           if (this.tabData2[this.x_index][this.y_index].win_result) {
-            if (this.prveVal.win_result == v.win_result || v.win_result==3) {
+            if (this.prveVal.win_result == v.win_result || v.win_result == 3) {
               if (this.y_index >= 11) {
                 this.x_index += 1;
               } else {
@@ -348,26 +328,50 @@ export default {
         this.tabData2[x][y] = v;
       }
     },
-    touzhu() {
-      let arr = this.tabDataAll;
-      let key1 = this.findFGreaterThan(arr, "left");
-      let val = Math.random(10) * 10 > 2 ? 1 : 2;
-      if (key1 < 24) {
-        arr[key1] = val;
-        this.tabData1 = this.tabDataAll;
-      } else {
-        arr.push(val);
-        this.tabData1 = this.tabDataAll.slice(
-          this.tabDataAll.length - 24,
-          this.tabDataAll.length
-        );
+    reset(){
+      let arr = [];
+      let arr2 = [];
+      for (let i = 0; i <= this.x_length; i++) {
+        let arr = [];
+        for (let j = 0; j <= this.y_length; j++) {
+          arr.push({ range: 1, session: 1, win_result: 0 });
+        }
+        arr2.push(arr);
       }
-
-      this.findFGreaterThan(arr, "right", val);
+      if (arr.length < 24) {
+        arr = this.padArray(arr, 24, { range: 1, session: 1, win_result: 0 });
+      }
+      this.x_index = 0
+      this.y_index = 0
+      this.tabDataAll = arr
+      this.tabData1 = arr;
+      this.tabData2 = arr2;
+    },
+    touzhu(arr) {
+      this.reset()
+      arr.reverse()
+      let arrAll = []
+      arr.forEach((item) => {
+        if (item.win_result) {
+          arrAll.push(item);
+        }
+      });
+      if (arrAll.length < 24) {
+        arrAll = this.padArray(arrAll, 24, { range: 1, session: 1, win_result: 0 });
+      }
+      this.tabData1 = arrAll.slice(
+        arrAll.length - 24,
+        arrAll.length
+      );
+      
+      this.tabDataAll = arrAll
+      let arr2 = [...arrAll]
+      console.log(this.x_index)
+      this.setArrRight(arr2)
     },
     setArrRight(all, arr, length) {
       all.forEach((item) => {
-        if (item) {
+        if (item.win_result) {
           this.findFGreaterThan(all, "right", item);
         }
       });
@@ -385,9 +389,10 @@ export default {
 
     changeGame(item) {
       this.gameType.type = item.gameType;
-      this.gameType.name = item.name
-      this.gameType.icon = item.icon
+      this.gameType.name = item.name;
+      this.gameType.icon = item.icon;
       this.ruleIndex = this.ruleTab.indexOf(item.name);
+      this.getDefaultData()
     },
     // 撤销
     cancelBetClick() {
@@ -398,23 +403,39 @@ export default {
           this.selectBetAmountList;
         this.currentCards[this.cardIndex].betValue = this.totalBetNum;
       }
+      this.cardIndex = null;
     },
     changeAmount(item) {
-      
       this.selectImg = item;
     },
 
     // 下注
     handleBetting() {
+      const newCardIndex =
+        this.gameType.type === 4
+          ? this.cardIndex === 2
+            ? 1
+            : this.cardIndex === 1
+            ? 2
+            : this.cardIndex
+          : this.cardIndex;
       const params = {
         action: 9,
         ts: Date.now(),
         amount: this.totalBetNum,
         number: this.nextBlock,
         gameType: this.gameType.type,
-        range: this.cardIndex + 1,
+        range: newCardIndex + 1,
         session: this.sessionIndex + 1,
       };
+      
+      if (
+        Object.values(params).some(
+          (value) => value == "" || value == 0 || value == null
+        )
+      ) {
+        return;
+      }
       this.$http
         .post(`/game/putBet`, params)
         .then(({ data }) => {
@@ -424,12 +445,22 @@ export default {
               message: "投注成功",
               className: "fail-toast-box",
             });
+
+            this.getDefaultData();
             setTimeout(this.getResultFn(), 3000);
           }
         })
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    // 获取默认数据
+    getDefaultData() {
+      this.totalBetNum = 0;
+      this.selectBetAmountList = [];
+      this.currentCards[this.cardIndex].selectImgList = [];
+      this.cardIndex = null;
     },
 
     // 获取输赢结果
@@ -445,7 +476,7 @@ export default {
           if (data.code === 200) {
             this.resultInfoList.push(...data.data.results);
             this.openResultPop();
-            this.getWayBill()
+            this.getWayBill();
           }
         })
         .catch((err) => {
@@ -461,15 +492,7 @@ export default {
         .post(`/game/wayBill`, params)
         .then(({ data }) => {
           if (data.code === 200) {
-            console.log(data.data,"data.data===");
-            data.data = data.data.reverse()
-            if (data.data.length < 24) {
-              data.data = this.padArray(data.data, 24, {range:1, session: 1, win_result: 0, win_loser: 0});
-            }
-
-            this.tabDataAll = data.data;
-            this.key1 = data.data.length - 1;
-            this.tabData1 = data.data.slice(data.data.length - 24, data.data.length);
+            this.touzhu(data.data)
           }
         })
         .catch((err) => {
@@ -691,7 +714,7 @@ export default {
                   v-for="(selImg, imgIndex) in card.selectImgList.slice(0, 4)"
                   :key="imgIndex"
                   class="absolute right-[0.8rem] top-0 w-30 h-19"
-                  :class="{ 'left-[0.8rem]': card.circlePos == 'left' }"
+                  :class="{ 'left-[0.8rem]': card.circlePos == 'left','right-[1.4rem]':card.name == '牛闲' }"
                   :style="{
                     top: `${0.5 - 0.1 * imgIndex}rem`,
                     'z-index': imgIndex,
