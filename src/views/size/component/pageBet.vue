@@ -2,6 +2,7 @@
 import RulePop from "@/components/rulePop.vue";
 import GamePop from "@/components/gamePop.vue";
 import MenuPop from "@/components/menuPop.vue";
+import BetResultPop from "@/components/betResultPop.vue";
 import BetAmount from "@/components/betAmount.vue";
 import BetRecord from "@/components/betRecord.vue";
 import ComRollNumber from "@/components/comRollNumber.vue";
@@ -33,7 +34,7 @@ export default {
       totalBetNum: null, // 总注数
       selectImg: {},
       selectBetAmountList: [], // 选中的投注金额列表
-      showGameResult: false,
+      showGameResultPop: false,
       showChangeGamePop: false,
       showMenuPop: false,
       showRulePop: false,
@@ -159,6 +160,7 @@ export default {
     RulePop,
     GamePop,
     MenuPop,
+    BetResultPop,
     BetAmount,
     BetRecord,
     ComRollNumber,
@@ -166,43 +168,44 @@ export default {
   mixins: [toHref, postInfo],
   computed: {
     ...mapGetters(['userInfo']),
+
     gameInfo() {
-    let currentCards = [];
-    let resultText = "";
-
-    if (this.userInfo.gameType === 1 || this.userInfo.gameType === 5) {
-      currentCards = this.daxiao;
-      resultText = this.resultInfo.range == 1 ? "大" : "小";
-    } else {
-      switch (this.userInfo.gameType) {
-        case 2:
-          currentCards = this.danshuang;
-          resultText = this.resultInfo.range == 1 ? "单" : "双";
-          break;
-        case 3:
-          currentCards = this.niuniu;
-          resultText = "牛闲";
-          break;
-        case 4:
-          currentCards = this.zhuangxian;
-          resultText = this.resultInfo.range == 1
-            ? "庄"
-            : this.resultInfo.range == 2
-            ? "闲"
-            : "和";
-          break;
-        default:
-          currentCards = [];
-          resultText = "";
-          break;
+      let currentCards = [];
+      let resultText = "";
+  
+      if (this.userInfo.gameType === 1 || this.userInfo.gameType === 5) {
+        currentCards = this.daxiao;
+        resultText = this.resultInfo.range == 1 ? "大" : "小";
+      } else {
+        switch (this.userInfo.gameType) {
+          case 2:
+            currentCards = this.danshuang;
+            resultText = this.resultInfo.range == 1 ? "单" : "双";
+            break;
+          case 3:
+            currentCards = this.niuniu;
+            resultText = "牛闲";
+            break;
+          case 4:
+            currentCards = this.zhuangxian;
+            resultText = this.resultInfo.range == 1
+              ? "庄"
+              : this.resultInfo.range == 2
+              ? "闲"
+              : "和";
+            break;
+          default:
+            currentCards = [];
+            resultText = "";
+            break;
+        }
       }
-    }
-
-    return {
-      currentCards,
-      resultText,
-    };
-  },
+  
+      return {
+        currentCards,
+        resultText,
+      };
+    },
   },
   watch: {
   },
@@ -519,14 +522,14 @@ export default {
     showNextResult() {
       if (this.resultIndex < this.resultInfoList.length) {
         this.resultInfo = this.resultInfoList[this.resultIndex];
-        this.showGameResult = true;
+        this.showGameResultPop = true;
       } else {
-        this.showGameResult = false;
+        this.showGameResultPop = false;
       }
     },
     // 关闭弹窗并展示下一条数据
     closeOverlay() {
-      this.showGameResult = false;
+      this.showGameResultPop = false;
       this.resultIndex++;
       this.showNextResult();
     },
@@ -795,116 +798,8 @@ export default {
       :showMenuPop="showMenuPop"
       @update:showMenuPop="showMenuPop = $event"
     />
-
-    <van-overlay :show="showGameResult" @click="closeOverlay" z-index="100">
-      <div class="wrapper flex items-center justify-center h-full" @click.stop>
-        <div class="bg-[#27272D] rounded-xl">
-          <div class="top-15 left-15 right-15 m-auto">
-            <div class="px-15">
-              <div class="flex items-center justify-between mt-22 mx-38">
-                <img class="h-27" src="@/assets/images/home/star.png" alt="" />
-                <div class="text-2.5xl text-white">
-                  {{
-                    resultInfo.win_loser == 1
-                      ? "恭喜你,你赢了"
-                      : "很遗憾,你输了"
-                  }}
-                </div>
-                <img class="h-27" src="@/assets/images/home/star.png" alt="" />
-              </div>
-              <div class="text-wathet-deep text-4xl text-center">
-                {{ gameInfo.resultText }}
-              </div>
-              <div class="text-lg white text-center">本期开奖结果</div>
-              <div class="flex items-center justify-center">
-                <img
-                  class="h-29 mr-11"
-                  src="@/assets/images/home/count.png"
-                  alt=""
-                />
-                <div class="text-white text-2.5xl">
-                  {{ resultInfo.netWin }}
-                </div>
-              </div>
-              <div class="text-base text-white mt-25 mb-8">交易哈希</div>
-              <div
-                class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8 mb-18"
-              >
-                <div class="text-white text-sm ml-11">
-                  KyhLudjL……jkljlka5234
-                </div>
-                <div class="flex items-center">
-                  <img
-                    @click="onCopy('KyhLudjL……jkljlka5234')"
-                    class="h-16 mr-4"
-                    src="@/assets/images/home/copy.png"
-                    alt=""
-                  />
-                  <div class="relative mr-3" @click="handleVerify('111')">
-                    <img
-                      class="w-68 m-auto"
-                      src="@/assets/images/home/btn-bg-small.png"
-                      alt=""
-                    />
-                    <span
-                      class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-white"
-                      >验证</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <div class="text-base text-white mb-8">开奖区块</div>
-              <div
-                class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8 mb-18"
-              >
-                <div class="text-white text-sm ml-11">32458458</div>
-                <img
-                  class="h-16 mr-11"
-                  src="@/assets/images/home/copy.png"
-                  alt=""
-                />
-              </div>
-              <div class="text-base text-white mb-8">开奖区块哈希</div>
-              <div
-                class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8"
-              >
-                <div class="text-white text-sm ml-11 w-200 truncate">
-                  {{ resultInfo.hashValue }}
-                </div>
-                <div class="flex items-center">
-                  <img
-                    @click="onCopy(resultInfo.hashValue)"
-                    class="h-16 mr-4"
-                    src="@/assets/images/home/copy.png"
-                    alt=""
-                  />
-                  <div
-                    class="relative mr-3"
-                    @click="handleVerify(resultInfo.hashValue)"
-                  >
-                    <img
-                      class="w-68 m-auto"
-                      src="@/assets/images/home/btn-bg-small.png"
-                      alt=""
-                    />
-                    <span
-                      class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-white"
-                      >验证</span
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              @click="closeOverlay"
-              class="flex justify-center text-lg text-beige border-t border-[#F3F4F2] mt-15 mb-18 pt-12 mx-2"
-            >
-              我知道了
-            </div>
-          </div>
-        </div>
-      </div>
-    </van-overlay>
+    <BetResultPop :showGameResultPop="showGameResultPop" :resultInfo="resultInfo" :resultText="gameInfo.resultText"
+      @closeOverlay="closeOverlay" />
 
     <van-popup
       v-model:show="showRulePop"
