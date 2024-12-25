@@ -9,14 +9,10 @@ import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
 import { Swiper, SwiperSlide } from "swiper/vue";
 import { showToast } from "vant";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      gameType: {
-        name: "哈希大小",
-        icon: "daxiao",
-        type: 1,
-      },
       gradientColor: {
         "0%": "rgba(81, 100, 255, 0.38)",
         "100%": "rgba(81, 100, 255, 1)",
@@ -141,6 +137,7 @@ export default {
         },
       ],
       cardIndex: null,
+      selectCardIndex: null,
       headSwiper: "",
       tabDataAll: [],
       tabData1: [],
@@ -168,43 +165,44 @@ export default {
   },
   mixins: [toHref, postInfo],
   computed: {
-    currentCards() {
-      if (
-        this.gameType.icon === "daxiao" ||
-        this.gameType.icon === "hezhidaxiao"
-      ) {
-        return this.daxiao;
-      }
-      switch (this.gameType.icon) {
-        case "danshuang":
-          return this.danshuang;
-        case "niuniu":
-          return this.niuniu;
-        case "zhuangxian":
-          return this.zhuangxian;
-        default:
-          return [];
-      }
-    },
-    getResultText() {
-      if (this.gameType.type == 1 || this.gameType.type == 5) {
-        return this.resultInfo.range == 1 ? "大" : "小";
-      }
-      switch (this.gameType.type) {
+    ...mapGetters(['userInfo']),
+    gameInfo() {
+    let currentCards = [];
+    let resultText = "";
+
+    if (this.userInfo.gameType === 1 || this.userInfo.gameType === 5) {
+      currentCards = this.daxiao;
+      resultText = this.resultInfo.range == 1 ? "大" : "小";
+    } else {
+      switch (this.userInfo.gameType) {
         case 2:
-          return this.resultInfo.range == 1 ? "单" : "双";
+          currentCards = this.danshuang;
+          resultText = this.resultInfo.range == 1 ? "单" : "双";
+          break;
         case 3:
-          return "牛闲";
+          currentCards = this.niuniu;
+          resultText = "牛闲";
+          break;
         case 4:
-          return this.resultInfo.range == 1
+          currentCards = this.zhuangxian;
+          resultText = this.resultInfo.range == 1
             ? "庄"
             : this.resultInfo.range == 2
             ? "闲"
             : "和";
+          break;
         default:
-          return "";
+          currentCards = [];
+          resultText = "";
+          break;
       }
-    },
+    }
+
+    return {
+      currentCards,
+      resultText,
+    };
+  },
   },
   watch: {
   },
@@ -223,6 +221,7 @@ export default {
   methods: {
     handleCard(i) {
       if (this.cardIndex == i) {
+        this.selectCardIndex = i
         this.selectBetAmountList.push(this.selectImg);
         // 'k'值转换
         if (
@@ -233,10 +232,10 @@ export default {
             parseFloat(this.selectImg.amount.replace("k", "")) * 1000;
         }
         this.totalBetNum += this.selectImg.amount;
-        this.currentCards[i].selectImgList = this.selectBetAmountList;
-        this.currentCards[i].betValue = this.totalBetNum;
+        this.gameInfo.currentCards[i].selectImgList = this.selectBetAmountList;
+        this.gameInfo.currentCards[i].betValue = this.totalBetNum;
       } else {
-        const allBetsAreZero = this.currentCards.every(
+        const allBetsAreZero = this.gameInfo.currentCards.every(
           (card) => card.betValue === 0
         );
         if (allBetsAreZero) {
@@ -253,12 +252,13 @@ export default {
           this.totalBetNum += this.selectImg.amount;
         }
         if (this.cardIndex != null) {
-          this.currentCards[this.cardIndex].selectImgList = [];
-          this.currentCards[this.cardIndex].betValue = 0;
+          this.gameInfo.currentCards[this.cardIndex].selectImgList = [];
+          this.gameInfo.currentCards[this.cardIndex].betValue = 0;
         }
         this.cardIndex = i;
-        this.currentCards[i].selectImgList = this.selectBetAmountList;
-        this.currentCards[i].betValue = this.totalBetNum;
+        this.selectCardIndex = i
+        this.gameInfo.currentCards[i].selectImgList = this.selectBetAmountList;
+        this.gameInfo.currentCards[i].betValue = this.totalBetNum;
       }
     },
 
@@ -273,7 +273,6 @@ export default {
         }
         return this.key1 + 1;
       } else {
-        console.log(this.x_index)
         if (this.x_index >= 9) {
           if (this.prveVal.win_result != v.win_result || this.y_index >= 11) {
             let c = this.tabData2.shift();
@@ -366,7 +365,6 @@ export default {
       
       this.tabDataAll = arrAll
       let arr2 = [...arrAll]
-      console.log(this.x_index)
       this.setArrRight(arr2)
     },
     setArrRight(all, arr, length) {
@@ -388,22 +386,21 @@ export default {
     onSlideChange: (i) => {},
 
     changeGame(item) {
-      this.gameType.type = item.gameType;
-      this.gameType.name = item.name;
-      this.gameType.icon = item.icon;
-      this.ruleIndex = this.ruleTab.indexOf(item.name);
       this.getDefaultData()
+      this.ruleIndex = this.userInfo.gameType - 1;
     },
     // 撤销
     cancelBetClick() {
       if (this.selectBetAmountList.length > 0) {
         const removedItem = this.selectBetAmountList.pop();
+        
         this.totalBetNum -= removedItem.amount;
-        this.currentCards[this.cardIndex].selectImgList =
+        this.gameInfo.currentCards[this.cardIndex].selectImgList =
           this.selectBetAmountList;
-        this.currentCards[this.cardIndex].betValue = this.totalBetNum;
+        this.gameInfo.currentCards[this.cardIndex].betValue = this.totalBetNum;
       }
-      this.cardIndex = null;
+      // 移除投注选项卡的选中效果
+      this.selectCardIndex = null
     },
     changeAmount(item) {
       this.selectImg = item;
@@ -412,7 +409,7 @@ export default {
     // 下注
     handleBetting() {
       const newCardIndex =
-        this.gameType.type === 4
+        this.userInfo.gameType === 4
           ? this.cardIndex === 2
             ? 1
             : this.cardIndex === 1
@@ -424,7 +421,7 @@ export default {
         ts: Date.now(),
         amount: this.totalBetNum,
         number: this.nextBlock,
-        gameType: this.gameType.type,
+        gameType: this.userInfo.gameType,
         range: newCardIndex + 1,
         session: this.sessionIndex + 1,
       };
@@ -459,8 +456,12 @@ export default {
     getDefaultData() {
       this.totalBetNum = 0;
       this.selectBetAmountList = [];
-      this.currentCards[this.cardIndex].selectImgList = [];
-      this.cardIndex = null;
+      if(this.cardIndex !== null){
+        this.gameInfo.currentCards[this.cardIndex].betValue = 0;
+        this.gameInfo.currentCards[this.cardIndex].selectImgList = [];
+        this.cardIndex = null;
+      }
+      this.selectCardIndex = null;
     },
 
     // 获取输赢结果
@@ -468,7 +469,7 @@ export default {
       const params = {
         action: 9,
         ts: Date.now(),
-        gameType: this.gameType.type,
+        gameType: this.userInfo.gameType,
       };
       this.$http
         .post(`/game/settle`, params)
@@ -486,7 +487,7 @@ export default {
     // 录单
     getWayBill() {
       const params = {
-        gameType: this.gameType.type,
+        gameType: this.userInfo.gameType,
       };
       this.$http
         .post(`/game/wayBill`, params)
@@ -503,8 +504,8 @@ export default {
     // 验证
     handleVerify(value) {
       // 跳转至其他网址
-      // const url = `https://tronscan.org/#/block/${value}`;
-      // this.navigateTo(url);
+      const url = `https://tronscan.org/#/block/${value}`;
+      this.navigateTo(url);
     },
 
     // 展示输赢结果的弹窗
@@ -540,7 +541,7 @@ export default {
           class="text-xl text-center text-white pt-7 mb-9"
           @click="showRulePop = true"
         >
-          {{ gameType.name }}
+          {{ userInfo.gameName }}
         </div>
         <div class="flex justify-between mx-24">
           <div class="text-xs flex items-center justify-center flex-col">
@@ -604,8 +605,8 @@ export default {
         <div class="rounded-default gap-x-7 flex text-white">
           <div
             class="flex-1 bg-[#141316] p-8 rounded-md border"
-            :class="cardIndex == i ? 'border-[#70697C]' : 'border-[#141316]'"
-            v-for="(card, i) in currentCards"
+            :class="selectCardIndex == i ? 'border-[#70697C]' : 'border-[#141316]'"
+            v-for="(card, i) in gameInfo.currentCards"
             :key="i"
             @click="handleCard(i)"
           >
@@ -711,7 +712,7 @@ export default {
               </div>
               <div :class="card.color" class="relative text-4xl mt-5 mb-7">
                 <div
-                  v-for="(selImg, imgIndex) in card.selectImgList.slice(0, 4)"
+                  v-for="(selImg, imgIndex) in card.selectImgList.slice(0, 5)"
                   :key="imgIndex"
                   class="absolute right-[0.8rem] top-0 w-30 h-19"
                   :class="{ 'left-[0.8rem]': card.circlePos == 'left','right-[1.4rem]':card.name == '牛闲' }"
@@ -788,7 +789,6 @@ export default {
       :showChangeGamePop="showChangeGamePop"
       @update:showChangeGamePop="showChangeGamePop = $event"
       @changeGame="changeGame"
-      :gameType="gameType.type"
     />
 
     <MenuPop
@@ -813,7 +813,7 @@ export default {
                 <img class="h-27" src="@/assets/images/home/star.png" alt="" />
               </div>
               <div class="text-wathet-deep text-4xl text-center">
-                {{ getResultText }}
+                {{ gameInfo.resultText }}
               </div>
               <div class="text-lg white text-center">本期开奖结果</div>
               <div class="flex items-center justify-center">

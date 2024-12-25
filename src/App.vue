@@ -5,13 +5,6 @@ import postInfo from "./mixins/postInfo";
 export default {
   components: {},
   watch: {
-    // $route(to, from) {
-    //   if (this.direction === "forward") {
-    //     this.viewAnimate = "slide-left";
-    //   } else {
-    //     this.viewAnimate = "slide-right";
-    //   }
-    // },
   },
   watch:{
   },
@@ -19,9 +12,6 @@ export default {
     appColor(){
       return _APP_COLOR_
     },
-    ...mapState({
-      direction: (state) => state.direction,
-    }),
   },
   mixins: [postInfo],
   data() {

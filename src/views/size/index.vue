@@ -3,6 +3,7 @@ import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
 import Bet from "./component/pageBet.vue";
 import TransferBet from "./component/transferBet.vue";
+// import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -18,15 +19,24 @@ export default {
           inactiveIcon: "bet-inactive",
         },
       ],
-      active: 1,
+      active: 0,
     };
   },
   components: { Bet, TransferBet,},
   mixins: [toHref, postInfo],
   computed: {
-    
+    // ...mapGetters(['userInfo'])
   },
   created(){
+    // const userInfo = this.$route.query.userInfo
+    const userInfo = {
+      token: 'xxx',
+      gameName: '哈希大小',
+      gameType: 1,
+      balance: 12345,
+    }
+    this.$store.dispatch('saveUserInfo',userInfo)
+    
     const token = this.getCookie('token'); // 获取cookie中的token
     if (!token) {
       this.getTokenInfo({

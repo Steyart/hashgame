@@ -33,6 +33,10 @@ var toHref = {
       }
       return num.toString();
     },
+    // 跳转至外部链接
+    navigateTo(url) {
+      window.location.href = url;
+    },
   }
 }
 export default toHref

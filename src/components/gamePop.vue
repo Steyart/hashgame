@@ -1,17 +1,12 @@
 <script>
 import toHref from "@/mixins/toHref";
+import { mapGetters } from "vuex";
 export default {
   props: {
     showChangeGamePop: {
       type: Boolean,
       default: () => {
         return false;
-      },
-    },
-    gameType: {
-      type: Number,
-      default: () => {
-        return 1;
       },
     },
   },
@@ -31,6 +26,9 @@ export default {
     };
   },
   components: {},
+  computed: {
+    ...mapGetters(["userInfo"]),
+  },
   created() {},
   mounted() {},
   methods: {
@@ -38,6 +36,7 @@ export default {
       this.$emit("update:showChangeGamePop", false);
     },
     changeGame(item, index) {
+      this.$store.dispatch('changeGameInfo',item)
       this.gameActive = index;
       this.$emit("changeGame", item);
       this.handleClickOverlay();
@@ -73,7 +72,7 @@ export default {
             <img
               :class="{
                 'border border-[#70697C]':
-                  gameActive == index || gameType == index + 1,
+                  gameActive == index || userInfo.gameType == index + 1,
               }"
               class="h-130 mb-25"
               :src="getRequireImg(`home/Hash_${game.icon}.png`)"
