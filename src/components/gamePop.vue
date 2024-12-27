@@ -36,7 +36,6 @@ export default {
       this.$emit("update:showChangeGamePop", false);
     },
     changeGame(item, index) {
-      this.$store.dispatch('changeGameInfo',item)
       this.gameActive = index;
       this.$emit("changeGame", item);
       this.handleClickOverlay();

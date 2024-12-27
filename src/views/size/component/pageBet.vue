@@ -391,6 +391,7 @@ export default {
     changeGame(item) {
       this.getDefaultData()
       this.ruleIndex = this.userInfo.gameType - 1;
+      this.$store.dispatch('changeGameInfo',item)
     },
     // 撤销
     cancelBetClick() {
@@ -459,7 +460,7 @@ export default {
     getDefaultData() {
       this.totalBetNum = 0;
       this.selectBetAmountList = [];
-      if(this.cardIndex !== null){
+      if(this.cardIndex !== null){        
         this.gameInfo.currentCards[this.cardIndex].betValue = 0;
         this.gameInfo.currentCards[this.cardIndex].selectImgList = [];
         this.cardIndex = null;
@@ -640,7 +641,7 @@ export default {
                   v-if="card.name !== '牛闲'"
                   class="circle-text"
                   v-model:current-rate="card.schedule"
-                  size="27px"
+                  size="0.52rem"
                   :stroke-width="60"
                   :rate="card.schedule"
                   :speed="100"
@@ -667,7 +668,7 @@ export default {
                   v-if="card.name !== '牛闲'"
                   class="circle-text"
                   v-model:current-rate="card.schedule"
-                  size="27px"
+                  size="0.52rem"
                   :stroke-width="60"
                   :rate="card.schedule"
                   :speed="100"
