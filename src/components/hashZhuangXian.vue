@@ -31,7 +31,7 @@ export default {
           src="@/assets/images/home/coin-right.png"
           alt=""
         />
-        <div class="flex text-base text-base-color mt-25">
+        <div class="flex text-sm text-base-color mt-25 font-bold">
           转账
           <div class="text-beige">区块哈希值</div>
           最后一位<span class="text-beige">数字</span>
@@ -41,19 +41,19 @@ export default {
           如:
           <div class="text-beige">KyhL…ljla5b55</div>
           <div
-            class="text-xl ml-7 border border-dashed border-[#FFA602] rounded-xl text-beige pl-6 pr-3"
+            class="text-xl ml-7 border border-dashed border-[#FFA602] rounded-xl text-beige pl-6 pr-3 font-bold"
           >
             z1a11
           </div>
         </div>
-        <div class="text-base-color text-base mt-3 mb-10">获奖规则</div>
+        <div class="text-base-color text-sm mt-3 mb-10 font-bold">获奖规则</div>
       </div>
       <div
-        class="mt-7 mx-7 pt-9 pb-6 pl-41 bg-[url('@/assets/images/home/transfer-bg2.png')] bg-[length:100%_100%] bg-no-repeat"
+        class="mt-10 mx-7 pt-9 pb-6 pl-41 bg-[url('@/assets/images/home/transfer-bg2.png')] bg-[length:100%_100%] bg-no-repeat"
       >
         <div class="flex items-center text-xs text-base-color">
-          投注玩法
-          <div class="text-ll ml-7">
+          <div class="font-bold">投注玩法</div>
+          <div class="text-ll ml-7 font-medium">
             转账金额个位，1押<span class="text-beige">庄</span>，2押<span
               class="text-beige"
               >闲</span
@@ -61,12 +61,12 @@ export default {
           </div>
         </div>
         <div class="flex items-center text-xs text-base-color">
-          开奖结果
-          <div class="text-ll ml-7">闲：a+1+1=2 后五位的后三位，字母=0点</div>
+          <div class="font-bold">开奖结果</div>
+          <div class="text-ll ml-7 font-medium">闲：a+1+1=2 后五位的后三位，字母=0点</div>
         </div>
       </div>
       <img
-        class="absolute h-13 left-[3.3rem] top-[2.55rem]"
+        class="absolute h-13 left-[3.3rem] top-[2.45rem]"
         src="@/assets/images/home/down.png"
         alt=""
       />

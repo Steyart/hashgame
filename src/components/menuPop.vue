@@ -29,7 +29,12 @@ export default {
   methods: {
     handleClickOverlay() {
       this.$emit('update:showMenuPop', false);
-    }
+    },
+    changeMenu(index) {
+      this.menuIndex = index;
+      this.$emit('changeMenu', index);
+      this.handleClickOverlay()
+    },
   },
 };
 </script>
@@ -37,7 +42,7 @@ export default {
   <div>
     <van-popup :show="showMenuPop" round position="bottom" @click-overlay="handleClickOverlay">
     <div class="bg-[#27272D] pl-17 pt-15 pb-36">
-      <div class="flex justify-between items-center text-white text-xl mb-14">
+      <div class="flex justify-between items-center text-white text-xl mb-14 font-bold">
         选单
         <img
           @click="handleClickOverlay"
@@ -49,10 +54,10 @@ export default {
       <div class="flex flex-wrap">
         <div
           :class="{ 'text-blackish-green': menuIndex == index }"
-          class="w-111 bg-[#0B0B0C] rounded-2xl pt-13 pb-10 mb-14 flex items-center justify-center flex-col mr-14 text-xs text-base-color"
+          class="w-111 bg-[#0B0B0C] rounded-2xl pt-13 pb-10 mb-14 flex items-center justify-center flex-col mr-14 text-xs text-base-color font-medium"
           v-for="(item, index) in menuList"
           :key="index"
-          @click="menuIndex = index"
+          @click="changeMenu(index)"
         >
           <img
             class="h-30 mb-12"

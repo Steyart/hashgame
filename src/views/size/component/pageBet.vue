@@ -1,5 +1,5 @@
 <script>
-import RulePop from "@/components/rulePop.vue";
+import GameRulePop from "@/components/gameRulePop.vue";
 import GamePop from "@/components/gamePop.vue";
 import MenuPop from "@/components/menuPop.vue";
 import BetResultPop from "@/components/betResultPop.vue";
@@ -8,7 +8,6 @@ import BetRecord from "@/components/betRecord.vue";
 import ComRollNumber from "@/components/comRollNumber.vue";
 import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
-import { Swiper, SwiperSlide } from "swiper/vue";
 import { showToast } from "vant";
 import { mapGetters } from "vuex";
 export default {
@@ -155,9 +154,7 @@ export default {
     };
   },
   components: {
-    Swiper,
-    SwiperSlide,
-    RulePop,
+    GameRulePop,
     GamePop,
     MenuPop,
     BetResultPop,
@@ -383,10 +380,6 @@ export default {
       }
       return arr;
     },
-    onSwiper(swiper) {
-      this.headSwiper = swiper;
-    },
-    onSlideChange: (i) => {},
 
     changeGame(item) {
       this.getDefaultData()
@@ -534,6 +527,13 @@ export default {
       this.resultIndex++;
       this.showNextResult();
     },
+
+    changeMenu(i){
+      if(i==3){
+        // 展示游戏规则
+        this.showRulePop = true
+      }
+    }
   },
 };
 </script>
@@ -542,8 +542,7 @@ export default {
     <div class="mx-7">
       <div class="bg-[#27272D] rounded-default mt-3 pb-8">
         <div
-          class="text-xl text-center text-white pt-7 mb-9"
-          @click="showRulePop = true"
+          class="text-xl text-center text-white pt-7 mb-9 font-semibold"
         >
           {{ userInfo.gameName }}
         </div>
@@ -591,7 +590,7 @@ export default {
                 src="@/assets/images/home/btn-bg.png"
               />
               <span
-                class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
+                class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-white font-medium"
                 >{{ stab }}</span
               >
             </div>
@@ -600,7 +599,7 @@ export default {
               class="relative w-119 h-38 rounded-2xl border border-[#707070] mt-15 mb-12"
             >
               <span
-                class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-wathet"
+                class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-wathet font-medium"
                 >{{ stab }}</span
               >
             </div>
@@ -731,7 +730,7 @@ export default {
                     alt=""
                   />
                 </div>
-                <div>{{ card.name }}</div>
+                <div class="SHANHAILIULIANGMIMA text-[0.78rem]">{{ card.name }}</div>
               </div>
               <div
                 class="text-center text-xs bg-[#27272D] pl-18 pr-16 py-4 mb-30 rounded-2xl border border-[#70697C] text-white"
@@ -798,43 +797,14 @@ export default {
     <MenuPop
       :showMenuPop="showMenuPop"
       @update:showMenuPop="showMenuPop = $event"
+      @changeMenu="changeMenu"
     />
     <BetResultPop :showGameResultPop="showGameResultPop" :resultInfo="resultInfo" :resultText="gameInfo.resultText"
       @closeOverlay="closeOverlay" />
-
-    <van-popup
-      v-model:show="showRulePop"
-      round
-      position="bottom"
-      :style="{ height: '80%' }"
-    >
-      <div class="bg-[#27272D] px-17 pt-8 pb-25">
-        <div class="flex justify-end mb-7" @click="showRulePop = false">
-          <img class="w-14" src="@/assets/images/home/close-white.png" alt="" />
-        </div>
-        <swiper
-          class="swiper-nav"
-          :slides-per-view="'auto'"
-          @swiper="onSwiper"
-          @slideChange="onSlideChange"
-        >
-          <swiper-slide
-            v-for="(item, index) in ruleTab"
-            :key="index"
-            @click="ruleIndex = index"
-            :stop-propagation="false"
-          >
-            <div
-              class="text-sm mr-8 bg-[#141316] rounded-lg pt-14 pb-11 px-15"
-              :class="ruleIndex == index ? 'text-beige' : 'text-white'"
-            >
-              {{ item }}
-            </div>
-          </swiper-slide>
-        </swiper>
-        <RulePop :ruleName="ruleTab[ruleIndex]" />
-      </div>
-    </van-popup>
+    <GameRulePop
+      :showRulePop="showRulePop"
+      @update:showRulePop="showRulePop = $event"
+    />
   </div>
 </template>
 <style scoped>

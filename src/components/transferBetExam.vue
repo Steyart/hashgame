@@ -26,8 +26,8 @@ export default {
     <!-- 大小 -->
     <template v-if="userInfo.gameType == 1">
       <div class="bg-white pt-10 pb-18 pl-10 pr-24 rounded-md mb-65">
-        <div class="text-blackish-green text-xs mb-21">范例一</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs mb-21 font-medium">范例一</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">1000</span>，识别为押<span
             class="text-beige"
             >小</span
@@ -43,8 +43,8 @@ export default {
             >1150.5*1.95=2243.475</span
           >
         </div>
-        <div class="text-blackish-green text-xs my-21">范例二</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs my-21 font-medium">范例二</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">2268</span>，识别为押<span
             class="text-beige"
             >大</span
@@ -59,8 +59,8 @@ export default {
     <!-- 单双 -->
     <template v-if="userInfo.gameType == 2">
       <div class="bg-white pt-10 pb-18 pl-10 pr-24 rounded-md mb-65">
-        <div class="text-blackish-green text-xs mb-21">范例一</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs mb-21 font-medium">范例一</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">200.66</span>，识别为押<span
             class="text-beige"
             >双</span
@@ -73,8 +73,8 @@ export default {
             >390</span
           >
         </div>
-        <div class="text-blackish-green text-xs my-21">范例二</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs my-21 font-medium">范例二</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">9</span>，转账限额:<span
             class="text-beige"
             >10 - 900 USDT</span
@@ -86,8 +86,8 @@ export default {
     <!-- 牛牛 -->
     <template v-if="userInfo.gameType == 3">
       <div class="bg-white pt-10 pb-18 pl-10 pr-24 rounded-md mb-65">
-        <div class="text-blackish-green text-xs mb-21">范例一</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs mb-21 font-medium">范例一</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">1000</span
           >，该笔转账的区块哈希为：kyhl***ljl<span class="text-beige"
             >a5b55</span
@@ -98,8 +98,8 @@ export default {
             >1000x1.95=1950</span
           >
         </div>
-        <div class="text-blackish-green text-xs my-21">范例二</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs my-21 font-medium">范例二</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">1000</span
           >，该笔转账的区块哈希为：kyhl***ljl<span class="text-beige"
             >a5b5a</span
@@ -112,8 +112,8 @@ export default {
     <!-- 庄闲 -->
     <template v-if="userInfo.gameType == 4">
       <div class="bg-white pt-10 pb-18 pl-10 pr-24 rounded-md mb-65">
-        <div class="text-blackish-green text-xs mb-21">范例一</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs mb-21 font-medium">范例一</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">1002</span>，识别为押<span
             class="text-beige"
             >闲</span
@@ -126,8 +126,8 @@ export default {
             >1002*1.95=1953.9</span
           >
         </div>
-        <div class="text-blackish-green text-xs my-21">范例二</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs my-21 font-medium">范例二</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">3223</span>，识别为押<span
             class="text-beige"
             >和</span
@@ -140,8 +140,8 @@ export default {
     <!-- 和值大小 -->
     <template v-if="userInfo.gameType == 5">
       <div class="bg-white pt-10 pb-18 pl-10 pr-24 rounded-md mb-65">
-        <div class="text-blackish-green text-xs mb-21">范例一</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs mb-21 font-medium">范例一</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">1000</span
           >，个位数识别为<span class="text-beige">小</span
           >,小数点为无效金额，该笔转账的区块 哈希为:Y70Jijl***kyhJ<span
@@ -154,8 +154,8 @@ export default {
             >1000*1.95=1950</span
           >
         </div>
-        <div class="text-blackish-green text-xs my-21">范例二</div>
-        <div class="text-ll text-base-color">
+        <div class="text-blackish-green text-xs my-21 font-medium">范例二</div>
+        <div class="text-ll text-base-color font-medium">
           您的转账金额为：<span class="text-beige">1000</span
           >，个位数识别为<span class="text-beige">小</span
           >,小数点为无效金额，该笔转账的区块 哈希为:Y70Jijl***kyhJ<span

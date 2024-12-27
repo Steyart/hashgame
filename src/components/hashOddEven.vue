@@ -31,7 +31,7 @@ export default {
           src="@/assets/images/home/coin-right.png"
           alt=""
         />
-        <div class="flex text-base text-base-color mt-25">
+        <div class="flex text-sm text-base-color mt-25 font-bold">
           转账
           <div class="text-beige">区块哈希值</div>
           最后一位<span class="text-beige">数字</span>
@@ -41,26 +41,26 @@ export default {
           如:
           <div class="text-beige">KyhL…ljlk523h</div>
           <img
-            class="w-50 absolute right-[1.32rem] bottom-[0.5rem]"
+            class="w-50 absolute right-[1.32rem] bottom-[0.3rem]"
             src="@/assets/images/home/search.png"
             alt=""
           />
         </div>
-        <div class="text-base-color text-base mt-3 mb-10">获奖规则</div>
+        <div class="text-base-color text-sm mt-3 mb-10 font-bold">获奖规则</div>
       </div>
       <div
-        class="mt-7 mx-7 pt-9 pb-6 pl-41 bg-[url('@/assets/images/home/transfer-bg2.png')] bg-[length:100%_100%] bg-no-repeat"
+        class="mt-10 mx-7 pt-9 pb-6 pl-41 bg-[url('@/assets/images/home/transfer-bg2.png')] bg-[length:100%_100%] bg-no-repeat"
       >
         <div class="flex items-center text-xs text-base-color">
-          投注玩法
-          <div class="text-ll ml-7">
+          <div class="font-bold">投注玩法</div>
+          <div class="text-ll ml-7 font-medium">
             转账金额个位 1,3,5,7,9押<span class="text-beige">单</span
             >,0,2,4,6,8押<span class="text-beige">双</span>
           </div>
         </div>
         <div class="flex items-center text-xs text-base-color">
-          开奖结果
-          <div class="text-ll ml-7">
+          <div class="font-bold">开奖结果</div>
+          <div class="text-ll ml-7 font-medium">
             1,3,5,7,9为<span class="text-beige">单</span>,0,2,4,6,8为<span
               class="text-beige"
               >双</span
@@ -69,7 +69,7 @@ export default {
         </div>
       </div>
       <img
-        class="absolute h-13 left-[3.3rem] top-[2.3rem]"
+        class="absolute h-13 left-[3.3rem] top-[2.2rem]"
         src="@/assets/images/home/down.png"
         alt=""
       />

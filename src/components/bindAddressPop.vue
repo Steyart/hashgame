@@ -17,6 +17,7 @@ export default {
     return {
       addressValue: '',
       showPopover: false,
+      canAddAddress: true,
     };
   },
   components: {},
@@ -77,7 +78,7 @@ export default {
         ></div>
         <div class="relative">
           <div
-            class="flex items-center justify-center text-xl text-blackish-green"
+            class="flex items-center justify-center text-xl text-blackish-green font-bold"
           >
             绑定虚拟货币
             <img
@@ -94,8 +95,8 @@ export default {
               <div
                 class="w-317 bg-[#F1F4EC] border border-[#707070] rounded-md px-15"
               >
-                <div class="text-base text-beige mt-10 mb-15">绑定流程?</div>
-                <div class="text-xs mb-37">
+                <div class="text-base text-beige mt-10 mb-15 font-medium">绑定流程?</div>
+                <div class="text-xs mb-37 font-medium">
                   将您的去中心化钱包地址（Tron）粘贴在待激活地址位置，点击添加
                 </div>
               </div>
@@ -110,12 +111,13 @@ export default {
               alt=""
             />新增地址
           </div>
-          <div class="text-sm text-blackish-green ml-18 mt-27">您的地址</div>
+          <div class="text-sm text-blackish-green ml-18 mt-27 font-semibold">您的地址</div>
           <div
             class="bg-[#F2F2F2] mx-16 border border-[#707070] rounded-default"
           >
             <van-field
               class="field-box"
+              :disabled="!canAddAddress"
               v-model="addressValue"
               placeholder="请输入您的新增地址"
             />
@@ -130,7 +132,7 @@ export default {
               >添加</span
             >
           </div>
-          <!-- <div class="text-sm text-blackish-green ml-17 mt-25">
+          <!-- <div class="text-sm text-blackish-green ml-17 mt-25 font-semibold">
           已启动的地址：<span class="text-base text-beige">1个</span>
         </div>
         <div

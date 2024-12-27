@@ -54,6 +54,9 @@ export default {
       const parts = value.split(`; ${name}=`);
       if (parts.length === 2) return parts.pop().split(';').shift();
     },
+    changeActive(index) {
+      this.active = index;
+    },
   },
 };
 </script>
@@ -62,11 +65,11 @@ export default {
     <div
       class="flex justify-between text-base pl-32 pr-40 pt-16 pb-12 border-b " :class="active == 0 ?'border-[#2A2D33]': 'border-[#70697C]'"
     >
-      <div v-for="(item, index) in tabList" :key="index" @click="active = index">
-        <div :class="{ 'text-beige': active == index }" class="flex items-center justify-center">
+      <div v-for="(item, index) in tabList" :key="index" @click="changeActive(index)">
+        <div :class="{ 'text-beige': active == index }" class="flex items-center justify-center font-bold">
           <img
             class="h-16 mr-8"
-            :src="getRequireImg(`home/${active==index ? item.activeIcon:item.inactiveIcon}.png`)"
+            :src="getRequireImg(`home/${active==index ? item.activeIcon : item.inactiveIcon}.png`)"
             alt=""
           />
           {{ item.name }}

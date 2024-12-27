@@ -31,7 +31,7 @@ export default {
           src="@/assets/images/home/coin-right.png"
           alt=""
         />
-        <div class="flex text-base text-base-color mt-25">
+        <div class="flex text-sm text-base-color mt-25 font-bold">
           转账
           <div class="text-beige">区块哈希值</div>
           最后一位<span class="text-beige">数字</span>
@@ -52,20 +52,20 @@ export default {
             alt=""
           />
         </div>
-        <div class="text-base-color text-base mt-3 mb-10">获奖规则</div>
+        <div class="text-base-color text-sm mt-3 mb-10 font-bold">获奖规则</div>
       </div>
       <div
-        class="mt-7 mx-7 pt-9 pb-6 pl-30 bg-[url('@/assets/images/home/transfer-bg2.png')] bg-[length:100%_100%] bg-no-repeat"
+        class="mt-10 mx-7 pt-9 pb-6 pl-30 bg-[url('@/assets/images/home/transfer-bg2.png')] bg-[length:100%_100%] bg-no-repeat"
       >
         <div class="flex text-xs text-base-color">
-          投注玩法
-          <div class="text-ll ml-7 w-220">
+          <div class="font-bold">投注玩法</div>
+          <div class="text-ll ml-7 w-220 font-medium">
             转账交易区块和该区块的下一个区块的区块哈希值的最后一个数字之和，0,1,2,3,4为小，5,6,7,8,9为大
           </div>
         </div>
         <div class="flex text-xs text-base-color">
-          开奖结果
-          <div class="text-ll ml-7">
+          <div class="font-bold">开奖结果</div>
+          <div class="text-ll ml-7 font-medium">
             0,1,2,3,4为押<span class="text-beige">小</span>,5,6,7,8,9为押<span
               class="text-beige"
               >大</span
@@ -74,7 +74,7 @@ export default {
         </div>
       </div>
       <img
-        class="absolute h-13 left-[3.3rem] top-[2.5rem]"
+        class="absolute h-13 left-[3.3rem] top-[2.4rem]"
         src="@/assets/images/home/down.png"
         alt=""
       />

@@ -47,7 +47,7 @@ export default {
             <div class="px-15">
               <div class="flex items-center justify-between mt-22 mx-38">
                 <img class="h-27" src="@/assets/images/home/star.png" alt="" />
-                <div class="text-2.5xl text-white">
+                <div class="text-2.5xl text-white font-bold">
                   {{
                     resultInfo.win_loser == 1
                       ? "恭喜你,你赢了"
@@ -56,7 +56,7 @@ export default {
                 </div>
                 <img class="h-27" src="@/assets/images/home/star.png" alt="" />
               </div>
-              <div class="text-wathet-deep text-4xl text-center">
+              <div class="text-wathet-deep text-4xl text-center SHANHAILIULIANGMIMA">
                 {{ resultText }}
               </div>
               <div class="text-lg white text-center">本期开奖结果</div>
@@ -84,7 +84,7 @@ export default {
                     src="@/assets/images/home/copy.png"
                     alt=""
                   />
-                  <div class="relative mr-3" @click="handleVerify('111')">
+                  <div class="relative mr-3" @click="handleVerify('KyhLudjL……jkljlka5234')">
                     <img
                       class="w-68 m-auto"
                       src="@/assets/images/home/btn-bg-small.png"
@@ -101,8 +101,9 @@ export default {
               <div
                 class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8 mb-18"
               >
-                <div class="text-white text-sm ml-11">32458458</div>
+                <div class="text-white text-sm ml-11">{{ resultInfo.number }}</div>
                 <img
+                @click="onCopy(resultInfo.number)"
                   class="h-16 mr-11"
                   src="@/assets/images/home/copy.png"
                   alt=""

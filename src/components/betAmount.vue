@@ -208,7 +208,7 @@ export default {
     <!-- 筹码切换 -->
     <van-popup :show="zdyChipPop" round position="bottom">
       <div class="bg-[#27272D] pl-17 pt-15 pb-220">
-        <div class="flex justify-between items-center text-white text-xl mb-14">
+        <div class="flex justify-between items-center text-white text-xl mb-14 font-bold">
           设定筹码
           <img
             @click="zdyChipPop = false"

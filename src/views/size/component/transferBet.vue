@@ -87,13 +87,13 @@ export default {
             active == index ? 'bg-[#FFA602]' : '',
             active == 0 ? 'rounded-l-md' : 'rounded-r-md',
           ]"
-          class="w-1/2 text-center pt-15 pb-12"
+          class="w-1/2 text-center pt-15 pb-12 font-medium"
         >
           {{ item }}
         </div>
       </div>
       <div class="flex items-center text-sm ml-8 mt-14 mb-9">
-        投注地址
+       <div class="font-semibold">投注地址</div>
         <div class="text-xs text-wathet ml-7">请使用【去中心化钱包】投注</div>
       </div>
       <div class="mx-11">
@@ -116,7 +116,7 @@ export default {
             alt=""
           />
           <span
-            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
+            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-white font-bold"
             >绑定钱包</span
           >
         </div>
@@ -137,7 +137,7 @@ export default {
         </template>
         <div class="flex justify-between items-center mt-35">
           <div class="flex items-center text-sm text-blackish-green">
-            赔率
+            <div class="font-medium">赔率</div>
             <div
               v-if="tabName == '哈希和值大小'"
               class="text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
@@ -153,19 +153,19 @@ export default {
             </div>
           </div>
           <div class="flex items-center text-sm text-blackish-green">
-            转账限额
+            <div class="font-medium">转账限额</div>
             <div
-              class="flex items-center text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-19 pb-17 pl-16 pr-26 ml-8"
+              class="flex items-center text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-19 pb-17 pl-15 pr-7 ml-8"
             >
               10-15000
               <div class="text-xs text-base-color ml-13">USDT</div>
             </div>
           </div>
         </div>
-        <div class="text-xs text-beige mt-30">
+        <div class="text-xs text-beige mt-30 font-medium">
           注：游戏赔率会自动浮动，所有解释权归本平台所有。
         </div>
-        <div class="text-ll text-base-color mt-10">
+        <div class="text-ll text-base-color mt-10 font-medium">
           低于限额平台扣除，高于限额视为无效金额，平台抽取1%手续费，给予回馈。
         </div>
       </div>

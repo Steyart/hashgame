@@ -53,7 +53,7 @@ export default {
       @click-overlay="handleClickOverlay"
     >
       <div class="bg-[#27272D] pl-17 pt-15">
-        <div class="flex justify-between items-center text-white text-xl mb-14">
+        <div class="flex justify-between items-center text-white text-xl mb-14 font-bold">
           游戏切换
           <img
             @click="handleClickOverlay"
