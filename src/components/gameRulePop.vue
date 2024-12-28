@@ -12,8 +12,9 @@ export default {
   },
   data() {
     return {
+      headSwiper: "",
       ruleTab: ["哈希大小", "哈希单双", "哈希牛牛", "哈希庄闲", "哈希和值大小"],
-      ruleIndex: 1,
+      ruleIndex: null,
     };
   },
   components: {
@@ -24,7 +25,17 @@ export default {
   computed: {
     ...mapGetters(["userInfo"]),
   },
-  watch: {},
+  watch: {
+    userInfo: {
+      handler(newVal) {
+        if (newVal && newVal.gameType !== undefined) {
+          this.updateRuleIndex(newVal.gameType);
+        }
+      },
+      immediate: true,
+      deep: true,
+    },
+  },
   created() {},
 
   mounted() {},
@@ -36,6 +47,15 @@ export default {
       this.headSwiper = swiper;
     },
     onSlideChange: (i) => {},
+    changeNav(index) {
+      this.updateRuleIndex(index + 1);
+    },
+    updateRuleIndex(index) {
+      this.ruleIndex = index;
+      if (this.ruleIndex >= 2 && this.headSwiper) {
+        this.headSwiper.slideTo(this.ruleIndex - 2);
+      }
+    },
   },
 };
 </script>
@@ -61,7 +81,7 @@ export default {
           <swiper-slide
             v-for="(item, index) in ruleTab"
             :key="index"
-            @click="ruleIndex = index + 1"
+            @click="changeNav(index)"
             :stop-propagation="false"
           >
             <div
