@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # web
+=======
+# hashGo
+>>>>>>> gitlab/main
 
 
 
@@ -15,14 +19,22 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
+<<<<<<< HEAD
 git remote add origin http://7353fbb95b98/root/web.git
+=======
+git remote add origin http://chainup.888bbm.com/xiaolin/hashgo.git
+>>>>>>> gitlab/main
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
+<<<<<<< HEAD
 - [ ] [Set up project integrations](http://7353fbb95b98/root/web/-/settings/integrations)
+=======
+- [ ] [Set up project integrations](http://chainup.888bbm.com/xiaolin/hashgo/-/settings/integrations)
+>>>>>>> gitlab/main
 
 ## Collaborate with your team
 
