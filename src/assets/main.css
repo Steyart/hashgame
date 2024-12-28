@@ -91,6 +91,10 @@ html[data-device-nodesktop="0"] .pagination-bottom{
 ::-webkit-scrollbar{width:0;height:0;}
 
 .van-popup {
+  max-width: 535px;
+  right: 0 !important;
+  left: 0 !important;
+  margin: auto !important;
   background-color: transparent !important;
 }
 .fail-toast-box,
