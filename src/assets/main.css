@@ -20,6 +20,7 @@ html, body{
   background-color: #E8E8EA;
   font-family: "ALIMAMAFANGYUANTIVF" !important;
   overscroll-behavior: none;
+  user-select: none;
 }
 html[data-device-nodesktop="0"]{
   font-size: calc(100vw /(750 / 100));
