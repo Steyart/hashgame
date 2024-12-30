@@ -19,17 +19,7 @@ var postInfo = {
   created() {
   },
   computed: {
-    ...mapGetters(['language', "indexNav", "factoryList", "bannerList", "user", "is_all", "swiperTimerList", "isLogged", "vipInfo"]),
-    myAvatar() {
-      let img = ""
-      if (this.user.avatar) {
-        img = this.user.avatar.replace(/\/default\/avatar\//g, "");
-        img = img.replace(/\.png/g, "");
-      } else {
-        img = 'img0'
-      }
-      return this.myImg[`head_${img}`]
-    },
+    ...mapGetters([]),
   },
   mounted() {
 
@@ -134,18 +124,18 @@ var postInfo = {
       this.nextBlock = Number(this.currentBlock) + 1;
     },
     // 获取余额
-    getBalance(params) {
-      this.$http
-        .post(`/game/blance`, params)
-        .then(({ data }) => {
-          if (data.code === 200) {
+    // getBalance(params) {
+    //   this.$http
+    //     .post(`/game/blance`, params)
+    //     .then(({ data }) => {
+    //       if (data.code === 200) {
 
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        });
-    },
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     });
+    // },
   }
 }
 export default postInfo

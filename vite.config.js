@@ -4,7 +4,7 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 // https://vite.dev/config/
 
-export default defineConfig(()=>{
+export default defineConfig(() => {
   return {
     define: {
       _APP_COLOR_: JSON.stringify('bule')
@@ -17,7 +17,7 @@ export default defineConfig(()=>{
         // 代理路径
         '/api': {
           // 目标地址
-          target: 'http://192.168.0.7:8888', //206.238.68.200
+          target: 'http://hash-api.888bbm.com', //206.238.68.200    http://192.168.0.7:8888
           // 是否改变请求的源地址，这里设置为 true，表示强制使用绝对路径
           changeOrigin: true,
           // 路径重写规则，这里将 /api 开头的请求路径替换为空字符串，即去掉 /api 前缀
