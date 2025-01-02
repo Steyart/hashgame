@@ -1,42 +1,32 @@
 
 /*global $ returnCitySN require ClipboardJS wx err process*/
 import axios from 'axios'
-import Qs from 'qs'
 import router from '../router'
-import store from '../store/index'
-import { getCookie } from '@/service/util.service'
-
-// $instance基本配置
+import { getCookie, getTokenInfo } from '@/service/util.service'
 let $instance = axios.create({
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
   },
   withCredentials: false,
-  data: {}
+  baseURL: (process.env.NODE_ENV === 'production') ? 'https://hash-api.888bbm.com/api' : '/api',
+  timeout: 30000,
+  retry: 1,
+  retryDelay: 1000,
+  __retryCount: 0
 });
 
-// 全局axios配置
-$instance.defaults.baseURL = (process.env.NODE_ENV === 'production') ? 'https://api.888bbm.com/api' : '/api';
-$instance.defaults.timeout = 30000;
-// 额外自定义参数
-$instance.retry = 1;
-$instance.retryDelay = 1000;
-$instance.__retryCount = 0;
-
+// 设置全局参数方法
 $instance.setParams = (posted = false, query = {}) => {
-  if ($instance.session_id === undefined && posted) {
+  const token = getCookie('token');
+  if (token) {
+    $instance.defaults.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete $instance.defaults.headers.Authorization; // 确保没有无效的Authorization头
   }
-  
-   // 从cookie中获取token
-   const token = getCookie('token');
-   $instance.defaults.headers.token = token || '';
-  $instance.defaults.data = {}
-  // 全局需要
-  let env = import.meta.env
-  // 全局设置session_id
   return $instance.defaults.data;
 };
 
+// 初始化设置
 $instance.setParams(true);
 
 // POST传参序列化
@@ -45,59 +35,49 @@ $instance.interceptors.request.use((config) => {
     config.baseURL = '';
     return config;
   }
-  let query = {};
-  // query = router.currentRoute._value.query
-  $instance.setParams(false, query);
 
+  // 设置全局参数
+  $instance.setParams(false, {});
 
-  // Object.assign($instance.defaults.data, config.data);
-
-  // Object.assign(config.data, $instance.defaults.data);
-  // cookie被清理，分页请求需要登录的跳转到登录页面
-  // if (router.currentRoute._value.meta.auth) {
-  //   return window.location.replace(`/login?redirect=${router.currentRoute._value.path}`);
-  // }
-  // if (config.method.toLowerCase() === 'post') {
-  //   config.data = Qs.stringify(config.data, { skipNulls: true });
-  // }
+  // 如果是POST请求并且不是简单的请求，则可能触发预检请求
+  if (config.method.toLowerCase() === 'post') {
+    config.headers['Content-Type'] = 'application/json'; // 或者 application/x-www-form-urlencoded
+  }
 
   return config;
 }, (error) => {
-  // 错误的传参
   return Promise.reject(error);
 });
 
 // 响应拦截器配置
 $instance.interceptors.response.use((response) => {
-  if (response.data && (response.data.code === 1001)) {
-  } else if (response.data.status === 403) {
-    return window.location.replace(`/login?redirect=${router.currentRoute._value.path}`);
-  } else if (response.data.status === -3 || response.data.status === -2) {
+  if (response.data && response.data.code === 1001) {
+    // 处理业务逻辑错误
+  } else if (response.status === 403 || response.data.status === 403) {
+    getTokenInfo({
+      ts: Date.now(),
+      uid: "game_37039042",
+    });
 
-    setTimeout((_) => {
-      return window.location.replace(`/login?redirect=${router.currentRoute._value.path}`);
-    }, 2000)
+
+  } else if ([-3, -2].includes(response.data.status)) {
+    setTimeout(() => {
+      getTokenInfo({
+        ts: Date.now(),
+        uid: "game_37039042",
+      })
+    }, 2000);
   }
-  console.log(response);
   return response;
 }, function (error) {
-  console.log(error);
-  // console.log(error.name); // ReferenceError
-  // console.log(error.message); // lalala is not defined
-  // console.log(error.stack); // ReferenceError: lalala is not defined at ...
-
-
-  // if (!error.config || !$instance.retry || $instance.__retryCount >= $instance.retry) return Promise.reject(error);
-  // $instance.__retryCount++;
-  // let backoff = new Promise(function (resolve) {
-  //   setTimeout(function () {
-  //     resolve();
-  //   }, $instance.retryDelay || 1);
-  // });
-  // return backoff.then(function () {
-  //   return $instance(error.config);
-  // });
-  // return Promise.reject(error);
+  console.error(error);
+  if (error.response && error.response.status === 401) {
+    getTokenInfo({
+      ts: Date.now(),
+      uid: "game_37039042",
+    })
+  }
+  return Promise.reject(error);
 });
 
 export default $instance;

@@ -1,13 +1,14 @@
 <script>
 import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
+import { getCookie, getTokenInfo } from "@/service/util.service";
 import HashMagnitude from "@/components/hashMagnitude.vue";
 import HashOddEven from "@/components/hashOddEven.vue";
 import HashNiuNiu from "@/components/hashNiuNiu.vue";
 import HashZhuangXian from "@/components/hashZhuangXian.vue";
 import HashValueSize from "@/components/hashValueSize.vue";
 import TransferBetExam from "@/components/transferBetExam.vue";
-import BindAddressPop from '@/components/bindAddressPop.vue';
+import BindAddressPop from "@/components/bindAddressPop.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -17,12 +18,9 @@ export default {
       active: 0,
       tabName: "哈希牛牛", //哈希单双 、哈希大小、哈希牛牛、哈希庄闲、哈希和值大小
       showBindAddressPop: false,
-      startAddressList: [
-        { type: "", address: "IUY45……jk52d", status: "已激活" },
-      ],
       addressValue: "",
-      addressList: [],  //钱包地址列表
-      betWalletAddress: '',
+      addressList: [], //钱包地址列表
+      betWalletAddress: "",
     };
   },
   components: {
@@ -36,41 +34,74 @@ export default {
   },
   mixins: [toHref, postInfo],
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(["userInfo"]),
   },
   watch: {
     // gameType(newValue, oldValue) {
     //   this.betWalletAddress = this.addressList[this.matchedAddressIndex()].address
     // },
     active(newValue, oldValue) {
-      this.betWalletAddress = this.addressList[this.matchedAddressIndex()].address
+      this.betWalletAddress =
+        this.addressList[this.matchedAddressIndex()].address;
     },
   },
-  mounted() {
-    this.getWalletAddress()
+  created() {
+    const token = getCookie("token"); // 获取cookie中的token
+    if (!token) {
+      getTokenInfo({
+        ts: Date.now(),
+        uid: "game_37039042",
+      })
+        .then(() => {
+          this.getWalletAddress();
+        })
+        .catch((err) => {
+          console.error("获取 token 失败:", err);
+        });
+    } else {
+      this.getWalletAddress();
+    }
   },
+  mounted() {},
   methods: {
     matchedAddressIndex() {
-      return this.addressList.findIndex(item => 
-        item.gameType === this.userInfo.gameType && item.range === this.active + 1
+      return this.addressList.findIndex(
+        (item) =>
+          item.gameType === this.userInfo.gameType &&
+          item.range === this.active + 1
       );
     },
-    // 获取钱包地址
-    getWalletAddress(){
+    /**
+     * 获取钱包地址
+     */
+    getWalletAddress() {
       this.$http
-        .get(`/pocket/getDogPayWallet`,{})
+        .get(`/pocket/getDogPayWallet`, {})
         .then(({ data }) => {
           if (data.code === 200) {
-            this.addressList = data.data
-            this.betWalletAddress = this.addressList[this.matchedAddressIndex()].address
+            console.log(data.data);
+            console.log(this.userInfo.gameType);
+
+            this.addressList = data.data;
+            const index = this.matchedAddressIndex();
+            console.log("index===", index);
+
+            if (index !== null) {
+              this.betWalletAddress = this.addressList[index].address;
+            } else {
+              this.betWalletAddress = ""; // 设置默认值或处理未找到的情况
+            }
+            console.log(this.userInfo.gameType);
+
+            console.log(this.betWalletAddress);
           }
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    openBindPop(){
-      this.showBindAddressPop = true
+    openBindPop() {
+      this.showBindAddressPop = true;
     },
   },
 };
@@ -93,7 +124,7 @@ export default {
         </div>
       </div>
       <div class="flex items-center text-sm ml-8 mt-14 mb-9">
-       <div class="font-semibold">投注地址</div>
+        <div class="font-semibold">投注地址</div>
         <div class="text-xs text-wathet ml-7">请使用【去中心化钱包】投注</div>
       </div>
       <div class="mx-11">
@@ -179,8 +210,10 @@ export default {
     <TransferBetExam />
   </div>
 
-  <BindAddressPop :showBindAddressPop="showBindAddressPop" @update:showBindAddressPop="showBindAddressPop = $event" />
-
+  <BindAddressPop
+    :showBindAddressPop="showBindAddressPop"
+    @update:showBindAddressPop="showBindAddressPop = $event"
+  />
 </template>
 <style scoped>
 </style>

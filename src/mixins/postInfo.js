@@ -72,36 +72,6 @@ var postInfo = {
         });
       }
     },
-
-    // 获取token
-    getTokenInfo(params) {
-      this.$http
-        .post(`/gameLike/link`, params)
-        .then(({ data }) => {
-          if (data.code === 200) {
-            const token = data.data.token;
-            if (token) {
-              // 将 token 存储到 cookie 中
-              this.setCookie('token', token, 1); // 设置 cookie，有效期为 1 天
-            }
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-
-    // 设置cookie
-    setCookie(name, value, days) {
-      let expires = "";
-      if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-      }
-      document.cookie = name + "=" + (value || "") + expires + "; path=/";
-    },
-
     // 获取区块号
     getBlockNum() {
       this.$http

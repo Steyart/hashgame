@@ -53,7 +53,9 @@ export default {
       @click-overlay="handleClickOverlay"
     >
       <div class="bg-[#27272D] pl-17 pt-15">
-        <div class="flex justify-between items-center text-white text-xl mb-14 font-bold">
+        <div
+          class="flex justify-between items-center text-white text-xl mb-14 font-bold"
+        >
           游戏切换
           <img
             @click="handleClickOverlay"
@@ -70,7 +72,7 @@ export default {
           >
             <img
               :class="{
-                'border border-[#70697C]':
+                'border border-[#70697C] rounded-md':
                   gameActive == index || userInfo.gameType == index + 1,
               }"
               class="h-130 mb-25"
