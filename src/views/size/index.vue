@@ -3,6 +3,7 @@ import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
 import Bet from "./component/pageBet.vue";
 import TransferBet from "./component/transferBet.vue";
+import { setCookie } from "@/service/util.service";
 // import { mapGetters } from "vuex";
 export default {
   data() {
@@ -28,14 +29,12 @@ export default {
     // ...mapGetters(['userInfo'])
   },
   created() {
-    console.log(this.$route.query);
-
     const userInfo = {
-      token: "xxx",
+      token: this.$route.query.token,
       gameName: this.$route.query.gameName || "哈希大小",
       gameType: Number(this.$route.query.gameType) || 1,
-      balance: 12345,
     };
+    setCookie("token", this.$route.query.token);
     this.$store.dispatch("saveUserInfo", userInfo);
   },
   mounted() {},

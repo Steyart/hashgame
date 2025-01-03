@@ -1,15 +1,23 @@
 
+import axios from 'axios';
 // state
 let state = {
   userInfo: null,
 };
 const actions = {
-  saveUserInfo({ commit }, userInfo) {
+  saveUserInfo({ commit, dispatch }, userInfo) {
     commit('SET_USER_INFO', userInfo);
+    dispatch('setHttpHeaders', userInfo.token);
   },
 
   changeGameInfo({ commit }, newGameInfo) {
     commit('UPDATE_GAME_INFO', newGameInfo);
+  },
+  // 设置HTTP请求头
+  setHttpHeaders(_, payload) {
+    if (payload) {
+      axios.defaults.headers['Authorization'] = `Bearer ${payload}`;;
+    }
   },
 };
 

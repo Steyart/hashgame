@@ -566,6 +566,12 @@ export default {
       if (i == 3) {
         // 展示游戏规则
         this.showRulePop = true;
+      } else {
+        return showToast({
+          type: "fail",
+          message: "暂未开放",
+          className: "fail-toast-box",
+        });
       }
     },
   },

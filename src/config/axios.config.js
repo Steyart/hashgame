@@ -1,8 +1,9 @@
 
 /*global $ returnCitySN require ClipboardJS wx err process*/
 import axios from 'axios'
+import store from '../store/index'
 import router from '../router'
-import { getCookie, getTokenInfo } from '@/service/util.service'
+import { getCookie } from '@/service/util.service'
 let $instance = axios.create({
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
@@ -17,7 +18,7 @@ let $instance = axios.create({
 
 // 设置全局参数方法
 $instance.setParams = (posted = false, query = {}) => {
-  const token = getCookie('token');
+  const token = getCookie('token') || store.state.auth.userInfo?.token;
   if (token) {
     $instance.defaults.headers.Authorization = `Bearer ${token}`;
   } else {
@@ -54,28 +55,14 @@ $instance.interceptors.response.use((response) => {
   if (response.data && response.data.code === 1001) {
     // 处理业务逻辑错误
   } else if (response.status === 403 || response.data.status === 403) {
-    getTokenInfo({
-      ts: Date.now(),
-      uid: "game_37039042",
-    });
-
-
   } else if ([-3, -2].includes(response.data.status)) {
     setTimeout(() => {
-      getTokenInfo({
-        ts: Date.now(),
-        uid: "game_37039042",
-      })
     }, 2000);
   }
   return response;
 }, function (error) {
   console.error(error);
   if (error.response && error.response.status === 401) {
-    getTokenInfo({
-      ts: Date.now(),
-      uid: "game_37039042",
-    })
   }
   return Promise.reject(error);
 });

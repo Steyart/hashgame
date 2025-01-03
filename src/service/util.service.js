@@ -12,7 +12,7 @@ export function hasNecessaryRoute(to) {
 export function generateRoutes() {
   store.dispatch('set_addRoutes', { router })
 }
-export function saveCookie(name, value) {
+export function setCookie(name, value) {
   if (window.localStorage) {
     localStorage.setItem(name, (typeof value === 'string' ? value : JSON.stringify(value)));
     localStorage.setItem('expires', new Date().getTime());
@@ -22,34 +22,6 @@ export function saveCookie(name, value) {
 
 export function getCookie(name) {
   return Cookies.get(name) || (window.localStorage ? localStorage.getItem(name) : '')
-}
-
-export function getTokenInfo(params) {
-  return axios.post(`/gameLike/link`, params)
-    .then(({ data }) => {
-      if (data.code === 200) {
-        const token = data.data.token;
-        if (token) {
-          // 将 token 存储到 cookie 中a
-          axios.defaults.headers['Authorization'] = `Bearer ${token}`;
-          setCookie('token', token, 1); // 设置 cookie，有效期为 1 天
-        }
-        return token;
-      }
-    })
-    .catch((err) => {
-      console.error('获取 token 失败:', err);
-    });
-}
-
-export function setCookie(name, value, days) {
-  let expires = "";
-  if (days) {
-    const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
 export function removeCookie(name) {
