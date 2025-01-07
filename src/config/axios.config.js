@@ -4,6 +4,7 @@ import axios from 'axios'
 import store from '../store/index'
 import router from '../router'
 import { getCookie } from '@/service/util.service'
+import { showToast } from "vant"
 let $instance = axios.create({
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
@@ -63,6 +64,11 @@ $instance.interceptors.response.use((response) => {
 }, function (error) {
   console.error(error);
   if (error.response && error.response.status === 401) {
+    showToast({
+      type: "fail",
+      message: "未登录",
+      className: "fail-toast-box",
+    });
   }
   return Promise.reject(error);
 });
