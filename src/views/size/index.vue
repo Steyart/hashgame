@@ -21,6 +21,7 @@ export default {
         },
       ],
       active: 0,
+      showPage: false,
     };
   },
   components: { Bet, TransferBet },
@@ -29,65 +30,85 @@ export default {
     // ...mapGetters(['userInfo'])
   },
   created() {
-    const userInfo = {
-      token: this.$route.query.token,
-      gameName: this.$route.query.gameName || "哈希大小",
-      gameType: Number(this.$route.query.gameType) || 1,
-    };
-    setCookie("token", this.$route.query.token);
-    this.$store.dispatch("saveUserInfo", userInfo);
+  
+    if (this.$route.query.token) {
+      const userInfo = {
+        token: this.$route.query.token,
+        gameName: this.getGameName(this.$route.query.gameType),
+        gameType: Number(this.$route.query.type) || 1,
+      };
+      setCookie("token", this.$route.query.token);
+      this.$store.dispatch("saveUserInfo", userInfo);
+    }else{
+      this.showPage = true;
+    }
+    // this.$router.replace({ path: "/" });
   },
   mounted() {},
   methods: {
     changeActive(index) {
       this.active = index;
     },
+
+    getGameName(type) {
+      const gameNames = {
+        1: "哈希大小",
+        2: "哈希单双",
+        3: "哈希牛牛",
+        4: "哈希庄闲",
+        5: "哈希和值大小"
+      };
+      return gameNames[type];
+    },
   },
 };
 </script>
 <template>
-  <div
-    class="px-10 pb-20 min-h-screen"
-    :class="
-      active == 0
-        ? 'bg-[#E8E8EA] text-blackish-green'
-        : 'bg-[#0B0B0C] text-white '
-    "
-  >
+  <div>
     <div
-      class="flex justify-between text-base pl-32 pr-40 pt-16 pb-12 border-b"
-      :class="active == 0 ? 'border-[#2A2D33]' : 'border-[#70697C]'"
+      class="px-10 pb-20 min-h-screen"
+      :class="
+        active == 0
+          ? 'bg-[#E8E8EA] text-blackish-green'
+          : 'bg-[#0B0B0C] text-white '
+      "
     >
       <div
-        v-for="(item, index) in tabList"
-        :key="index"
-        @click="changeActive(index)"
+        class="flex justify-between text-base pl-32 pr-40 pt-16 pb-12 border-b"
+        :class="active == 0 ? 'border-[#2A2D33]' : 'border-[#70697C]'"
       >
         <div
-          :class="{ 'text-beige': active == index }"
-          class="flex items-center justify-center font-bold"
+          v-for="(item, index) in tabList"
+          :key="index"
+          @click="changeActive(index)"
         >
-          <img
-            class="h-16 mr-8"
-            :src="
-              getRequireImg(
-                `home/${
-                  active == index ? item.activeIcon : item.inactiveIcon
-                }.png`
-              )
-            "
-            alt=""
-          />
-          {{ item.name }}
+          <div
+            :class="{ 'text-beige': active == index }"
+            class="flex items-center justify-center font-bold"
+          >
+            <img
+              class="h-16 mr-8"
+              :src="
+                getRequireImg(
+                  `home/${
+                    active == index ? item.activeIcon : item.inactiveIcon
+                  }.png`
+                )
+              "
+              alt=""
+            />
+            {{ item.name }}
+          </div>
         </div>
       </div>
+      <template v-if="active == 0">
+        <TransferBet />
+      </template>
+      <template v-if="active == 1">
+        <Bet />
+      </template>
     </div>
-    <template v-if="active == 0">
-      <TransferBet />
-    </template>
-    <template v-if="active == 1">
-      <Bet />
-    </template>
+    <van-overlay :show="showPage" :close-on-click-overlay="false" />
   </div>
 </template>
 <style scoped>

@@ -94,18 +94,18 @@ var postInfo = {
       this.nextBlock = Number(this.currentBlock) + 1;
     },
     // 获取余额
-    // getBalance(params) {
-    //   this.$http
-    //     .post(`/game/blance`, params)
-    //     .then(({ data }) => {
-    //       if (data.code === 200) {
-
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //     });
-    // },
+    getBalance(params) {
+      this.$http
+        .post(`/game/blance`, params)
+        .then(({ data }) => {
+          if (data.code === 200) {
+            this.balance = data.data.balance;
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    },
   }
 }
 export default postInfo

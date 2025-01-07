@@ -161,6 +161,7 @@ export default {
       resultInfoList: [],
       resultIndex: 0,
       resultInfo: {},
+      balance: 0,
     };
   },
   components: {
@@ -224,10 +225,11 @@ export default {
   },
 
   mounted() {
-    // this.getBalance({
-    //   action: 6,
-    //   ts: Date.now(),
-    // });
+    this.getBalance({
+      action: 6,
+      ts: Date.now(),
+    });
+
     this.getLotteryData();
     this.getWayBill();
   },
@@ -447,6 +449,14 @@ export default {
 
     // 下注
     handleBetting() {
+      if(this.totalBetNum > this.balance){
+        return showToast({
+          type: "fail",
+          message: "余额不足",
+          className: "fail-toast-box",
+        });
+      }
+
       const params = {
         action: 9,
         ts: Date.now(),
@@ -757,13 +767,12 @@ export default {
                 <div
                   v-for="(selImg, imgIndex) in card.selectImgList.slice(0, 5)"
                   :key="imgIndex"
-                  class="absolute right-[0.8rem] top-0 w-30 h-19"
+                  class="absolute w-30 h-19"
                   :class="{
-                    'left-[0.8rem]': card.circlePos == 'left',
-                    'right-[1.4rem]': card.name == '牛闲',
-                  }"
+        [card.circlePos == 'left' ? 'left-[.9rem]' : card.name == '牛闲' ? 'right-[1.7rem]' : 'right-[.9rem]']: true,
+      }"
                   :style="{
-                    top: `${0.5 - 0.1 * imgIndex}rem`,
+                    top: `${0.6 - 0.1 * imgIndex}rem`,
                     'z-index': imgIndex,
                   }"
                 >
