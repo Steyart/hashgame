@@ -169,7 +169,7 @@ export default {
             <div
               class="flex items-center text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-19 pb-17 pl-15 pr-7 ml-8"
             >
-              10-15000
+              {{ active == 0 ? '10-1000U' : '100-2000U' }}
               <div class="text-xs text-base-color ml-13">USDT</div>
             </div>
           </div>

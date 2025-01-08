@@ -6,6 +6,18 @@
     watch: {},
     computed: {
         ...mapGetters(["indexNav", "showLeft"]),
+        win: function(){
+            let a = this.lists1.filter(v=>{ return v.win_result == 2})
+            return a.length
+        },
+        lose: function(){
+            let a = this.lists1.filter(v=>{ return v.win_result == 1})
+            return a.length
+        },
+        all: function(){
+            let a = this.lists1.filter(v=>{ return v.win_result > 0})
+            return a.length
+        },
         newlists1(){
             let arr = this.lists1
             let a = []
@@ -63,18 +75,18 @@
 <template>
     <div>
         <div class="flex justify-between items-center text-ll mt-12 mb-9 text-white">
-        <div class="ml-7"><span class="mr-7">#</span><span>7</span></div>
+        <div class="ml-7"><span class="mr-7">#</span><span>{{all}}</span></div>
         <div class="flex items-center">
             <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#031BDD] rounded-full mr-6" >
             0
             </div>
-            <div  class="leading-[.19rem] flex items-center">5</div>
+            <div  class="leading-[.19rem] flex items-center">{{lose}}</div>
         </div>
         <div class="flex items-center">
             <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#FF5C01] rounded-full mr-6">
             E
             </div>
-            <div class="leading-[.19rem] flex items-center">2</div>
+            <div class="leading-[.19rem] flex items-center">{{win}}</div>
         </div>
         <div class="flex items-center" v-if="hasHe"><!-- 和 -->
             <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#FDC300] rounded-full mr-6">
@@ -109,7 +121,7 @@
                 <tr class="flex flex-col" v-for="(tab, i) in newlists1" :key="i" >
                     <td v-for="(v, k) in tab" :key="k">
                         <div class="td-box1">
-                            <div v-if="v.win_result" :class="{ 'bg-[#FF5C01]': v.win_result == '1', 'bg-[#5164FF]': v.win_result == '2', 'bg-[#FDC300]': v.win_result == '3', }" class="left-number" >
+                            <div v-if="v.win_result" :class="{ 'bg-[#5164FF]': v.win_result == '1', 'bg-[#FF5C01]': v.win_result == '2', 'bg-[#FDC300]': v.win_result == '3', }" class="left-number" >
                             {{ v.win_result==1?'0' : v.win_result==2?'E' : 'I' }}
                             </div>
                         </div>
@@ -122,7 +134,7 @@
                 <tr class="flex flex-col" v-for="(val, i) in lists2" :key="i">
                     <td v-for="(v, k) in val" :key="k">
                         <div class="td-box2">
-                            <div :class="{ 'border-2 border-[#FF5C01]': v.win_result == '1', 'border-2 border-[#5164FF]': v.win_result == '2'}" ></div>
+                            <div :class="{ 'border-2 border-[#5164FF]': v.win_result == '1', 'border-2 border-[#FF5C01]': v.win_result == '2'}" ></div>
                         </div>
                     </td>
                 </tr>

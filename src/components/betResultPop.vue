@@ -1,5 +1,6 @@
 <script>
 import toHref from "@/mixins/toHref";
+import postInfo from "@/mixins/postInfo";
 export default {
   props: {
     showGameResultPop: {
@@ -21,20 +22,26 @@ export default {
       },
     },
   },
-  mixins: [toHref],
+  mixins: [toHref, postInfo],
   watch: {},
   computed: {},
   data() {
-    return {
-    };
+    return {};
   },
   components: {},
   created() {},
   mounted() {},
   methods: {
     closeOverlay() {
-      this.$emit('closeOverlay', false);
-    }
+      this.$emit("closeOverlay", false);
+    },
+
+    // 验证
+    handleVerify(value) {
+      // 跳转至其他网址
+      const url = `https://tronscan.org/#/block/${value}`;
+      this.navigateTo(url);
+    },
   },
 };
 </script>
@@ -56,7 +63,18 @@ export default {
                 </div>
                 <img class="h-27" src="@/assets/images/home/star.png" alt="" />
               </div>
-              <div class="text-wathet-deep text-4xl text-center SHANHAILIULIANGMIMA">
+              <div
+                class="text-wathet-deep text-4xl text-center SHANHAILIULIANGMIMA"
+                :class="[
+                  resultText == '和'
+                    ? 'text-orange-l'
+                    : ['单', '大', '庄'].includes(resultText)
+                    ? 'text-wathet-deep'
+                    : ['双', '小', '贤', '牛闲'].includes(resultText)
+                    ? 'text-tomato-yellow'
+                    : '',
+                ]"
+              >
                 {{ resultText }}
               </div>
               <div class="text-lg white text-center">本期开奖结果</div>
@@ -67,10 +85,10 @@ export default {
                   alt=""
                 />
                 <div class="text-white text-2.5xl">
-                  {{ resultInfo.netWin }}
+                  {{ resultInfo.winOrLoserAmount }}
                 </div>
               </div>
-              <div class="text-base text-white mt-25 mb-8">交易哈希</div>
+              <!-- <div class="text-base text-white mt-25 mb-8">交易哈希</div>
               <div
                 class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8 mb-18"
               >
@@ -96,14 +114,16 @@ export default {
                     >
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="text-base text-white mb-8">开奖区块</div>
               <div
                 class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8 mb-18"
               >
-                <div class="text-white text-sm ml-11">{{ resultInfo.number }}</div>
+                <div class="text-white text-sm ml-11">
+                  {{ resultInfo.number }}
+                </div>
                 <img
-                @click="onCopy(resultInfo.number)"
+                  @click="onCopy(resultInfo.number)"
                   class="h-16 mr-11"
                   src="@/assets/images/home/copy.png"
                   alt=""
@@ -125,7 +145,7 @@ export default {
                   />
                   <div
                     class="relative mr-3"
-                    @click="handleVerify(resultInfo.hashValue)"
+                    @click="handleVerify(resultInfo.number)"
                   >
                     <img
                       class="w-68 m-auto"

@@ -183,12 +183,12 @@ export default {
 
       if (this.userInfo.gameType === 1 || this.userInfo.gameType === 5) {
         currentCards = this.daxiao;
-        resultText = this.resultInfo.range == 1 ? "小" : "大";
+        resultText = this.resultInfo.win_result == 1 ? "小" : "大";
       } else {
         switch (this.userInfo.gameType) {
           case 2:
             currentCards = this.danshuang;
-            resultText = this.resultInfo.range == 1 ? "单" : "双";
+            resultText = this.resultInfo.win_result == 1 ? "单" : "双";
             break;
           case 3:
             currentCards = this.niuniu;
@@ -197,9 +197,9 @@ export default {
           case 4:
             currentCards = this.zhuangxian;
             resultText =
-              this.resultInfo.range == 1
+              this.resultInfo.win_result == 1
                 ? "庄"
-                : this.resultInfo.range == 2
+                : this.resultInfo.win_result == 2
                 ? "闲"
                 : "和";
             break;
@@ -449,7 +449,11 @@ export default {
 
     // 下注
     handleBetting() {
-      if(this.totalBetNum > this.balance){
+      this.getBalance({
+        action: 6,
+        ts: Date.now(),
+      });
+      if (this.totalBetNum > this.balance) {
         return showToast({
           type: "fail",
           message: "余额不足",
@@ -542,13 +546,6 @@ export default {
         });
     },
 
-    // 验证
-    handleVerify(value) {
-      // 跳转至其他网址
-      const url = `https://tronscan.org/#/block/${value}`;
-      this.navigateTo(url);
-    },
-
     // 展示输赢结果的弹窗
     openResultPop() {
       if (this.resultInfoList.length > 0) {
@@ -592,7 +589,7 @@ export default {
     <div class="mx-7">
       <div class="bg-[#27272D] rounded-default mt-3 pb-8">
         <div class="text-xl text-center text-white pt-7 mb-9 font-semibold">
-          {{ userInfo.gameName }}
+          {{ userInfo.gameName || "哈希大小" }}
         </div>
         <div class="flex justify-between mx-24">
           <div class="text-xs flex items-center justify-center flex-col">
@@ -769,8 +766,12 @@ export default {
                   :key="imgIndex"
                   class="absolute w-30 h-19"
                   :class="{
-        [card.circlePos == 'left' ? 'left-[.9rem]' : card.name == '牛闲' ? 'right-[1.7rem]' : 'right-[.9rem]']: true,
-      }"
+                    [card.circlePos == 'left'
+                      ? 'left-[.9rem]'
+                      : card.name == '牛闲'
+                      ? 'right-[1.7rem]'
+                      : 'right-[.9rem]']: true,
+                  }"
                   :style="{
                     top: `${0.6 - 0.1 * imgIndex}rem`,
                     'z-index': imgIndex,
@@ -838,7 +839,9 @@ export default {
           @click="showGameResult = true"
           class="text-base text-white mt-4 ml-6 mb-36"
         >
-          限红<span class="text-beige ml-9">1-15000</span>
+          限红<span class="text-beige ml-9">{{
+            sessionIndex == 0 ? "10-1000U" : "100-2000U"
+          }}</span>
         </div>
       </div>
     </div>

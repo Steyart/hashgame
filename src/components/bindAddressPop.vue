@@ -1,5 +1,5 @@
 <script>
-import { showToast } from 'vant';
+import { showToast, showConfirmDialog } from "vant";
 import toHref from "@/mixins/toHref";
 export default {
   props: {
@@ -15,7 +15,7 @@ export default {
   computed: {},
   data() {
     return {
-      addressValue: '',
+      addressValue: "",
       showPopover: false,
       canAddAddress: true,
     };
@@ -29,32 +29,40 @@ export default {
     },
 
     addAddress() {
-      if(!this.addressValue){
+      if (!this.addressValue) {
         showToast({
-          type: 'fail',
-          message: '请输入地址',
-          className: 'fail-toast-box'
-        })
-        return
+          type: "fail",
+          message: "请输入地址",
+          className: "fail-toast-box",
+        });
+        return;
       }
-      const params = {
-        toAddress: this.addressValue,
-      };
-      this.$http
-        .post(`/pocket/bindWallet`, params)
-        .then(({ data }) => {
-          if (data.code === 200) {
-            showToast({
-              type: 'success',
-              message: '绑定成功',
-              className: 'fail-toast-box'
+      showConfirmDialog({
+        message: "确认绑定该地址？",
+      })
+        .then(() => {
+          const params = {
+            toAddress: this.addressValue,
+          };
+          this.$http
+            .post(`/pocket/bindWallet`, params)
+            .then(({ data }) => {
+              if (data.code === 200) {
+                showToast({
+                  type: "success",
+                  message: "绑定成功",
+                  className: "fail-toast-box",
+                });
+                this.addressValue = "";
+                this.handleClickOverlay();
+              }
             })
-            this.addressValue = ''
-            this.handleClickOverlay()
-          }
+            .catch((err) => {
+              console.log(err);
+            });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          console.log("cancel");
         });
     },
   },
@@ -62,7 +70,12 @@ export default {
 </script>
 <template>
   <div>
-    <van-popup :show="showBindAddressPop" round :style="{}" @click-overlay="handleClickOverlay">
+    <van-popup
+      :show="showBindAddressPop"
+      round
+      :style="{}"
+      @click-overlay="handleClickOverlay"
+    >
       <div class="relative w-350 bg-white pt-16 pb-31">
         <!-- <img class="absolute h-650" src="@/assets/images/home/pop-bg.png" alt="" /> -->
         <div
@@ -80,7 +93,7 @@ export default {
           <div
             class="flex items-center justify-center text-xl text-blackish-green font-bold"
           >
-            绑定虚拟货币
+            绑定虚拟币地址
             <img
               @click="showPopover = !showPopover"
               class="h-15 ml-17"
@@ -90,12 +103,15 @@ export default {
             <van-popover
               v-model:show="showPopover"
               :show-arrow="false"
-              :offset="[-75, 25]"
+              :offset="[0, 25]"
+              style="width: 317px"
             >
               <div
-                class="w-317 bg-[#F1F4EC] border border-[#707070] rounded-md px-15"
+                class="bg-[#F1F4EC] border border-[#707070] rounded-md px-15"
               >
-                <div class="text-base text-beige mt-10 mb-15 font-medium">绑定流程?</div>
+                <div class="text-base text-beige mt-10 mb-15 font-medium">
+                  绑定流程?
+                </div>
                 <div class="text-xs mb-37 font-medium">
                   将您的去中心化钱包地址（Tron）粘贴在待激活地址位置，点击添加
                 </div>
@@ -111,7 +127,9 @@ export default {
               alt=""
             />新增地址
           </div>
-          <div class="text-sm text-blackish-green ml-18 mt-27 font-semibold">您的地址</div>
+          <div class="text-sm text-blackish-green ml-18 mt-27 font-semibold">
+            您的地址
+          </div>
           <div
             class="bg-[#F2F2F2] mx-16 border border-[#707070] rounded-default"
           >
@@ -176,6 +194,10 @@ export default {
   @apply bg-[#F2F2F2] px-15 py-10 text-xs text-[#2F3F33];
 }
 .van-field {
-  --van-field-placeholder-text-color: #2F3F33; /* 修改该组件内的 placeholder 颜色 */
+  --van-field-placeholder-text-color: #2f3f33; /* 修改该组件内的 placeholder 颜色 */
+}
+
+.confirm-dialog-message {
+  background-color: white;
 }
 </style>

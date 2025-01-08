@@ -54,16 +54,16 @@ export default {
         <div class="flex items-center text-xs text-base-color">
           <div class="font-bold">投注玩法</div>
           <div class="text-ll ml-7 font-medium">
-            转账金额个位 1,3,5,7,9押<span class="text-beige">单</span
-            >,0,2,4,6,8押<span class="text-beige">双</span>
+            转账金额个位 0,1,2,3,4押<span class="text-beige">小</span
+            >, 5,6,7,8,9押<span class="text-beige">大</span>
           </div>
         </div>
         <div class="flex items-center text-xs text-base-color">
           <div class="font-bold">开奖结果</div>
           <div class="text-ll ml-7 font-medium">
-            1,3,5,7,9为<span class="text-beige">单</span>,0,2,4,6,8为<span
+            0,1,2,3,4为<span class="text-beige">小</span>,5,6,7,8,9为<span
               class="text-beige"
-              >双</span
+              >大</span
             >
           </div>
         </div>

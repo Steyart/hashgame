@@ -32,10 +32,12 @@ export default {
   created() {
   
     if (this.$route.query.token) {
+      const gameType = Number(this.$route.query.type);
+      const gameName = this.getGameName(gameType);
       const userInfo = {
         token: this.$route.query.token,
-        gameName: this.getGameName(this.$route.query.gameType),
-        gameType: Number(this.$route.query.type) || 1,
+        gameName: gameName || "哈希大小",
+        gameType: gameType || 1,
       };
       setCookie("token", this.$route.query.token);
       this.$store.dispatch("saveUserInfo", userInfo);
@@ -74,13 +76,14 @@ export default {
       "
     >
       <div
-        class="flex justify-between text-base pl-32 pr-40 pt-16 pb-12 border-b"
+        class="flex justify-between text-base pt-16 pb-12 border-b"
         :class="active == 0 ? 'border-[#2A2D33]' : 'border-[#70697C]'"
       >
         <div
           v-for="(item, index) in tabList"
           :key="index"
           @click="changeActive(index)"
+          class="w-1/2"
         >
           <div
             :class="{ 'text-beige': active == index }"
