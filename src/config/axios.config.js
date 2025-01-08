@@ -38,6 +38,12 @@ $instance.interceptors.request.use((config) => {
     return config;
   }
 
+  const token = getCookie('token') || store.state.auth.userInfo?.token;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  } else {
+    delete config.headers.Authorization; // 确保没有无效的Authorization头
+  }
   // 设置全局参数
   $instance.setParams(false, {});
 
