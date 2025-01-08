@@ -449,10 +449,6 @@ export default {
 
     // 下注
     handleBetting() {
-      this.getBalance({
-        action: 6,
-        ts: Date.now(),
-      });
       if (this.totalBetNum > this.balance) {
         return showToast({
           type: "fail",
@@ -521,6 +517,9 @@ export default {
         .then(({ data }) => {
           if (data.code === 200) {
             this.resultInfoList.push(...data.data.results);
+            if (this.resultInfoList && this.resultInfoList.length > 0) {
+              this.balance = this.resultInfoList[this.resultInfoList.length - 1].balance;
+            }
             this.openResultPop();
             this.getWayBill();
           }
