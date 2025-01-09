@@ -47,8 +47,8 @@ export default {
 </script>
 <template>
   <div>
-    <van-overlay :show="showGameResultPop" @click="closeOverlay" z-index="100">
-      <div class="wrapper flex items-center justify-center h-full" @click.stop>
+    <van-overlay :show="showGameResultPop" z-index="100">
+      <div class="wrapper flex items-center justify-center h-full">
         <div class="bg-[#27272D] rounded-xl">
           <div class="top-15 left-15 right-15 m-auto">
             <div class="px-15">
