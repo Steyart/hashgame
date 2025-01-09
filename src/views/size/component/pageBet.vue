@@ -696,7 +696,7 @@ export default {
                   {{ card.userCount }}
                 </div>
               </div>
-              <div class="text-ll mt-8">
+              <div class="mt-8">
                 <van-circle
                   v-if="card.name !== '牛闲'"
                   class="circle-text"
@@ -723,7 +723,7 @@ export default {
               class="flex justify-between items-center"
               v-if="card.circlePos == 'left'"
             >
-              <div class="text-ll mt-8">
+              <div class="mt-8">
                 <van-circle
                   v-if="card.name !== '牛闲'"
                   class="circle-text"
@@ -781,10 +781,10 @@ export default {
                   class="absolute w-30 h-19"
                   :class="{
                     [card.circlePos == 'left'
-                      ? 'left-[.9rem]'
+                      ? 'left-[.87rem]'
                       : card.name == '牛闲'
                       ? 'right-[1.7rem]'
-                      : 'right-[.9rem]']: true,
+                      : 'right-[.87rem]']: true,
                   }"
                   :style="{
                     top: `${0.6 - 0.1 * imgIndex}rem`,
@@ -885,6 +885,6 @@ export default {
 <style scoped>
 :deep(.circle-text) .van-circle__text {
   --van-circle-text-color: #fff;
-  @apply text-ll flex items-center top-0 bottom-0 m-auto transform-none;
+  @apply text-ll font-normal text-center flex justify-center items-center top-0 bottom-0 m-auto transform-none;
 }
 </style>
