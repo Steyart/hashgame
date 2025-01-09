@@ -192,7 +192,12 @@ export default {
             break;
           case 3:
             currentCards = this.niuniu;
-            resultText = "牛闲";
+            resultText =
+            this.resultInfo.win_result == 1
+              ? "庄"
+              : this.resultInfo.win_result == 2
+              ? "闲"
+              : "和";
             break;
           case 4:
             currentCards = this.zhuangxian;
@@ -256,7 +261,8 @@ export default {
         if (listItem) {
           item.acountAmount = listItem.total_amount;
           item.userCount = listItem.count;
-          item.schedule = listItem.percentage;
+          item.schedule = listItem.percentage || 0;
+
         }
       });
     },
@@ -695,7 +701,7 @@ export default {
                   v-if="card.name !== '牛闲'"
                   class="circle-text"
                   v-model:current-rate="card.schedule"
-                  size="0.52rem"
+                  size="0.42rem"
                   :stroke-width="60"
                   :rate="card.schedule"
                   :speed="100"
@@ -722,7 +728,7 @@ export default {
                   v-if="card.name !== '牛闲'"
                   class="circle-text"
                   v-model:current-rate="card.schedule"
-                  size="0.52rem"
+                  size="0.42rem"
                   :stroke-width="60"
                   :rate="card.schedule"
                   :speed="100"

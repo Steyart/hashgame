@@ -11,7 +11,13 @@ export default {
     },
   },
   mixins: [toHref],
-  watch: {},
+  watch: {
+    showBindAddressPop(newValue, oldValue) {
+      if (!newValue) {
+        this.showPopover = false;
+      }
+    },
+  },
   computed: {},
   data() {
     return {
@@ -25,6 +31,7 @@ export default {
   mounted() {},
   methods: {
     handleClickOverlay() {
+      this.showPopover = false;
       this.$emit("update:showBindAddressPop", false);
     },
 
@@ -107,7 +114,7 @@ export default {
               style="width: 317px"
             >
               <div
-                class="bg-[#F1F4EC] border border-[#707070] rounded-md px-15"
+                class="bg-[#F1F4EC] border border-[#707070] rounded-md"
               >
                 <div class="text-base text-beige mt-10 mb-15 font-medium">
                   绑定流程?

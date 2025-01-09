@@ -15,6 +15,8 @@ import 'swiper/css';
 
 import axios from './config/axios.config'
 import { MotionPlugin } from '@vueuse/motion'
+import '@vant/touch-emulator';
+
 // 获取嵌入APP信息
 router.UA = (() => {
     let u = navigator.userAgent;
@@ -167,5 +169,5 @@ app.directive('title', (el, binding) => {
 });
 app.use(Vant);
 app.use(Lazyload);
-app.use(MotionPlugin)
+app.use(MotionPlugin);
 app.use(store).use(router).mount('#app')

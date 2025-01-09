@@ -146,6 +146,9 @@ export default {
         this.zdyValue = "";
       }
     },
+    inputVal(val) {
+      this.zdyValue = val;
+    },
     changeVal() {
       this.showKeyboard = false;
       this.zdyList[this.keyboardChangeIndex].amount = Number(this.zdyValue);
@@ -270,6 +273,7 @@ export default {
           v-model="zdyValue"
           close-button-text="完成"
           @blur="changeVal"
+          @input="inputVal"
         />
       </div>
     </van-popup>

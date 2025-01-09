@@ -70,7 +70,7 @@ export default {
                     ? 'text-orange-l'
                     : ['单', '大', '庄'].includes(resultText)
                     ? 'text-wathet-deep'
-                    : ['双', '小', '贤', '牛闲'].includes(resultText)
+                    : ['双', '小', '贤'].includes(resultText)
                     ? 'text-tomato-yellow'
                     : '',
                 ]"
@@ -122,13 +122,13 @@ export default {
                 <div class="text-white text-sm ml-11">
                   {{ resultInfo.number }}
                 </div>
-                <img
-                  :data-clipboard-text="resultInfo.number"
-                  @click="onCopy(resultInfo.number)"
-                  class="h-16 mr-11 copyBtn"
+                <div class="copyBtn" :data-clipboard-text="resultInfo.number" @click="onCopy(resultInfo.number)">
+                  <img
+                  class="h-16 mr-11"
                   src="@/assets/images/home/copy.png"
                   alt=""
                 />
+                </div>
               </div>
               <div class="text-base text-white mb-8">开奖区块哈希</div>
               <div
@@ -138,13 +138,13 @@ export default {
                   {{ resultInfo.hashValue }}
                 </div>
                 <div class="flex items-center">
-                  <img
-                    :data-clipboard-text="resultInfo.hashValue"
-                    @click="onCopy(resultInfo.hashValue)"
-                    class="h-16 mr-4 copyBtn"
+                  <div class="copyBtn" :data-clipboard-text="resultInfo.hashValue" @click="onCopy(resultInfo.hashValue)">
+                    <img
+                    class="h-16 mr-4"
                     src="@/assets/images/home/copy.png"
                     alt=""
                   />
+                </div>
                   <div
                     class="relative mr-3"
                     @click="handleVerify(resultInfo.number)"
