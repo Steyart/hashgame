@@ -59,6 +59,7 @@ var postInfo = {
         });
       } else {
         clipboard.on('success', function (e) {
+          console.log('复制成功', e);
           showToast({
             type: 'success',
             message: '复制成功',

@@ -114,8 +114,9 @@ export default {
         >
           <div class="pl-7">{{ betWalletAddress }}</div>
           <div
+            :data-clipboard-text="betWalletAddress"
             @click="onCopy(betWalletAddress)"
-            class="flex items-center text-wathet border-l border-[#707070] rounded-md pt-9 pb-11 px-9"
+            class="flex items-center text-wathet border-l border-[#707070] rounded-md pt-9 pb-11 px-9 copyBtn"
           >
             <img class="h-13 mr-5" src="@/assets/images/home/copy.png" alt="" />
             复制

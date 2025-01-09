@@ -123,8 +123,9 @@ export default {
                   {{ resultInfo.number }}
                 </div>
                 <img
+                  :data-clipboard-text="resultInfo.number"
                   @click="onCopy(resultInfo.number)"
-                  class="h-16 mr-11"
+                  class="h-16 mr-11 copyBtn"
                   src="@/assets/images/home/copy.png"
                   alt=""
                 />
@@ -138,8 +139,9 @@ export default {
                 </div>
                 <div class="flex items-center">
                   <img
+                    :data-clipboard-text="resultInfo.hashValue"
                     @click="onCopy(resultInfo.hashValue)"
-                    class="h-16 mr-4"
+                    class="h-16 mr-4 copyBtn"
                     src="@/assets/images/home/copy.png"
                     alt=""
                   />
