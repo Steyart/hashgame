@@ -447,16 +447,25 @@ export default {
       this.selectImg = item;
     },
 
+    showBetError(message) {
+      return showToast({
+        type: "fail",
+        message: message,
+        className: "fail-toast-box",
+      });
+    },
+
     // 下注
     handleBetting() {
       if (this.totalBetNum > this.balance) {
-        return showToast({
-          type: "fail",
-          message: "余额不足",
-          className: "fail-toast-box",
-        });
+        return this.showBetError("余额不足");
       }
-
+      if(this.sessionIndex==0 && this.totalBetNum<10){
+        return this.showBetError("初级场下注金额应在10至1000U之间");
+      }
+      if(this.sessionIndex==1 && this.totalBetNum<100){
+        return this.showBetError("中级场下注金额应在100至2000U之间");
+      }
       const params = {
         action: 9,
         ts: Date.now(),
@@ -472,7 +481,7 @@ export default {
           (value) => value == "" || value == 0 || value == null
         )
       ) {
-        return;
+        return this.showBetError("下注参数无效");
       }
       this.$http
         .post(`/game/putBet`, params)
