@@ -1,21 +1,4 @@
 
-
-@font-face {
-  font-family: 'ALIBABAPUHUITI';
-  src: url('./fontFamily/ALIBABAPUHUITI-2-65-MEDIUM.TTF') format('truetype'),
-}
-@font-face {
-  font-family: 'SHANHAILIULIANGMIMA';
-  src: url('./fontFamily/SHANHAILIULIANGMIMA.TTF') format('truetype'),
-}
-@font-face {
-  font-family: 'AAYUANWEITUSI';
-  src: url('./fontFamily/AAYUANWEITUSI-2.TTF') format('truetype'),
-}
-@font-face {
-  font-family: 'ALIMAMAFANGYUANTIVF';
-  src: url('./fontFamily/ALIMAMAFANGYUANTIVF-THIN.TTF') format('truetype'),
-}
 html, body{
   background-color: #E8E8EA;
   font-family: "ALIMAMAFANGYUANTIVF" !important;
