@@ -88,15 +88,11 @@ export default {
       <div class="bg-white pt-10 pb-18 pl-10 pr-24 rounded-md mb-65">
         <div class="text-blackish-green text-xs mb-21 font-medium">范例一</div>
         <div class="text-ll text-base-color font-medium">
-          您的转账金额为：<span class="text-beige">1000</span
-          >，该笔转账的区块哈希为：kyhl***ljl<span class="text-beige"
-            >a5b55</span
-          >庄家开奖号码 a5b，a+5+b=<span class="text-beige">25</span
-          >,闲家开奖号码：b+5+5=<span class="text-beige">20</span
-          >,此时玩家＞庄家，玩家获胜。结果 中奖系统回款金额为：<span
-            class="text-beige"
-            >1000x1.95=1950</span
-          >
+          您的转账金额为：<span class="text-beige">1000</span>，该笔转账的区块哈希为：kyhl***ljl<span class="text-beige">a5b55</span>庄家开奖号码
+a5b，a+5+b=<span class="text-beige">25</span>,闲家开奖号码：b+5+5=<span class="text-beige">20</span>,此时玩家＞庄家，玩家获胜。结果
+中奖系统回款金额为：<span class="text-beige">1000+（100*10*0.95）=1950</span>，开出牛牛收取手续费<span class="text-beige">1950*10%=195</span>，玩家最终获得金额：<span class="text-beige">1950-195=1755</span>
+
+
         </div>
         <div class="text-blackish-green text-xs my-21 font-medium">范例二</div>
         <div class="text-ll text-base-color font-medium">

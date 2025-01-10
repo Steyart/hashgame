@@ -64,13 +64,13 @@ export default {
                 <img class="h-27" src="@/assets/images/home/star.png" alt="" />
               </div>
               <div
-                class="text-wathet-deep text-4xl text-center SHANHAILIULIANGMIMA"
+                class="text-wathet-deep text-4xl text-center shanhailiuliangmima"
                 :class="[
                   resultText == '和'
                     ? 'text-orange-l'
                     : ['单', '大', '庄'].includes(resultText)
                     ? 'text-wathet-deep'
-                    : ['双', '小', '贤'].includes(resultText)
+                    : ['双', '小', '闲'].includes(resultText)
                     ? 'text-tomato-yellow'
                     : '',
                 ]"

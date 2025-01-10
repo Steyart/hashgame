@@ -162,6 +162,18 @@ export default {
       resultIndex: 0,
       resultInfo: {},
       balance: 0,
+      niuniuList:[
+        {name: "牛1", scale: '1:1'},
+        {name: "牛2", scale: '1:2'},
+        {name: "牛3", scale: '1:3'},
+        {name: "牛4", scale: '1:4'},
+        {name: "牛5", scale: '1:5'},
+        {name: "牛6", scale: '1:6'},
+        {name: "牛7", scale: '1:7'},
+        {name: "牛8", scale: '1:8'},
+        {name: "牛9", scale: '1:9'},
+        {name: "牛牛", scale: '1:10'},
+      ]
     };
   },
   components: {
@@ -435,6 +447,7 @@ export default {
       this.ruleIndex = this.userInfo.gameType - 1;
       this.$store.dispatch("changeGameInfo", item);
       this.getLotteryData();
+      this.getWayBill();
     },
     // 撤销
     cancelBetClick() {
@@ -465,6 +478,12 @@ export default {
     handleBetting() {
       if (this.totalBetNum > this.balance) {
         return this.showBetError("余额不足");
+      }
+      if(this.userInfo.gameType==3 && this.sessionIndex==0 && this.totalBetNum<100){
+        return this.showBetError("初级场下注金额应在100至2000U之间");
+      }
+      if(this.userInfo.gameType==3 && this.sessionIndex==1 && this.totalBetNum<200){
+        return this.showBetError("中级场下注金额应在200至3000U之间");
       }
       if(this.sessionIndex==0 && this.totalBetNum<10){
         return this.showBetError("初级场下注金额应在10至1000U之间");
@@ -498,9 +517,14 @@ export default {
               message: "投注成功",
               className: "fail-toast-box",
             });
-
             this.getDefaultData();
             setTimeout(this.getResultFn(), 3000);
+          }else{
+            showToast({
+              type: "fail",
+              message: "投注失败",
+              className: "fail-toast-box",
+            });
           }
         })
         .catch((err) => {
@@ -666,7 +690,7 @@ export default {
         </div>
         <div class="rounded-default gap-x-7 flex text-white">
           <div
-            class="flex-1 bg-[#141316] p-8 rounded-md border"
+            class="flex-1 bg-[#141316] px-8 rounded-md border"
             :class="
               selectCardIndex == i ? 'border-[#70697C]' : 'border-[#141316]'
             "
@@ -674,11 +698,17 @@ export default {
             :key="i"
             @click="handleCard(card, i)"
           >
+          <div v-if="userInfo.gameType == 3" class="flex flex-nowrap justify-between mb-11">
+            <div v-for="(niu,n) in niuniuList" :key="n">
+              <div class="text-ll text-blue-green-ll font-medium">{{ niu.name }}</div>
+              <div class="text-xs text-beige font-semibold">{{ niu.scale }}</div>
+            </div>
+          </div>
             <div
               class="flex justify-between items-center"
               v-if="card.circlePos == 'right'"
             >
-              <div class="text-ll mt-8">
+              <div class="text-ll">
                 <div class="flex">
                   <img
                     class="h-12 mr-3"
@@ -696,7 +726,7 @@ export default {
                   {{ card.userCount }}
                 </div>
               </div>
-              <div class="mt-8">
+              <div>
                 <van-circle
                   v-if="card.name !== '牛闲'"
                   class="circle-text"
@@ -723,7 +753,7 @@ export default {
               class="flex justify-between items-center"
               v-if="card.circlePos == 'left'"
             >
-              <div class="mt-8">
+              <div>
                 <van-circle
                   v-if="card.name !== '牛闲'"
                   class="circle-text"
@@ -741,7 +771,7 @@ export default {
                   :text="`${card.schedule.toFixed(0)}%`"
                 />
               </div>
-              <div class="text-ll mt-8">
+              <div class="text-ll">
                 <div class="flex">
                   <img
                     class="h-12 mr-3"
@@ -762,7 +792,7 @@ export default {
             </div>
             <div
               class="flex items-center justify-center flex-col"
-              :class="card.name == '和' ? 'mt-50' : 'mt-22'"
+              :class="card.name == '和' ? 'mt-36' : 'mt-8'"
             >
               <div
                 class="flex pt-4 pb-2 pl-5 pr-14 bg-[#27272D] rounded-2xl border border-[#70697C]"
@@ -774,7 +804,7 @@ export default {
                 />
                 <div class="text-ll">{{ getThousandth(card.betValue, 3) }}</div>
               </div>
-              <div :class="card.color" class="relative text-4xl mt-5 mb-7">
+              <div :class="card.color" class="relative text-4xl">
                 <div
                   v-for="(selImg, imgIndex) in card.selectImgList.slice(0, 5)"
                   :key="imgIndex"
@@ -797,7 +827,7 @@ export default {
                     alt=""
                   />
                 </div>
-                <div class="SHANHAILIULIANGMIMA text-[0.78rem]">
+                <div class="shanhailiuliangmima text-[0.78rem]">
                   {{ card.name }}
                 </div>
               </div>
@@ -854,7 +884,9 @@ export default {
           class="text-base text-white mt-4 ml-6 mb-36"
         >
           限红<span class="text-beige ml-9">{{
-            sessionIndex == 0 ? "10-1000U" : "100-2000U"
+            userInfo.gameType == 3 && sessionIndex == 0 ? '100-2000U' :
+                userInfo.gameType == 3 && sessionIndex == 1 ? '200-3000U' :
+                sessionIndex == 0 ? '10-1000U' : '100-2000U'
           }}</span>
         </div>
       </div>

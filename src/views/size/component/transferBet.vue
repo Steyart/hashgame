@@ -9,6 +9,7 @@ import HashZhuangXian from "@/components/hashZhuangXian.vue";
 import HashValueSize from "@/components/hashValueSize.vue";
 import TransferBetExam from "@/components/transferBetExam.vue";
 import BindAddressPop from "@/components/bindAddressPop.vue";
+import TeachingVideo from "@/components/teachingVideo.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -31,6 +32,7 @@ export default {
     HashValueSize,
     TransferBetExam,
     BindAddressPop,
+    TeachingVideo,
   },
   mixins: [toHref, postInfo],
   computed: {
@@ -152,11 +154,18 @@ export default {
           <div class="flex items-center text-sm text-blackish-green">
             <div class="font-medium">赔率</div>
             <div
-              v-if="tabName == '哈希和值大小'"
+              v-if="userInfo.gameType == 4"
               class="text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
             >
               1:1.95
               <div class="text-center">1:8</div>
+            </div>
+            <div
+              v-else-if="userInfo.gameType == 3"
+              class="text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
+            >
+            [1~10]*
+              <div class="text-center">0.95</div>
             </div>
             <div
               v-else
@@ -170,13 +179,17 @@ export default {
             <div
               class="flex items-center text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-19 pb-17 pl-15 pr-7 ml-8"
             >
-              {{ active == 0 ? '10-1000U' : '100-2000U' }}
+            {{
+                userInfo.gameType == 3 && active == 0 ? '100-2000' :
+                userInfo.gameType == 3 && active == 1 ? '200-3000' :
+                active == 0 ? '10-1000' : '100-2000'
+              }}
               <div class="text-xs text-base-color ml-13">USDT</div>
             </div>
           </div>
         </div>
-        <div class="text-xs text-beige mt-30 font-medium">
-          注：游戏赔率会自动浮动，所有解释权归本平台所有。
+        <div v-if="userInfo.gameType == 3" class="text-xs text-beige mt-30 font-medium">
+          {{ userInfo.gameType == 3 ? '注：游戏赔率会自动浮动，所有解释权归本平台所有。闲家牌型牛牛,牛九赢时返奖抽10%手续费' : '注：游戏赔率会自动浮动，所有解释权归本平台所有。' }}
         </div>
         <div class="text-ll text-base-color mt-10 font-medium">
           低于限额平台扣除，高于限额视为无效金额，平台抽取1%手续费，给予回馈。
@@ -188,7 +201,7 @@ export default {
     >
       <img class="h-7" src="@/assets/images/home/icon_down.png" alt="" />
     </div>
-
+    <TeachingVideo />
     <TransferBetExam />
   </div>
 
