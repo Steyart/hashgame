@@ -97,10 +97,10 @@ export default {
             开奖规则
           </div>
           <div class="text-xs text-blue-green-ll">
-            为确保开奖结果的绝对公平、公正、不可篡改，无人可控，本平台所
-            有钱包玩法全部采用区块链开奖！ 您的每笔下注系统会用公开的A钱
-            包转账随机金额的波场币（TRX）到B钱包， 每笔开奖区块的区块哈
-            希值（Block hash)作为开奖结果。
+            为确保开奖结果的绝对公平、公正、不可篡改、无人可控，本平台所
+有钱包玩法全部采用区块链开奖！您的每一笔下注系统都是基于波场
+币（TRX）的区块哈希值（Block hash）作为开奖结果，并且每一笔
+下注均可查询哈希值。
           </div>
           <!-- <div class="text-sm text-white mt-32 mb-7">钱包A</div>
     <div
@@ -174,7 +174,10 @@ export default {
                 >10</span
               >相加出的点个位数比较
               <div>2.0＞9＞8＞7＞6＞5＞4＞3＞2＞1</div>
-              3.如点数一致，均扣<span class="text-beige">1</span>%手续费退还本金
+              3.闲家牌型<span class="text-beige">牛牛,牛九</span>赢时返奖抽<span class="text-beige">10%</span>手续费
+              <div>4.如当前庄家为：<span class="text-beige">a5b.10+5+10=25</span>"牛五"</div>
+              5.如当前闲家为：<span class="text-beige">b55.10+5+5=20</span>"牛牛"
+              <div>6.如点数一致，均扣<span class="text-beige">1</span>%手续费退还本金</div>
             </div>
           </template>
           <template v-if="ruleIndex == 4">

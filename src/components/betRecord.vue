@@ -5,7 +5,11 @@
     mixins: [toHref],
     watch: {},
     computed: {
-        ...mapGetters(["indexNav", "showLeft"]),
+        ...mapGetters(["userInfo"]),
+        flat: function(){
+            let a = this.lists1.filter(v=>{ return v.win_result == 3})
+            return a.length
+        },
         win: function(){
             let a = this.lists1.filter(v=>{ return v.win_result == 2})
             return a.length
@@ -88,11 +92,11 @@
             </div>
             <div class="leading-[.19rem] flex items-center">{{win}}</div>
         </div>
-        <div class="flex items-center" v-if="hasHe"><!-- 和 -->
+        <div class="flex items-center" v-if="userInfo.gameType == 3 || userInfo.gameType == 4"><!-- 和 -->
             <div class="w-15 h-15 leading-[.19rem] flex items-center justify-center bg-[#FDC300] rounded-full mr-6">
             I
             </div>
-            <div class="leading-[.19rem] flex items-center">2</div>
+            <div class="leading-[.19rem] flex items-center">{{flat}}</div>
         </div>
         <div class="flex gap-x-10">
             <div class="text-tomato-yellow  relative">
@@ -134,7 +138,7 @@
                 <tr class="flex flex-col" v-for="(val, i) in lists2" :key="i">
                     <td v-for="(v, k) in val" :key="k">
                         <div class="td-box2">
-                            <div :class="{ 'border-2 border-[#5164FF]': v.win_result == '1', 'border-2 border-[#FF5C01]': v.win_result == '2'}" ></div>
+                            <div :class="{ 'border-2 border-[#5164FF]': v.win_result == '1', 'border-2 border-[#FF5C01]': v.win_result == '2', 'border-2 border-[#FDC300]': v.win_result == '3'}" ></div>
                         </div>
                     </td>
                 </tr>

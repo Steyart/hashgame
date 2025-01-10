@@ -61,14 +61,15 @@ export default {
               <div class="text-ll ml-7 mr-23 font-medium">
                 <div>庄a+5+b=25(前三位之和个位数）</div>
                 <div>闲b+5+5=20（后三位之和个位数）字母=10点</div>
-                <div>庄闲同点：点数一致，均扣除1%手续费退回本金</div>
+                <div>投注金额=转账金额*0.1</div>
               </div>
             </div>
             <div class="flex text-xs text-base-color">
               <div class="font-bold">开奖结果</div>
               <div class="text-ll ml-7 font-medium">
-                <div>庄赢：返还=投注金额-庄点数</div>
-                <div>闲家(玩家):奖金=投注金额*赔率</div>
+                <div>庄赢：返还=投注金额*(10-庄点数)</div>
+                <div>闲家(玩家):奖金=本金+（投注金额X闲点数X0.95）</div>
+                <div>庄闲同点:点数一致,均扣除1%手续费退回本金</div>
               </div>
             </div>
           </div>
