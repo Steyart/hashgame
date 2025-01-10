@@ -1,7 +1,7 @@
 
 html, body{
   background-color: #E8E8EA;
-  font-family: "ALIMAMAFANGYUANTIVF" !important;
+  font-family: "alimamafangyuantivf" !important;
   overscroll-behavior: none;
   user-select: none;
 }
@@ -85,20 +85,20 @@ html[data-device-nodesktop="0"] .pagination-bottom{
 .success-toast-box{
   background-color: var(--van-toast-background) !important;
 }
-.SHANHAILIULIANGMIMA{
-  @apply font-[SHANHAILIULIANGMIMA] !important;
+.shanhailiuliangmima{
+  @apply font-[shanhailiuliangmima] !important;
 }
-.AAYUANWEITUSI{
-  @apply font-[AAYUANWEITUSI] !important;
+.aayuanweitusi{
+  @apply font-[aayuanweitusi] !important;
 }
-.ALIBABAPUHUITI-1{
-  @apply font-[ALIBABAPUHUITI] !important;
+.alibabapuhuiti-1{
+  @apply font-[alibabapuhuiti] !important;
 }
-.ALIMAMAFANGYUANTIVF{
-  @apply font-[ALIMAMAFANGYUANTIVF] !important;
+.alimamafangyuantivf{
+  @apply font-[alimamafangyuantivf] !important;
 }
 input, label{
-  @apply font-[ALIBABAPUHUITI] !important;
+  @apply font-[alibabapuhuiti] !important;
 }
 .text{
   @apply text-[#333];

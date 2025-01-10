@@ -797,7 +797,7 @@ export default {
                     alt=""
                   />
                 </div>
-                <div class="SHANHAILIULIANGMIMA text-[0.78rem]">
+                <div class="shanhailiuliangmima text-[0.78rem]">
                   {{ card.name }}
                 </div>
               </div>

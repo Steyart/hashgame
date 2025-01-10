@@ -64,7 +64,7 @@ export default {
                 <img class="h-27" src="@/assets/images/home/star.png" alt="" />
               </div>
               <div
-                class="text-wathet-deep text-4xl text-center SHANHAILIULIANGMIMA"
+                class="text-wathet-deep text-4xl text-center shanhailiuliangmima"
                 :class="[
                   resultText == '和'
                     ? 'text-orange-l'
