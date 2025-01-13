@@ -67,7 +67,7 @@ export default {
               }else{
                 showToast({
                   type: "fail",
-                  message: "绑定失败",
+                  message: data.message,
                   icon: this.getRequireImg('/home/warning.png'),
                   className: "fail-toast-box",
                 });

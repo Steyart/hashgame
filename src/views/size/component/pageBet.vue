@@ -522,7 +522,7 @@ export default {
           }else{
             showToast({
               type: "fail",
-              message: "投注失败",
+              message: data.message,
               className: "fail-toast-box",
             });
           }
