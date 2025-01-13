@@ -127,7 +127,7 @@ export default {
           color: "text-orange-l",
           acountAmount: "0.00",
           userCount: 0,
-          proportion: "1:1.95",
+          proportion: "1:8",
           schedule: 0,
           circlePos: "right",
         },
@@ -700,7 +700,7 @@ export default {
           >
           <div v-if="userInfo.gameType == 3" class="flex flex-nowrap justify-between mb-11">
             <div v-for="(niu,n) in niuniuList" :key="n">
-              <div class="text-ll text-blue-green-ll font-medium">{{ niu.name }}</div>
+              <div class="text-ll text-blue-green-ll font-medium mt-8">{{ niu.name }}</div>
               <div class="text-xs text-beige font-semibold">{{ niu.scale }}</div>
             </div>
           </div>
