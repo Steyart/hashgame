@@ -24,6 +24,14 @@ export default {
         video.play();
       }
     },
+
+    // 关闭弹出层时暂停视频播放
+    onPopupClose() {
+      const video = this.$refs.videoPlayer;
+      if (video) {
+        video.pause();
+      }
+    },
   },
 };
 </script>
@@ -51,11 +59,12 @@ export default {
     <van-popup
       v-model:show="showVideoPop"
       closeable
+      @close="onPopupClose"
     >
       <div class="flex items-center justify-center">
         <video ref="videoPlayer" class="w-320" controls>
           <source
-            :src="getRequireImg(`videos/${userInfo.gameType}.mp4`)"
+            :src="`https://hj-hashgo.s3.ap-southeast-1.amazonaws.com/video/${userInfo.gameType}.mp4`"
             type="video/mp4"
           />
         </video>

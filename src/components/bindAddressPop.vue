@@ -1,6 +1,7 @@
 <script>
 import { showToast, showConfirmDialog } from "vant";
 import toHref from "@/mixins/toHref";
+import postInfo from "@/mixins/postInfo";
 export default {
   props: {
     showBindAddressPop: {
@@ -10,7 +11,7 @@ export default {
       },
     },
   },
-  mixins: [toHref],
+  mixins: [toHref, postInfo],
   watch: {
     showBindAddressPop(newValue, oldValue) {
       if (!newValue) {
@@ -40,6 +41,7 @@ export default {
         showToast({
           type: "fail",
           message: "请输入地址",
+          icon: this.getRequireImg('/home/warning.png'),
           className: "fail-toast-box",
         });
         return;
@@ -62,6 +64,13 @@ export default {
                 });
                 this.addressValue = "";
                 this.handleClickOverlay();
+              }else{
+                showToast({
+                  type: "fail",
+                  message: data.message,
+                  icon: this.getRequireImg('/home/warning.png'),
+                  className: "fail-toast-box",
+                });
               }
             })
             .catch((err) => {
