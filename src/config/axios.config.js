@@ -10,7 +10,8 @@ let $instance = axios.create({
     'Content-Type': 'application/json;charset=UTF-8'
   },
   withCredentials: false,
-  baseURL: (process.env.NODE_ENV === 'production') ? 'https://hash-api.888bbm.com/api' : '/api',
+  baseURL:  _APP_HISTORY_ == 2 ? (process.env.NODE_ENV == 'development' ? '/api' : "https://adminHds8SD31AKJ.hashgo888.com") : '/api',
+  // baseURL: (process.env.NODE_ENV === 'production') ? 'https://hash-api.hashgo888.com/api' : '/api',
   timeout: 30000,
   retry: 1,
   retryDelay: 1000,

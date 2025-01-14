@@ -7,7 +7,8 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig(() => {
   return {
     define: {
-      _APP_COLOR_: JSON.stringify('blue')
+      _APP_COLOR_: JSON.stringify('default'),
+      _APP_HISTORY_: 1
     },
     plugins: [
       vue(),
