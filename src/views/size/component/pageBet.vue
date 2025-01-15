@@ -162,6 +162,7 @@ export default {
       resultIndex: 0,
       resultInfo: {},
       balance: 0,
+      winOrLoserAmount: 0,
       niuniuList:[
         {name: "牛1", scale: '1:1'},
         {name: "牛2", scale: '1:2'},
@@ -558,6 +559,7 @@ export default {
             this.resultInfoList.push(...data.data.results);
             if (this.resultInfoList && this.resultInfoList.length > 0) {
               this.balance = this.resultInfoList[this.resultInfoList.length - 1].balance;
+              this.winOrLoserAmount = this.resultInfoList[this.resultInfoList.length - 1].winOrLoserAmount;
             }
             this.openResultPop();
             this.getWayBill();
@@ -873,6 +875,16 @@ export default {
             src="@/assets/images/home/menu-black.png"
             alt=""
           />
+        </div>
+        <div class="flex justify-between items-center text-sm text-white mx-20 mt-12">
+          <div class="w-1/2 flex items-center mr-7 bg-[#141316] rounded-md pt-8 pb-6 pl-8">
+            <img class="w-24 mr-15" src="@/assets/images/home/icon_balance.png" alt="">
+            {{ balance }}
+          </div>
+          <div class="w-1/2 flex items-center bg-[#141316] rounded-md pt-8 pb-6 pl-8">
+            <img class="w-24 mr-15" src="@/assets/images/home/icon_win.png" alt="">
+            {{ winOrLoserAmount }}
+          </div>
         </div>
         <BetRecord
           :allList="tabDataAll"

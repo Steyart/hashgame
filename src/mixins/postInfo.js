@@ -107,6 +107,21 @@ var postInfo = {
           console.log(err)
         });
     },
+
+    // 获取用户绑定地址列表
+    getUserAddressList() {
+      this.$http
+        .post(`/pocket/getUserWallet`, {})
+        .then(({ data }) => {
+          if (data.code === 200) {
+            this.userAddressList = [];
+            this.userAddressList.push(data.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        });
+    },
   }
 }
 export default postInfo

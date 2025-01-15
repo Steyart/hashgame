@@ -25,10 +25,13 @@ export default {
       addressValue: "",
       showPopover: false,
       canAddAddress: true,
+      userAddressList: [],
     };
   },
   components: {},
-  created() {},
+  created() {
+    this.getUserAddressList();
+  },
   mounted() {},
   methods: {
     handleClickOverlay() {
@@ -64,6 +67,7 @@ export default {
                 });
                 this.addressValue = "";
                 this.handleClickOverlay();
+                this.getUserAddressList();
               }else{
                 showToast({
                   type: "fail",
@@ -166,8 +170,8 @@ export default {
               >添加</span
             >
           </div>
-          <!-- <div class="text-sm text-blackish-green ml-17 mt-25 font-semibold">
-          已启动的地址：<span class="text-base text-beige">1个</span>
+          <div class="text-sm text-blackish-green ml-17 mt-25 font-semibold">
+          已启动的地址：<span class="text-base text-beige">{{ userAddressList.length }}个</span>
         </div>
         <div
           class="bg-[#F2F2F2] border border-[#707070] mx-17 mt-12 pb-17 rounded-default"
@@ -182,7 +186,7 @@ export default {
           <div>
             <div
               class="flex items-center justify-between text-xs text-blackish-green pt-21"
-              v-for="(info, i) in startAddressList"
+              v-for="(info, i) in userAddressList"
               :key="i"
             >
               <div class="w-80 flex justify-center"><img
@@ -190,14 +194,14 @@ export default {
                 src="@/assets/images/home/count.png"
                 alt=""
               /></div>
-              <div class="w-150 text-center" style="word-wrap: break-word;">{{ info.address }}</div>
-              <div class="w-80 text-center">{{ info.status }}</div>
+              <div class="w-150 text-center" style="word-wrap: break-word;">{{ info.toAddress }}</div>
+              <div class="w-80 text-center">已激活</div>
             </div>
           </div>
           <div class="flex justify-center mt-43">
             <img class="h-13" src="@/assets/images/home/icon_up.png" alt="" />
           </div>
-        </div> -->
+        </div>
         </div>
       </div>
     </van-popup>
