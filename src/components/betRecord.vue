@@ -125,8 +125,8 @@
                 <tr class="flex flex-col" v-for="(tab, i) in newlists1" :key="i" >
                     <td v-for="(v, k) in tab" :key="k">
                         <div class="td-box1">
-                            <div v-if="v.win_result" :class="{ 'bg-[#5164FF]': v.win_result == '1', 'bg-[#FF5C01]': v.win_result == '2', 'bg-[#FDC300]': v.win_result == '3', }" class="left-number" >
-                            {{ v.win_result==1?'0' : v.win_result==2?'E' : 'I' }}
+                            <div v-if="v.win_result" :class="{ 'bg-[#5164FF]': v.win_result == '2', 'bg-[#FF5C01]': v.win_result == '1', 'bg-[#FDC300]': v.win_result == '3', }" class="left-number" >
+                            {{ v.win_result==2?'0' : v.win_result==1?'E' : 'I' }}
                             </div>
                         </div>
                     </td>
@@ -138,7 +138,7 @@
                 <tr class="flex flex-col" v-for="(val, i) in lists2" :key="i">
                     <td v-for="(v, k) in val" :key="k">
                         <div class="td-box2">
-                            <div :class="{ 'border-2 border-[#5164FF]': v.win_result == '1', 'border-2 border-[#FF5C01]': v.win_result == '2', 'border-2 border-[#FDC300]': v.win_result == '3'}" ></div>
+                            <div :class="{ 'border-2 border-[#5164FF]': v.win_result == '2', 'border-2 border-[#FF5C01]': v.win_result == '1', 'border-2 border-[#FDC300]': v.win_result == '3'}" ></div>
                         </div>
                     </td>
                 </tr>
