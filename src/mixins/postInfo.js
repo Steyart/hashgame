@@ -114,8 +114,11 @@ var postInfo = {
         .post(`/pocket/getUserWallet`, {})
         .then(({ data }) => {
           if (data.code === 200) {
-            this.userAddressList = [];
-            this.userAddressList.push(data.data);
+            if(data.data.toAddress){
+              this.userAddressList = [];
+              this.userAddressList.push(data.data);
+              this.$emit('isBindAddress', this.userAddressList);
+            }
           }
         })
         .catch((err) => {

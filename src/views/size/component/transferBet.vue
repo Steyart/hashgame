@@ -1,4 +1,5 @@
 <script>
+import { showToast, } from "vant";
 import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
 import { getCookie } from "@/service/util.service";
@@ -22,6 +23,7 @@ export default {
       addressValue: "",
       addressList: [], //钱包地址列表
       betWalletAddress: "",
+      isBindWalletAddress: false, //是否绑定钱包地址
     };
   },
   components: {
@@ -86,6 +88,23 @@ export default {
     openBindPop() {
       this.showBindAddressPop = true;
     },
+    isBindAddress(list){
+      if(list.length>0){
+        this.isBindWalletAddress = true;
+      }
+    },
+    onCopyBindAddress(address){
+      // 如果没有绑定钱包，需要先绑定钱包后才能复制地址
+      if (!this.isBindWalletAddress) {
+        showToast({
+          type: "fail",
+          message: "请先绑定钱包",
+          className: "fail-toast-box",
+        });
+        return;
+      }
+      this.onCopy(address);
+    }
   },
 };
 </script>
@@ -117,7 +136,7 @@ export default {
           <div class="pl-7">{{ betWalletAddress }}</div>
           <div
             :data-clipboard-text="betWalletAddress"
-            @click="onCopy(betWalletAddress)"
+            @click="onCopyBindAddress(betWalletAddress)"
             class="flex items-center text-wathet border-l border-[#707070] rounded-md pt-9 pb-11 px-9 copyBtn"
           >
             <img class="h-13 mr-5" src="@/assets/images/home/copy.png" alt="" />
@@ -208,6 +227,7 @@ export default {
   <BindAddressPop
     :showBindAddressPop="showBindAddressPop"
     @update:showBindAddressPop="showBindAddressPop = $event"
+    @isBindAddress="isBindAddress"
   />
 </template>
 <style scoped>
