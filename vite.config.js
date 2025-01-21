@@ -8,7 +8,8 @@ export default defineConfig(() => {
   return {
     define: {
       _APP_COLOR_: JSON.stringify('default'),
-      _APP_HISTORY_: 1
+      _APP_HISTORY_: 1,
+      _APP_POSTURL_: JSON.stringify('https://hash-api.888bbm.com/api')
     },
     plugins: [
       vue(),

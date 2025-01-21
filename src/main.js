@@ -44,13 +44,6 @@ router.UA = (() => {
     };
 });
 
-/* if (_APP_COLOR_) {
-    var linkDom = document.createElement('link');
-    linkDom.rel = 'stylesheet';
-    linkDom.href = require(`/styles/${_APP_COLOR_}.css`);
-    document.querySelector('head').appendChild(linkDom);
-} */
-
 router.back = function (query = {}) {
     if (query.redirectUrl) {
         return window.location.href = query.redirectUrl;
