@@ -540,13 +540,13 @@ export default {
       const toast = showLoadingToast({
         duration: 0,
         forbidClick: true,
-        message: '投注结果倒计时 3 秒',
+        message: '等待开奖结果 3',
       });
       let second = 3;
       const timer = setInterval(() => {
         second--;
         if (second) {
-          toast.message = `投注结果倒计时 ${second} 秒`;    
+          toast.message = `等待开奖结果 ${second} `;    
         } else {
           clearInterval(timer);
           closeToast();
@@ -619,6 +619,8 @@ export default {
       if (this.resultIndex < this.resultInfoList.length) {
         this.resultInfo = this.resultInfoList[this.resultIndex];
         this.showGameResultPop = true;
+        // 结果返回成功，可以继续投注
+        this.isCanBeting = true;
       } else {
         this.showGameResultPop = false;
         this.getDefaultData();
@@ -938,6 +940,7 @@ export default {
         </div>
       </div>
     </div>
+    <div v-if="!isCanBeting" class="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-1000"></div>
     <GamePop
       :showChangeGamePop="showChangeGamePop"
       @update:showChangeGamePop="showChangeGamePop = $event"
