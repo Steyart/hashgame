@@ -520,7 +520,6 @@ export default {
               message: "投注成功",
               className: "fail-toast-box",
             });
-            this.getDefaultData();
             this.showGetResultPop();
           }else{
             showToast({
@@ -622,6 +621,7 @@ export default {
         this.showGameResultPop = true;
       } else {
         this.showGameResultPop = false;
+        this.getDefaultData();
         // 结果返回成功，可以继续投注
         this.isCanBeting = true;
       }
@@ -629,6 +629,7 @@ export default {
     // 关闭弹窗并展示下一条数据
     closeOverlay() {
       this.showGameResultPop = false;
+      this.getDefaultData();
       // 结果返回成功，可以继续投注
       this.isCanBeting = true;
       this.resultIndex++;
