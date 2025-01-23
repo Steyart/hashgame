@@ -8,7 +8,7 @@ import BetRecord from "@/components/betRecord.vue";
 import ComRollNumber from "@/components/comRollNumber.vue";
 import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
-import { showToast } from "vant";
+import { showToast, showLoadingToast, closeToast } from "vant";
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -174,7 +174,8 @@ export default {
         {name: "牛8", scale: '1:8'},
         {name: "牛9", scale: '1:9'},
         {name: "牛牛", scale: '1:10'},
-      ]
+      ],
+      isCanBeting: true,
     };
   },
   components: {
@@ -480,18 +481,19 @@ export default {
       if (this.totalBetNum > this.balance) {
         return this.showBetError("余额不足");
       }
-      if(this.userInfo.gameType==3 && this.sessionIndex==0 && this.totalBetNum<100){
+      if(this.userInfo.gameType==3 && this.sessionIndex==0 && (this.totalBetNum<100 || this.totalBetNum>2000)){
         return this.showBetError("初级场下注金额应在100至2000U之间");
       }
-      if(this.userInfo.gameType==3 && this.sessionIndex==1 && this.totalBetNum<200){
+      if(this.userInfo.gameType==3 && this.sessionIndex==1 && (this.totalBetNum<200 || this.totalBetNum>3000)){
         return this.showBetError("中级场下注金额应在200至3000U之间");
       }
-      if(this.sessionIndex==0 && this.totalBetNum<10){
-        return this.showBetError("初级场下注金额应在10至1000U之间");
+      if(this.sessionIndex==0 && (this.totalBetNum<10 || this.totalBetNum>2000)){
+        return this.showBetError("初级场下注金额应在10至2000U之间");
       }
-      if(this.sessionIndex==1 && this.totalBetNum<100){
-        return this.showBetError("中级场下注金额应在100至2000U之间");
+      if(this.sessionIndex==1 && (this.totalBetNum<100 || this.totalBetNum>3000)){
+        return this.showBetError("中级场下注金额应在100至3000U之间");
       }
+      this.isCanBeting = false;
       const params = {
         action: 9,
         ts: Date.now(),
@@ -519,20 +521,40 @@ export default {
               className: "fail-toast-box",
             });
             this.getDefaultData();
-            setTimeout(this.getResultFn(), 3000);
+            this.showGetResultPop();
           }else{
             showToast({
               type: "fail",
               message: data.message,
               className: "fail-toast-box",
             });
+            this.isCanBeting = true;
           }
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    // 投注结果倒计时弹窗
 
+    showGetResultPop(){
+      const toast = showLoadingToast({
+        duration: 0,
+        forbidClick: true,
+        message: '投注结果倒计时 3 秒',
+      });
+      let second = 3;
+      const timer = setInterval(() => {
+        second--;
+        if (second) {
+          toast.message = `投注结果倒计时 ${second} 秒`;    
+        } else {
+          clearInterval(timer);
+          closeToast();
+          this.getResultFn()
+        }
+      }, 1000);
+    },
     // 获取默认数据
     getDefaultData() {
       this.totalBetNum = 0;
@@ -556,6 +578,8 @@ export default {
         .post(`/game/settle`, params)
         .then(({ data }) => {
           if (data.code === 200) {
+            // 结果返回成功，可以继续投注
+            this.isCanBeting = true;
             this.resultInfoList.push(...data.data.results);
             if (this.resultInfoList && this.resultInfoList.length > 0) {
               this.balance = this.resultInfoList[this.resultInfoList.length - 1].balance;
@@ -860,13 +884,21 @@ export default {
               />
             </div>
             <BetAmount @changeAmount="changeAmount" />
-            <div class="flex items-center" @click="handleBetting">
+            <div v-if="isCanBeting" class="flex items-center" @click="handleBetting">
               <img
                 class="h-25 mr-8"
                 src="@/assets/images/home/submit-black.png"
                 alt=""
               />
               <div>确定</div>
+            </div>
+            <div v-else class="flex items-center">
+              <img
+                class="h-25 mr-8"
+                src="@/assets/images/home/cannot_select.png"
+                alt=""
+              />
+              <div class="text-base-color">确定</div>
             </div>
           </div>
           <img
