@@ -578,14 +578,14 @@ export default {
         .post(`/game/settle`, params)
         .then(({ data }) => {
           if (data.code === 200) {
-            // 结果返回成功，可以继续投注
-            this.isCanBeting = true;
             this.resultInfoList.push(...data.data.results);
             if (this.resultInfoList && this.resultInfoList.length > 0) {
               this.balance = this.resultInfoList[this.resultInfoList.length - 1].balance;
               this.winOrLoserAmount = this.resultInfoList[this.resultInfoList.length - 1].winOrLoserAmount;
             }
             this.openResultPop();
+            // 结果返回成功，可以继续投注
+            this.isCanBeting = true;
             this.getWayBill();
           }
         })
