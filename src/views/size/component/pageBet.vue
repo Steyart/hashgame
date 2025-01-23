@@ -584,8 +584,6 @@ export default {
               this.winOrLoserAmount = this.resultInfoList[this.resultInfoList.length - 1].winOrLoserAmount;
             }
             this.openResultPop();
-            // 结果返回成功，可以继续投注
-            this.isCanBeting = true;
             this.getWayBill();
           }
         })
@@ -624,11 +622,15 @@ export default {
         this.showGameResultPop = true;
       } else {
         this.showGameResultPop = false;
+        // 结果返回成功，可以继续投注
+        this.isCanBeting = true;
       }
     },
     // 关闭弹窗并展示下一条数据
     closeOverlay() {
       this.showGameResultPop = false;
+      // 结果返回成功，可以继续投注
+      this.isCanBeting = true;
       this.resultIndex++;
       this.showNextResult();
     },
