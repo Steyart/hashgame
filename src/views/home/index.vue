@@ -44,12 +44,15 @@ export default {
   },
   methods:{
     sendMessage (){
-      localStorage.setItem("crossTabMessage", "this.user.id");
+      let obj = {
+        user: '',
+        time: new Date().toLocaleTimeString(),
+      }
+      localStorage.setItem("crossTabMessage", JSON.stringify(obj));
     },
     handleStorageEvent(event){
       if (event.key === "crossTabMessage" && event.newValue) {
-        const newMessage = event.newValue;
-        console.log("接收到消息：", newMessage);
+        const newMessage = JSON.parse(event.newValue);
       }
     }
   },

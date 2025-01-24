@@ -4,7 +4,7 @@ import postInfo from "@/mixins/postInfo";
 import Bet from "./component/pageBet.vue";
 import TransferBet from "./component/transferBet.vue";
 import { setCookie } from "@/service/util.service";
-// import { mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -22,12 +22,13 @@ export default {
       ],
       active: 0,
       showPage: false,
+      newMessage: {}
     };
   },
   components: { Bet, TransferBet },
   mixins: [toHref, postInfo],
   computed: {
-    // ...mapGetters(['userInfo'])
+    ...mapGetters(['userInfo'])
   },
   created() {
   
@@ -46,8 +47,31 @@ export default {
     }
     // this.$router.replace({ path: "/" });
   },
-  mounted() {},
+  mounted(){
+    this.sendMessage()
+    window.addEventListener("storage", this.handleStorageEvent);
+  },
+  beforeUnmount() {
+    window.removeEventListener("storage", this.handleStorageEvent);
+  },
+  beforeDestroy() {
+    window.removeEventListener("storage", this.handleStorageEvent);
+  },
   methods: {
+    sendMessage (){
+      let obj = {
+        userId: this.userInfo.token,
+        time: new Date().toLocaleTimeString(),
+      }
+      localStorage.setItem("crossTabMessage", JSON.stringify(obj));
+    },
+    handleStorageEvent(event){
+      if (event.key === "crossTabMessage" && event.newValue) {
+        this.newMessage = JSON.parse(event.newValue);
+        console.log(JSON.parse(event.newValue))
+      }
+    },
+
     changeActive(index) {
       this.active = index;
     },
@@ -67,7 +91,8 @@ export default {
 </script>
 <template>
   <div>
-    <div
+    <div v-if="newMessage.userId == userInfo.token" class="w-full h-screen flex items-center justify-center text-xl">您已在新的窗口打开</div>
+    <div v-else
       class="px-10 pb-20 min-h-screen"
       :class="
         active == 0
