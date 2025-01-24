@@ -44,7 +44,7 @@ export default {
   },
   methods:{
     sendMessage (){
-      localStorage.setItem("crossTabMessage", "this.user.id");
+      localStorage.setItem("crossTabMessage", new Date().toLocaleTimeString());
     },
     handleStorageEvent(event){
       if (event.key === "crossTabMessage" && event.newValue) {
