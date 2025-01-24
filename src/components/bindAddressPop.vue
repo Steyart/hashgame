@@ -77,8 +77,15 @@ export default {
                 });
               }
             })
-            .catch((err) => {
-              console.log(err);
+            .catch(({response}) => {
+              // if(response.data.code == 6001){
+                showToast({
+                  type: "fail",
+                  message: response.data.message,
+                  icon: this.getRequireImg('/home/warning.png'),
+                  className: "fail-toast-box",
+                });
+              // }
             });
         })
         .catch(() => {
