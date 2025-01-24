@@ -585,6 +585,11 @@ export default {
             this.openResultPop();
             this.getWayBill();
           }else{
+            showToast({
+              type: "fail",
+              message: "获取开奖结果失败",
+              className: "fail-toast-box",
+            });
             this.isCanBeting = true;
           }
         })
