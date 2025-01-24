@@ -522,6 +522,11 @@ export default {
             });
             this.showGetResultPop();
           }else{
+            // 更新余额
+            this.getBalance({
+              action: 6,
+              ts: Date.now(),
+            });
             showToast({
               type: "fail",
               message: data.message,
