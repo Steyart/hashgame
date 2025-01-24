@@ -537,7 +537,7 @@ export default {
         })
         .catch(({response}) => {
           // 更新余额
-          if(response.data.code == 6001){
+          // if(response.data.code == 6001){
             this.getDefaultData();
             this.getBalance({
               action: 6,
@@ -549,11 +549,10 @@ export default {
               className: "fail-toast-box",
             });
             this.isCanBeting = true;
-          }
+          // }
         });
     },
     // 投注结果倒计时弹窗
-
     showGetResultPop(){
       const toast = showLoadingToast({
         duration: 0,
@@ -613,7 +612,7 @@ export default {
         })
         .catch(({response}) => {
           // 更新余额
-          if(response.data.code == 6001){
+          // if(response.data.code == 6001){
             this.getDefaultData();
             this.getBalance({
               action: 6,
@@ -625,7 +624,7 @@ export default {
               className: "fail-toast-box",
             });
             this.isCanBeting = true;
-          }
+          // }
         });
     },
     // 录单
