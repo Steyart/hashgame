@@ -1,36 +1,5 @@
-<script>
-import toHref from "@/mixins/toHref";
-import Bet from "./component/pageBet.vue";
-import TransferBet from "./component/transferBet.vue";
-export default {
-  data() {
-    return {
-      tabList: [
-        {
-          name: "转账投注",
-          activeIcon: "transfer-active",
-          inactiveIcon: "transfer-inactive",
-        },
-        {
-          name: "页面投注",
-          activeIcon: "bet-active",
-          inactiveIcon: "bet-inactive",
-        },
-      ],
-      active: 0,
-    };
-  },
-  components: { Bet, TransferBet,},
-  mixins: [toHref],
-  computed: {
-    
-  },
-  mounted() {},
-  methods: {},
-};
-</script>
 <template>
-  <div class="mx-10">
+  <!-- <div class="mx-10">
     <div
       class="flex justify-between text-base pl-32 pr-40 pb-12 mt-16 border-b border-[#2F3F33]"
     >
@@ -51,7 +20,38 @@ export default {
     <template v-if="active==1">
       <Bet />
     </template>
+  </div> -->
+
+  <div>
   </div>
 </template>
-<style scoped>
-</style>
+
+<script>
+export default {
+  data(){
+    return {
+    }
+  },
+  mounted(){
+    this.sendMessage()
+    window.addEventListener("storage", this.handleStorageEvent);
+  },
+  beforeUnmount() {
+    window.removeEventListener("storage", this.handleStorageEvent);
+  },
+  beforeDestroy() {
+    window.removeEventListener("storage", this.handleStorageEvent);
+  },
+  methods:{
+    sendMessage (){
+      localStorage.setItem("crossTabMessage", "this.user.id");
+    },
+    handleStorageEvent(event){
+      if (event.key === "crossTabMessage" && event.newValue) {
+        const newMessage = event.newValue;
+        console.log("接收到消息：", newMessage);
+      }
+    }
+  },
+};
+</script>

@@ -4,14 +4,14 @@ import Size from '../views/size/index.vue' //哈希大小
 
 
 const indexRouter = [
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home,
-  //   meta: { 
-  //     auth: true, level:'1', title: '首页', countTitle: '首页', child: true, isNav: false,
-  //   },
-  // },
+  {
+    path: '/test',
+    name: 'Home',
+    component: Home,
+    meta: { 
+      auth: true, level:'1', title: '首页', countTitle: '首页', child: true, isNav: false,
+    },
+  },
   {
     path: '/',
     name: 'Size',
