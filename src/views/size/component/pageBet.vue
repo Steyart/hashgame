@@ -584,6 +584,8 @@ export default {
             }
             this.openResultPop();
             this.getWayBill();
+          }else{
+            this.isCanBeting = true;
           }
         })
         .catch((err) => {
