@@ -535,8 +535,21 @@ export default {
             this.isCanBeting = true;
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(({response}) => {
+          // 更新余额
+          if(response.data.code == 6001){
+            this.getDefaultData();
+            this.getBalance({
+              action: 6,
+              ts: Date.now(),
+            });
+            showToast({
+              type: "fail",
+              message: response.data.message,
+              className: "fail-toast-box",
+            });
+            this.isCanBeting = true;
+          }
         });
     },
     // 投注结果倒计时弹窗
@@ -598,8 +611,21 @@ export default {
             this.isCanBeting = true;
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(({response}) => {
+          // 更新余额
+          if(response.data.code == 6001){
+            this.getDefaultData();
+            this.getBalance({
+              action: 6,
+              ts: Date.now(),
+            });
+            showToast({
+              type: "fail",
+              message: response.data.message,
+              className: "fail-toast-box",
+            });
+            this.isCanBeting = true;
+          }
         });
     },
     // 录单
