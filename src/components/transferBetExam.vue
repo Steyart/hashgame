@@ -40,7 +40,7 @@ export default {
             >小</span
           >，结果<span class="text-beige">中奖</span>系统回款 金额为：<span
             class="text-beige"
-            >1150.5*1.95=2243.475</span
+            >1000*1.95=1950</span
           >
         </div>
         <div class="text-blackish-green text-xs my-21 font-medium">范例二</div>
@@ -69,8 +69,8 @@ export default {
             >4</span
           >
           区块哈希的最后一位数字为<span class="text-beige">4</span
-          >识别为双，结果中将系 统回款金额为：200*1.95=<span class="text-beige"
-            >390</span
+          >识别为双，结果中将系 统回款金额为：<span class="text-beige"
+            >200*1.95=390</span
           >
         </div>
         <div class="text-blackish-green text-xs my-21 font-medium">范例二</div>

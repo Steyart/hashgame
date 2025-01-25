@@ -20,11 +20,19 @@ var toHref = {
     },
     // 计算金额
     toFixedNoRounding(num, precision) {
-      var multiplier = Math.pow(10, precision);
-      var adjustedNum = num * multiplier;
-      var integerPart = Math.floor(adjustedNum);
-      return (integerPart / multiplier).toFixed(precision);
+      // 将数字转换为指定精度的字符串表示形式，避免四舍五入
+      var parts = num.toString().split('.');
+      var integerPart = parts[0];
+      var decimalPart = parts.length > 1 ? parts[1] : '';
+      // 如果需要更多小数位，则补零
+      while (decimalPart.length < precision) {
+        decimalPart += '0';
+      }
+      // 截取所需精度的小数部分
+      decimalPart = decimalPart.substr(0, precision);
+      return `${integerPart}.${decimalPart}`;
     },
+
     getThousandth(num, precision = 0) {
       if (num >= 1000 && num < 1000000) {
         return this.toFixedNoRounding(num / 1000, precision) + "K";

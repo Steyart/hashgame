@@ -26,14 +26,6 @@ export default {
     //   this.isLoginPage = true;
     // }
     
-    let test = sessionStorage.getItem('test')
-    if(test){
-      console.log(test)
-    }else{
-      let m = Math.random()
-      sessionStorage.setItem('test', m)
-      console.log(m)
-    }
   },
   mounted(){
     
