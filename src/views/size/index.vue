@@ -68,7 +68,7 @@ export default {
     handleStorageEvent(event){
       if (event.key === "crossTabMessage" && event.newValue) {
         this.newMessage = JSON.parse(event.newValue);
-        console.log(JSON.parse(event.newValue))
+        console.log("newMessage",JSON.parse(event.newValue))
       }
     },
 

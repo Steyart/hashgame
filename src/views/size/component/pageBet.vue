@@ -487,11 +487,11 @@ export default {
       if(this.userInfo.gameType==3 && this.sessionIndex==1 && (this.totalBetNum<200 || this.totalBetNum>3000)){
         return this.showBetError("中级场下注金额应在200至3000U之间");
       }
-      if(this.sessionIndex==0 && (this.totalBetNum<10 || this.totalBetNum>2000)){
-        return this.showBetError("初级场下注金额应在10至2000U之间");
+      if(this.sessionIndex==0 && (this.totalBetNum<10 || this.totalBetNum>1000)){
+        return this.showBetError("初级场下注金额应在10至1000U之间");
       }
-      if(this.sessionIndex==1 && (this.totalBetNum<100 || this.totalBetNum>3000)){
-        return this.showBetError("中级场下注金额应在100至3000U之间");
+      if(this.sessionIndex==1 && (this.totalBetNum<100 || this.totalBetNum>2000)){
+        return this.showBetError("中级场下注金额应在100至2000U之间");
       }
       this.isCanBeting = false;
       const params = {
