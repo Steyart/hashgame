@@ -44,15 +44,11 @@ export default {
   },
   methods:{
     sendMessage (){
-<<<<<<< HEAD
-      localStorage.setItem("crossTabMessage", new Date().toLocaleTimeString());
-=======
       let obj = {
         user: '',
         time: new Date().toLocaleTimeString(),
       }
       localStorage.setItem("crossTabMessage", JSON.stringify(obj));
->>>>>>> remotes/origin/main
     },
     handleStorageEvent(event){
       if (event.key === "crossTabMessage" && event.newValue) {
