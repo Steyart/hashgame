@@ -42,6 +42,15 @@ export default {
       const url = `https://tronscan.org/#/block/${value}`;
       this.navigateTo(url);
     },
+
+    formatHashValue(value) {
+      if (value.length <= 10) {
+        return value; 
+      }
+      const start = value.substring(0, 5);
+      const end = value.substring(value.length - 5);
+      return `${start}……${end}`;
+    }
   },
 };
 </script>
@@ -135,7 +144,7 @@ export default {
                 class="flex justify-between items-center bg-[#141316] border border-[#70697C] rounded-lg pt-9 pb-8"
               >
                 <div class="text-white text-sm ml-11 w-200 truncate">
-                  {{ resultInfo.hashValue }}
+                  {{ formatHashValue(resultInfo.hashValue) }}
                 </div>
                 <div class="flex items-center">
                   <div class="copyBtn" :data-clipboard-text="resultInfo.hashValue" @click="onCopy(resultInfo.hashValue)">
