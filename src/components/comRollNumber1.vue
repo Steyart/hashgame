@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       orderNum: [], // 默认订单总数
-      numberItem: 55555555,
+      numberItem: 0,
     };
   },
   watch:{
@@ -38,7 +38,7 @@ export default {
   computed:{
   },
   mounted() {
-    this.animateNumber(55555555, this.value, 400); // 2秒内从 0 变到 1000
+    // this.animateNumber(55555555, this.value, 400); // 2秒内从 0 变到 1000
   },
   methods: {
     animateNumber(start, end, duration) {

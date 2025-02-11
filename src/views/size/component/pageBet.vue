@@ -240,10 +240,9 @@ export default {
   watch: {},
   created() {
     this.reset();
-  },
-
-  mounted() {
     this.getLatestBlock();
+  },
+  mounted() {
     this.getBalance({
       action: 6,
       ts: Date.now(),
