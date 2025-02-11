@@ -477,6 +477,7 @@ export default {
 
     // 下注
     async handleBetting() {
+
       if (this.totalBetNum > this.balance) {
         return this.showBetError("余额不足");
       }
@@ -496,8 +497,8 @@ export default {
         }
       }
       
-      await this.updateBlocks()
       this.isCanBeting = false;
+      await this.updateBlocks()
       const params = {
         action: 9,
         ts: Date.now(),
