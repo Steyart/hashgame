@@ -3,6 +3,7 @@ import ClipboardJS from "clipboard"
 import { showToast, showSuccessToast } from "vant";
 var clipboard = new ClipboardJS('.copyBtn');
 import { mapGetters } from "vuex";
+import {TronWeb} from 'tronweb';
 
 var postInfo = {
   data() {
@@ -14,6 +15,8 @@ var postInfo = {
       currentBlock: null,
       nextBlock: null,
       interval: null,
+
+      blockNumber: null, // 用来存储最新的区块号
     }
   },
   created() {
@@ -88,6 +91,23 @@ var postInfo = {
         .catch((err) => {
           console.log(err)
         });
+    },
+    async getLatestBlock() {
+      try {
+        // 初始化 TronWeb 实例
+        const tronWeb = new TronWeb({
+          fullNode: 'https://api.trongrid.io', // TRON 公共节点
+          solidityNode: 'https://api.trongrid.io',
+          eventServer: 'https://api.trongrid.io'
+        });
+        // 获取最新区块
+        const block = await tronWeb.trx.getCurrentBlock();
+        this.currentBlock = block.block_header.raw_data.number + 3; // 获取最新区块号
+        this.nextBlock = this.currentBlock + 1
+        this.interval = setInterval(this.updateBlocks, 1000);
+      } catch (error) {
+        console.error('获取区块号失败:', error);
+      }
     },
     updateBlocks() {
       this.currentBlock = this.nextBlock;

@@ -5,7 +5,7 @@ import MenuPop from "@/components/menuPop.vue";
 import BetResultPop from "@/components/betResultPop.vue";
 import BetAmount from "@/components/betAmount.vue";
 import BetRecord from "@/components/betRecord.vue";
-import ComRollNumber from "@/components/comRollNumber.vue";
+import ComRollNumber from "@/components/comRollNumber1.vue";
 import toHref from "@/mixins/toHref";
 import postInfo from "@/mixins/postInfo";
 import { showToast, showLoadingToast, closeToast } from "vant";
@@ -239,11 +239,11 @@ export default {
   },
   watch: {},
   created() {
-    this.getBlockNum();
     this.reset();
   },
 
   mounted() {
+    this.getLatestBlock();
     this.getBalance({
       action: 6,
       ts: Date.now(),
@@ -701,30 +701,30 @@ export default {
           <div class="text-xs flex items-center justify-center flex-col">
             <div class="text-base-color">目前区块</div>
             <div
-              class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]"
+              class="flex justify-center items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C] min-w-120"
             >
               <img
                 class="h-15 mr-6"
                 src="@/assets/images/home/block-white.png"
               />
-              <div class="text-white font-bold">
-                <!-- <ComRollNumber :value="currentBlock" :time="0" :animate="true"/> -->
-                {{ currentBlock }}
+              <div class="text-white font-bold min-w-60">
+                <ComRollNumber :value="currentBlock" :time="0" :animate="true"/>
+                <!-- {{ currentBlock }} -->
               </div>
             </div>
           </div>
           <div class="text-xs flex items-center justify-center flex-col">
             <div class="text-base-color">下一区块</div>
             <div
-              class="flex items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C]"
+              class="flex justify-center items-center mt-10 py-10 pl-10 pr-24 bg-[#141316] rounded-lg border border-[#70697C] min-w-120"
             >
               <img
                 class="h-15 mr-6"
                 src="@/assets/images/home/block-white.png"
               />
-              <div class="text-beige font-bold">
-                <!-- <ComRollNumber :value="nextBlock" :time="0" :animate="true"/> -->
-                {{ nextBlock }}
+              <div class="text-beige font-bold min-w-60">
+                <ComRollNumber :value="nextBlock" :time="0" :animate="true"/>
+                <!-- {{ nextBlock }} -->
               </div>
             </div>
           </div>
