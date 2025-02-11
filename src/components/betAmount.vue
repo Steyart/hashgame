@@ -257,14 +257,9 @@ export default {
           </div>
         </div>
         <div class="relative" @click="changeAmountImg">
-          <img
-            class="w-119 h-38 m-auto"
-            src="@/assets/images/home/btn-bg.png"
-          />
-          <span
-            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
-            >确定</span
-          >
+          <img v-if="appColor == 'black'" class="w-119 h-38 m-auto" src="@/assets/images/black/btn-bg.png"/>
+          <img v-else class="w-119 h-38 m-auto" src="@/assets/images/home/btn-bg.png"/>
+          <span class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base btn-text-color">确定</span>
         </div>
 
         <van-number-keyboard

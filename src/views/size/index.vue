@@ -114,17 +114,8 @@ export default {
             :class="{ 'text-beige': active == index }"
             class="flex items-center justify-center font-bold"
           >
-            <img
-              class="h-16 mr-8"
-              :src="
-                getRequireImg(
-                  `home/${
-                    active == index ? item.activeIcon : item.inactiveIcon
-                  }.png`
-                )
-              "
-              alt=""
-            />
+            <img v-if="appColor == 'black'" class="h-16 mr-8" :src="getRequireImg(`black/${active == index ? item.activeIcon : item.inactiveIcon}.png`)"/>
+            <img v-else class="h-16 mr-8" :src="getRequireImg(`home/${active == index ? item.activeIcon : item.inactiveIcon}.png`)"/>
             {{ item.name }}
           </div>
         </div>

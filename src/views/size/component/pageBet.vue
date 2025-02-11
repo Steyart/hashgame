@@ -742,12 +742,10 @@ export default {
             @click="sessionIndex = index"
           >
             <div v-if="sessionIndex == index" class="relative mt-15 mb-12">
-              <img
-                class="w-119 h-38 m-auto"
-                src="@/assets/images/home/btn-bg.png"
-              />
+              <img v-if="appColor == 'black'" class="w-119 h-38 m-auto" src="@/assets/images/black/btn-bg.png"/>
+              <img v-else class="w-119 h-38 m-auto" src="@/assets/images/home/btn-bg.png"/>
               <span
-                class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-white font-medium"
+                class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm btn-text-color font-medium"
                 >{{ stab }}</span
               >
             </div>

@@ -168,14 +168,9 @@ export default {
             />
           </div>
           <div class="relative mt-21" @click="addAddress">
-            <img
-              class="w-119 h-38 m-auto"
-              src="@/assets/images/home/btn-bg.png"
-            />
-            <span
-              class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base text-white"
-              >添加</span
-            >
+          <img v-if="appColor == 'black'" class="w-119 h-38 m-auto" src="@/assets/images/black/btn-bg.png"/>
+          <img v-else class="w-119 h-38 m-auto" src="@/assets/images/home/btn-bg.png"/>
+            <span class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-base btn-text-color" >添加</span>
           </div>
           <div class="text-sm text-blackish-green ml-17 mt-25 font-semibold">
           已启动的地址：<span class="text-base text-beige">{{ userAddressList.length }}个</span>
