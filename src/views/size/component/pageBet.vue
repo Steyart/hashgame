@@ -509,8 +509,6 @@ export default {
         session: this.sessionIndex + 1,
       };
 
-      console.log(params)
-
       if (
         Object.values(params).some(
           (value) => value == "" || value == 0 || value == null
