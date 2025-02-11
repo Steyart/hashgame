@@ -477,7 +477,7 @@ export default {
 
     // 下注
     async handleBetting() {
-      /* if (this.totalBetNum > this.balance) {
+      if (this.totalBetNum > this.balance) {
         return this.showBetError("余额不足");
       }
       if(this.userInfo.gameType==3){
@@ -494,10 +494,10 @@ export default {
         if(this.sessionIndex==1 && (this.totalBetNum<100 || this.totalBetNum>2000)){
           return this.showBetError("中级场下注金额应在100至2000U之间");
         }
-      } */
+      }
       
       await this.updateBlocks()
-      // this.isCanBeting = false;
+      this.isCanBeting = false;
       const params = {
         action: 9,
         ts: Date.now(),
@@ -510,7 +510,7 @@ export default {
 
       console.log(params)
 
-      /* if (
+      if (
         Object.values(params).some(
           (value) => value == "" || value == 0 || value == null
         )
@@ -556,7 +556,7 @@ export default {
             });
             this.isCanBeting = true;
           // }
-        }); */
+        });
     },
     // 投注结果倒计时弹窗
     showGetResultPop(){
