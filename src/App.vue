@@ -5,13 +5,11 @@ import postInfo from "./mixins/postInfo";
 export default {
   components: {},
   watch: {
-  },
-  watch:{
+    '$route.query'(val){
+      this.$store.commit('setAppColor', val.color || _APP_COLOR_)
+    },
   },
   computed: {
-    appColor(){
-      return _APP_COLOR_
-    },
   },
   mixins: [postInfo],
   data() {
@@ -21,6 +19,7 @@ export default {
     };
   },
   created() {
+    this.$store.commit('setAppColor', this.$route.query.color || _APP_COLOR_)
     // if(document.getElementById('Loading')) document.getElementById('Loading').remove();
     // if (this.$route.name == "login" || this.$route.name == "register") {
     //   this.isLoginPage = true;
@@ -33,7 +32,7 @@ export default {
 };
 </script>
 <template>
-  <div>
+  <div :class="`app-${appColor}`">
     <RouterView />
   </div>
 </template>

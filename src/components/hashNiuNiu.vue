@@ -23,9 +23,10 @@ export default {
 
 <template>
   <div>
-    <div class="relative bg-[#EBEBEE] mt-17 rounded-md">
+    <div class="relative color-EBEBEE mt-17 rounded-md">
           <div
-            class="relative flex items-center justify-center flex-col bg-[url('@/assets/images/home/transfer-bg1.png')] bg-[length:100%_100%] bg-no-repeat"
+            class="relative flex items-center justify-center flex-col bg-[length:100%_100%] bg-no-repeat"
+            :class="appColor == 'black'? `bg-[url('@/assets/images/black/transfer-bg1.png')]` : `bg-[url('@/assets/images/home/transfer-bg1.png')]`"
           >
             <img
               class="absolute right-1/2 top-[-0.2rem] h-22"
@@ -54,7 +55,8 @@ export default {
             <div class="text-base-color text-sm mt-3 mb-10 font-bold">获奖规则</div>
           </div>
           <div
-            class="mt-10 mx-7 pt-9 pb-6 pl-41 bg-[url('@/assets/images/home/transfer-bg2.png')] bg-[length:100%_100%] bg-no-repeat"
+            class="mt-10 mx-7 pt-9 pb-6 pl-41 bg-[length:100%_100%] bg-no-repeat"
+            :class="appColor == 'black'? `bg-[url('@/assets/images/black/transfer-bg2.png')]` : `bg-[url('@/assets/images/home/transfer-bg2.png')]`"
           >
             <div class="flex text-xs text-base-color">
               <div class="font-bold">投注玩法</div>

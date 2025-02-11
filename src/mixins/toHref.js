@@ -1,5 +1,6 @@
 /* 跳转路由 */
 import { getImg } from "@/service/util.helper";
+import { mapGetters } from "vuex";
 var toHref = {
   data() {
     return {
@@ -10,6 +11,7 @@ var toHref = {
   created() {
   },
   computed: {
+    ...mapGetters(['appColor'])
   },
   mounted() {
 

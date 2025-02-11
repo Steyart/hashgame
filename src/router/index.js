@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/home/index.vue'
 import Size from '../views/size/index.vue' //哈希大小
 
 

@@ -1,5 +1,6 @@
 <script>
 import toHref from "@/mixins/toHref";
+import { showToast } from "vant";
 export default {
   props: {
     showMenuPop: {
@@ -20,7 +21,7 @@ export default {
         { name: "投注记录", icon: "tzjl", path: "" },
         { name: "游戏规则", icon: "yxgz", path: "" },
       ],
-      menuIndex: 3,
+      menuIndex: -1,
     };
   },
   components: {},
@@ -31,9 +32,18 @@ export default {
       this.$emit("update:showMenuPop", false);
     },
     changeMenu(index) {
-      this.menuIndex = index;
-      this.$emit("changeMenu", index);
-      this.handleClickOverlay();
+
+      if (index == 3) {
+        this.menuIndex = index;
+        this.$emit("changeMenu", index);
+        this.handleClickOverlay();
+      } else {
+        return showToast({
+          type: "fail",
+          message: "暂未开放",
+          className: "fail-toast-box",
+        });
+      }
     },
   },
 };
@@ -60,7 +70,7 @@ export default {
         </div>
         <div class="flex flex-wrap">
           <div
-            :class="{ 'text-blackish-green': menuIndex == index }"
+            :class="[{ 'text-blackish-green': menuIndex == index }]"
             class="w-111 bg-[#0B0B0C] rounded-2xl pt-13 pb-10 mb-14 flex items-center justify-center flex-col mr-14 text-xs text-base-color font-medium"
             v-for="(item, index) in menuList"
             :key="index"

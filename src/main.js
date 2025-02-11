@@ -1,4 +1,6 @@
 import './assets/main.css'
+import './assets/version/default.css'
+import './assets/version/black.css'
 import './style.css'
 
 import { require } from '@/service/util.helper'

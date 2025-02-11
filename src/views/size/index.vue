@@ -96,7 +96,7 @@ export default {
       class="px-10 pb-20 min-h-screen"
       :class="
         active == 0
-          ? 'bg-[#E8E8EA] text-blackish-green'
+          ? (appColor == 'black' ? 'bg-[#0B0B0C] text-white': 'bg-[#E8E8EA] text-blackish-green')
           : 'bg-[#0B0B0C] text-white '
       "
     >

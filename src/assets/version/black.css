@@ -1,0 +1,29 @@
+
+.app-black .text-base-color{
+    --text-base-color: #fff;
+}
+.app-black .text-beige {
+    --text-beige: #C9FC01;
+}
+.app-black .set-bg-color{
+    --set-bg-color: #27272D;
+}
+.app-black .label-bg-color{
+    --label-text-color: #fff;
+}
+.app-black .label-active-color{
+    --label-bg-color: #C9FC01;
+    --label-active-color: #141316;
+}
+.app-black .value-bg-color{
+    --value-bg-color: #141316;
+}
+.app-black .value-text-color{
+    --value-text-color: #B0B6C6;
+}
+.app-black .btn-text-color{
+    --btn-text-color: #141316;
+}
+.app-black .color-EBEBEE{
+    --bg-color-EBEBEE: #141316;
+}

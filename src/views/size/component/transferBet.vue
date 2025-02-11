@@ -49,7 +49,8 @@ export default {
         this.addressList[this.matchedAddressIndex()].address;
     },
   },
-  created() {},
+  created() {
+  },
   mounted() {
     const token = getCookie("token");
     if (token) {
@@ -110,14 +111,14 @@ export default {
 </script>
 <template>
   <div class="mt-12">
-    <div class="bg-white rounded-md pb-24">
-      <div class="flex justify-between text-sm w-full text-blackish-green">
+    <div class="rounded-md pb-24 set-bg-color">
+      <div class="flex justify-between text-sm w-full label-bg-color">
         <div
           v-for="(item, index) in tabList"
           :key="index"
           @click="active = index"
           :class="[
-            active == index ? 'bg-[#FFA602]' : '',
+            active == index ? 'label-active-color' : 'label-bg-color',
             active == 0 ? 'rounded-l-md' : 'rounded-r-md',
           ]"
           class="w-1/2 text-center pt-15 pb-12 font-medium"
@@ -146,11 +147,16 @@ export default {
         <div class="relative mt-6" @click="openBindPop">
           <img
             class="w-319 m-auto"
+            src="@/assets/images/black/btn-bg-big.png"
+            v-if="appColor=='black'"
+          />
+          <img
+            class="w-319 m-auto"
             src="@/assets/images/home/btn-bg-big.png"
-            alt=""
+            v-else
           />
           <span
-            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-white font-bold"
+            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm btn-text-color font-bold"
             >绑定钱包</span
           >
         </div>
@@ -170,33 +176,33 @@ export default {
           <HashValueSize />
         </template>
         <div class="flex justify-between items-center mt-35">
-          <div class="flex items-center text-sm text-blackish-green">
+          <div class="flex items-center text-sm label-bg-color">
             <div class="font-medium">赔率</div>
             <div
               v-if="userInfo.gameType == 4"
-              class="text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
+              class="text-beige value-bg-color border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
             >
               1:1.95
               <div class="text-center">1:8</div>
             </div>
             <div
               v-else-if="userInfo.gameType == 3"
-              class="text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
+              class="text-beige value-bg-color border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
             >
             [1~10]*
               <div class="text-center">0.95</div>
             </div>
             <div
               v-else
-              class="text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-19 pb-17 pl-16 pr-26 ml-8"
+              class="text-beige value-bg-color border border-[#707070] rounded-md pt-19 pb-17 pl-16 pr-26 ml-8"
             >
               1:1.95
             </div>
           </div>
-          <div class="flex items-center text-sm text-blackish-green">
+          <div class="flex items-center text-sm label-bg-color">
             <div class="font-medium">转账限额</div>
             <div
-              class="flex items-center text-beige bg-[#F3F4F2] border border-[#707070] rounded-md pt-19 pb-17 pl-15 pr-7 ml-8"
+              class="flex items-center text-beige value-bg-color border border-[#707070] rounded-md pt-19 pb-17 pl-15 pr-7 ml-8"
             >
             {{
                 userInfo.gameType == 3 && active == 0 ? '100-2000' :
@@ -216,9 +222,9 @@ export default {
       </div>
     </div>
     <div
-      class="h-32 flex items-center justify-center bg-white rounded-md mt-8 mb-12"
+      class="h-32 flex items-center justify-center set-bg-color rounded-md mt-8 mb-12"
     >
-      <img class="h-7" src="@/assets/images/home/icon_down.png" alt="" />
+      <img class="w-10" src="@/assets/images/home/icon_down.png" alt="" />
     </div>
     <TeachingVideo />
     <TransferBetExam />

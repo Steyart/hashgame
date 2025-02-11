@@ -4,7 +4,7 @@ import { showToast, showSuccessToast } from "vant";
 var clipboard = new ClipboardJS('.copyBtn');
 import { mapGetters } from "vuex";
 import {TronWeb} from 'tronweb';
-
+let interval = null
 var postInfo = {
   data() {
     return {
@@ -14,6 +14,8 @@ var postInfo = {
 
       currentBlock: null,
       nextBlock: null,
+      nextBlock1: null,
+      lastFetchedBlock: null,
       interval: null,
 
       blockNumber: null, // 用来存储最新的区块号
@@ -22,14 +24,18 @@ var postInfo = {
   created() {
   },
   computed: {
-    ...mapGetters([]),
+    ...mapGetters(['appColor'])
   },
   mounted() {
-
+    if (interval) {
+      clearInterval(interval); // 清除定时器，避免内存泄漏
+    }
   },
   beforeDestroy() {
     // 组件销毁前清除定时器
-    clearInterval(this.interval);
+    if (interval) {
+      clearInterval(interval); // 清除定时器，避免内存泄漏
+    }
   },
   methods: {
     /* 骨架请求防抖 */
@@ -77,7 +83,7 @@ var postInfo = {
       }
     },
     // 获取区块号
-    getBlockNum() {
+    /* getBlockNum() {
       this.$http
         .get(`/tron/block`)
         .then(({ data }) => {
@@ -91,8 +97,48 @@ var postInfo = {
         .catch((err) => {
           console.log(err)
         });
-    },
+    }, */
+    
     async getLatestBlock() {
+      if (interval) {
+        clearInterval(interval); // 清除定时器，避免内存泄漏
+      }
+      try {
+        // 初始化 TronWeb 实例
+        const tronWeb = new TronWeb({
+          fullNode: 'https://api.trongrid.io', // TRON 公共节点
+          solidityNode: 'https://api.trongrid.io',
+          eventServer: 'https://api.trongrid.io',
+        });
+
+        // 获取最新区块
+        const block = await tronWeb.trx.getCurrentBlock();
+        this.nextBlock = block.block_header.raw_data.number; // 最新区块号
+        this.currentBlock = this.nextBlock - 1;  // 当前区块号
+
+        // 设置定时器每5秒更新一次区块号
+        interval = setInterval(async () => {
+          const block = await tronWeb.trx.getCurrentBlock();
+          let newBlockNumber = block.block_header.raw_data.number;
+          if (newBlockNumber > this.nextBlock) {
+            this.nextBlock = newBlockNumber;
+            this.currentBlock = newBlockNumber - 1;
+          }else{
+            if(this.nextBlock - newBlockNumber >= 2){
+              this.nextBlock = newBlockNumber - 1;
+              this.currentBlock = newBlockNumber - 2;
+            }else{
+              this.nextBlock += 1
+              this.currentBlock = this.nextBlock - 1;
+            }
+          }
+          console.log(newBlockNumber, this.nextBlock)
+        }, 3000);
+      } catch (error) {
+        console.error('获取区块号失败:', error);
+      }
+    },
+    async updateBlocks() {
       try {
         // 初始化 TronWeb 实例
         const tronWeb = new TronWeb({
@@ -100,19 +146,20 @@ var postInfo = {
           solidityNode: 'https://api.trongrid.io',
           eventServer: 'https://api.trongrid.io'
         });
+  
         // 获取最新区块
         const block = await tronWeb.trx.getCurrentBlock();
-        this.currentBlock = block.block_header.raw_data.number + 3; // 获取最新区块号
-        this.nextBlock = this.currentBlock + 1
-        this.interval = setInterval(this.updateBlocks, 1000);
+  
+        let newBlockNumber = block.block_header.raw_data.number;
+        // console.log(this.nextBlock)
+        if (newBlockNumber > this.nextBlock) {
+          this.nextBlock = newBlockNumber;
+          this.nextBlock1 = newBlockNumber; // 获取最新区块号
+          this.currentBlock = newBlockNumber - 1;
+        }
       } catch (error) {
         console.error('获取区块号失败:', error);
       }
-    },
-    updateBlocks() {
-      this.currentBlock = this.nextBlock;
-      // 更新下一区块为当前区块 + 1
-      this.nextBlock = Number(this.currentBlock) + 1;
     },
     // 获取余额
     getBalance(params) {

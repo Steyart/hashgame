@@ -1,0 +1,45 @@
+:root{
+    --text-beige: #FFA602;
+    --text-blackish-green: #2F3F33;
+    --set-bg-color: #fff;
+    --label-bg-color: #FFA602;
+    --label-text-color: #2F3F33;
+    --value-bg-color: #F3F4F2;
+    --value-text-color: #2F3F33;
+    --label-active-color: #2F3F33;
+    --btn-text-color: #fff;
+    --bg-color-EBEBEE: #EBEBEE;
+    --text-base-color: #827F87;
+}
+.text-base-color{
+  color: var(--text-base-color);
+}
+.text-beige {
+    color: var(--text-beige);
+}
+.text-blackish-green{
+  color: var(--text-blackish-green);
+}
+.set-bg-color{
+    background: var(--set-bg-color);
+}
+.label-bg-color{
+    background: transparent;
+    color: var(--label-text-color);
+}
+.value-bg-color{
+    background: var(--value-bg-color);
+}
+.value-text-color{
+    color: var(--value-text-color);
+}
+.label-active-color{
+    background: var(--label-bg-color);
+    color: var(--label-active-color);
+}
+.btn-text-color{
+    color: var(--btn-text-color);
+}
+.color-EBEBEE{
+    background: var(--bg-color-EBEBEE);
+}

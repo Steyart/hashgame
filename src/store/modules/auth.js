@@ -3,6 +3,7 @@ import axios from 'axios';
 // state
 let state = {
   userInfo: null,
+  appColor: '',
 };
 const actions = {
   saveUserInfo({ commit, dispatch }, userInfo) {
@@ -31,11 +32,15 @@ const mutations = {
     state.userInfo.gameType = newGameInfo.gameType;
     state.userInfo.gameName = newGameInfo.name;
   },
+  setAppColor: (state, payload) => {
+    state.appColor = payload
+  },
 };
 
 // getters
 const getters = {
   userInfo: state => state.userInfo,
+  appColor: state => state.appColor,
 };
 
 export default {
