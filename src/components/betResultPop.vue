@@ -62,7 +62,8 @@ export default {
           <div class="top-15 left-15 right-15 m-auto">
             <div class="px-15">
               <div class="flex items-center justify-between mt-22 mx-38">
-                <img class="h-27" src="@/assets/images/home/star.png" alt="" />
+                <img v-if="appColor == 'black'" class="h-27" src="@/assets/images/black/star.png" alt="" />
+                <img v-else class="h-27" src="@/assets/images/home/star.png" alt="" />
                 <div class="text-2.5xl text-white font-bold">
                   {{
                     resultInfo.win_loser == 1
@@ -70,7 +71,8 @@ export default {
                       : "很遗憾,你输了"
                   }}
                 </div>
-                <img class="h-27" src="@/assets/images/home/star.png" alt="" />
+                <img v-if="appColor == 'black'" class="h-27" src="@/assets/images/black/star.png" alt="" />
+                <img v-else class="h-27" src="@/assets/images/home/star.png" alt="" />
               </div>
               <div
                 class="text-wathet-deep text-4xl text-center shanhailiuliangmima"
@@ -158,13 +160,18 @@ export default {
                     class="relative mr-3"
                     @click="handleVerify(resultInfo.number)"
                   >
-                    <img
+                    <img v-if="appColor == 'black'"
+                      class="w-68 m-auto"
+                      src="@/assets/images/black/btn-bg-small.png"
+                      alt=""
+                    />
+                    <img v-else
                       class="w-68 m-auto"
                       src="@/assets/images/home/btn-bg-small.png"
                       alt=""
                     />
                     <span
-                      class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm text-white"
+                      class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm btn-text-color"
                       >验证</span
                     >
                   </div>

@@ -44,7 +44,7 @@ export default {
         showToast({
           type: "fail",
           message: "请输入地址",
-          icon: this.getRequireImg('/home/warning.png'),
+          icon: this.getRequireImg(`${this.appColor=='black'?'/home':'/black'}/warning.png`),
           className: "fail-toast-box",
         });
         return;
@@ -72,7 +72,7 @@ export default {
                 showToast({
                   type: "fail",
                   message: data.message,
-                  icon: this.getRequireImg('/home/warning.png'),
+                  icon: this.getRequireImg(`${this.appColor=='black'?'/home':'/black'}/warning.png`),
                   className: "fail-toast-box",
                 });
               }
@@ -82,7 +82,7 @@ export default {
                 showToast({
                   type: "fail",
                   message: response.data.message,
-                  icon: this.getRequireImg('/home/warning.png'),
+                  icon: this.getRequireImg(`${this.appColor=='black'?'/home':'/black'}/warning.png`),
                   className: "fail-toast-box",
                 });
               // }
@@ -103,9 +103,9 @@ export default {
       :style="{}"
       @click-overlay="handleClickOverlay"
     >
-      <div class="relative w-350 bg-white pt-16 pb-31">
+      <div class="relative w-350 pt-16 pb-31" :class="appColor == 'black' ? 'bg-[#47444C]' : 'bg-white'">
         <!-- <img class="absolute h-650" src="@/assets/images/home/pop-bg.png" alt="" /> -->
-        <div
+        <div v-if="appColor !== 'black'"
           class="absolute right-0 top-0 w-full h-300"
           style="
             background: linear-gradient(
@@ -118,10 +118,17 @@ export default {
         ></div>
         <div class="relative">
           <div
-            class="flex items-center justify-center text-xl text-blackish-green font-bold"
+            class="flex items-center justify-center text-xl font-bold"
+            :class="appColor == 'black' ? 'text-white' : 'text-blackish-green'"
           >
             绑定虚拟币地址
-            <img
+            <img v-if="appColor == 'black'"
+              @click="showPopover = !showPopover"
+              class="h-15 ml-17"
+              src="@/assets/images/black/question.png"
+              alt=""
+            />
+            <img v-else
               @click="showPopover = !showPopover"
               class="h-15 ml-17"
               src="@/assets/images/home/question.png"
@@ -134,34 +141,42 @@ export default {
               style="width: 317px"
             >
               <div
-                class="bg-[#F1F4EC] border border-[#707070] rounded-md"
+                class="border border-[#707070] rounded-md"
+                :class="appColor == 'black' ? 'bg-[#141316]' : 'bg-[#F1F4EC]'"
               >
-                <div class="text-base text-beige mt-10 mb-15 font-medium">
+                <div class="text-base ml-15 mt-10 mb-15 font-medium"
+                :class="appColor == 'black' ? 'text-[#C9FC01]' : 'text-beige'"
+                >
                   绑定流程?
                 </div>
-                <div class="text-xs mb-37 font-medium">
+                <div class="text-xs mb-37 ml-15 font-medium" :class="{'text-[#FFFFFF]':appColor=='black'}">
                   将您的去中心化钱包地址（Tron）粘贴在待激活地址位置，点击添加
                 </div>
               </div>
             </van-popover>
           </div>
           <div
-            class="flex items-center justify-center text-lg text-white bg-[#FFA602] ml-18 mr-16 rounded-md border border-[#707070] py-10 mt-28"
+            class="flex items-center justify-center text-lg ml-18 mr-16 label-active-color rounded-md border border-[#707070] py-10 mt-28"
           >
-            <img
+            <img v-if="appColor == 'black'"
+              class="h-18 mr-5"
+              src="@/assets/images/black/bind.png"
+              alt=""
+            />
+            <img v-else
               class="h-18 mr-5"
               src="@/assets/images/home/bind.png"
               alt=""
             />新增地址
           </div>
-          <div class="text-sm text-blackish-green ml-18 mt-27 font-semibold">
+          <div class="text-sm ml-18 mt-27 text-blackish-green font-semibold">
             您的地址
           </div>
           <div
-            class="bg-[#F2F2F2] mx-16 border border-[#707070] rounded-default"
+            class="mx-16 border border-[#707070] rounded-default"
           >
             <van-field
-              class="field-box"
+              :class="appColor == 'black' ? 'field-box-black' : 'field-box'"
               :disabled="!canAddAddress"
               v-model="addressValue"
               placeholder="请输入您的新增地址"
@@ -176,10 +191,12 @@ export default {
           已启动的地址：<span class="text-base text-beige">{{ userAddressList.length }}个</span>
         </div>
         <div
-          class="bg-[#F2F2F2] border border-[#707070] mx-17 mt-12 pb-17 rounded-default"
+          class="border border-[#707070] mx-17 mt-12 pb-17 rounded-default"
+          :class="appColor == 'black' ? 'bg-[#27272D]' : 'bg-[#F2F2F2]'"
         >
           <div
-            class="flex items-center justify-between bg-[#CCCCCC] rounded-default text-xs text-blackish-green pt-13 pb-11"
+            class="flex items-center justify-between rounded-default text-xs pt-13 pb-11"
+            :class="appColor == 'black' ? 'bg-[#141316] text-[#B0B6C6]' : 'bg-[#CCCCCC] text-blackish-green'"
           >
             <div class="w-80 text-center">类型</div>
             <div class="w-150 text-center">地址</div>
@@ -214,9 +231,16 @@ export default {
   padding: 0;
   border: none;
   @apply bg-[#F2F2F2] px-15 py-10 text-xs text-[#2F3F33];
+  --van-field-placeholder-text-color: #2f3f33;
 }
-.van-field {
-  --van-field-placeholder-text-color: #2f3f33; /* 修改该组件内的 placeholder 颜色 */
+:deep(.field-box-black) {
+  padding: 0;
+  border: none;
+  @apply bg-[#141316] px-15 py-10 text-xs text-[#FFFFFF];
+  --van-field-placeholder-text-color: #FFFFFF;
+}
+:deep(.field-box-black .van-field__control) {
+  @apply text-[#FFFFFF];
 }
 
 .confirm-dialog-message {

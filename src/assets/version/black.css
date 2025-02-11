@@ -27,3 +27,6 @@
 .app-black .color-EBEBEE{
     --bg-color-EBEBEE: #141316;
 }
+.app-black .text-blackish-green{
+    --text-blackish-green: #fff
+}
