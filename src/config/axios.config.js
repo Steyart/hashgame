@@ -77,7 +77,7 @@ $instance.interceptors.response.use((response) => {
       className: "fail-toast-box",
     });
   }
-  if(error.response && error.response.data && error.response.data.code == 6002){
+  if(error.response && error.response.data && error.response.data.code){
     showToast({
       type: "fail",
       message: error.response.data.message,
