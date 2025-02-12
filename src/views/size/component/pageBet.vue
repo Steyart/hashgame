@@ -508,7 +508,7 @@ export default {
         range: this.selectRange,
         session: this.sessionIndex + 1,
       };
-
+      console.log(this.nextBlock1 , this.nextBlock)
       if (
         Object.values(params).some(
           (value) => value == "" || value == 0 || value == null
@@ -547,11 +547,6 @@ export default {
             this.getBalance({
               action: 6,
               ts: Date.now(),
-            });
-            showToast({
-              type: "fail",
-              message: response.data.message,
-              className: "fail-toast-box",
             });
             this.isCanBeting = true;
           // }
@@ -622,11 +617,6 @@ export default {
             this.getBalance({
               action: 6,
               ts: Date.now(),
-            });
-            showToast({
-              type: "fail",
-              message: response.data.message,
-              className: "fail-toast-box",
             });
             this.isCanBeting = true;
           // }

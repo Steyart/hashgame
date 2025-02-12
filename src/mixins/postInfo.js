@@ -152,7 +152,7 @@ var postInfo = {
   
         let newBlockNumber = block.block_header.raw_data.number;
         // console.log(this.nextBlock)
-        if (newBlockNumber > this.nextBlock) {
+        if (newBlockNumber > this.nextBlock1) {
           this.nextBlock = newBlockNumber;
           this.nextBlock1 = newBlockNumber; // 获取最新区块号
           this.currentBlock = newBlockNumber - 1;
