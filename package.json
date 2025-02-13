@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "build:all": "node builds.js",
+    "build:development": "node build-development.js",
+    "build:production": "node build-production.js",
     "preview": "vite preview",
     "test:unit": "vitest"
   },
