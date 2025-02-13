@@ -520,6 +520,7 @@ export default {
         .post(`/game/putBet`, params)
         .then(({ data }) => {
           if (data.code === 200) {
+            this.balance = data.data.balance;
             showToast({
               type: "success",
               message: "投注成功",
