@@ -41,13 +41,23 @@ export default {
         <div class="flex items-center text-base-color text-xs">
           如:
           <div class="text-beige">KyhL…ljla5b55</div>
-          <img
+          <img v-if="appColor == 'black'"
+            class="h-28 mx-4"
+            src="@/assets/images/black/search-5.png"
+            alt=""
+          />
+          <img v-else
             class="h-28 mx-4"
             src="@/assets/images/home/search-5.png"
             alt=""
           />
           <div class="text-beige">KyhL…ljla5b55</div>
-          <img
+          <img v-if="appColor == 'black'"
+            class="h-28 ml-4"
+            src="@/assets/images/black/search-5.png"
+            alt=""
+          />
+          <img v-else
             class="h-28 ml-4"
             src="@/assets/images/home/search-5.png"
             alt=""

@@ -30,6 +30,7 @@ export default {
   methods: {
     handleClickOverlay() {
       this.$emit("update:showMenuPop", false);
+      this.menuIndex = -1;
     },
     changeMenu(index) {
 
@@ -76,7 +77,18 @@ export default {
             :key="index"
             @click="changeMenu(index)"
           >
-            <img
+            <img v-if="appColor == 'black'"
+              class="h-30 mb-12"
+              :src="
+                getRequireImg(
+                  `black/${item.icon}_${
+                    menuIndex == index ? 'active' : 'inactive'
+                  }.png`
+                )
+              "
+              alt=""
+            />
+            <img v-else
               class="h-30 mb-12"
               :src="
                 getRequireImg(
