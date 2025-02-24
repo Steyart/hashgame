@@ -143,7 +143,7 @@ var postInfo = {
         // const block = await tronWeb.trx.getCurrentBlock();
         let block = await this.getBlockNum()
   
-        let newBlockNumber = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2;
+        let newBlockNumber = block.data.data * 1  || block.block_header.raw_data.number ;
         // console.log(this.nextBlock)
         if (newBlockNumber > this.nextBlock1) {
           this.nextBlock = newBlockNumber;
