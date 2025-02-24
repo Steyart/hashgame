@@ -134,7 +134,7 @@ export default {
         <div
           class="flex justify-between items-center border border-[#707070] rounded-md text-xs"
         >
-          <div class="pl-7">{{ betWalletAddress }}</div>
+          <div class="pl-7 overflow-hidden text-ellipsis whitespace-nowrap">{{ betWalletAddress }}</div>
           <div
             :data-clipboard-text="betWalletAddress"
             @click="onCopyBindAddress(betWalletAddress)"
