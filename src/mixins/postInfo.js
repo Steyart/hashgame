@@ -111,20 +111,20 @@ var postInfo = {
         interval = setInterval(async () => {
           let block = await this.getBlockNum()
           // const block = await tronWeb.trx.getCurrentBlock();
-          let newBlockNumber = block.data.data * 1 || block.block_header.raw_data.number;
+          let newBlockNumber = block.data.data * 1 + 1 || block.block_header.raw_data.number + 1;
           if (newBlockNumber > this.nextBlock) {
-            this.nextBlock = newBlockNumber + 1;
-            this.currentBlock = newBlockNumber ;
+            this.nextBlock = newBlockNumber ;
+            this.currentBlock = newBlockNumber - 1;
           }else{
-            if(this.nextBlock - newBlockNumber >= 2){
-              this.nextBlock = newBlockNumber ;
+            if(this.nextBlock - newBlockNumber >= 3){
+              this.nextBlock = newBlockNumber;
               this.currentBlock = newBlockNumber - 1;
             }else{
               this.nextBlock += 1
               this.currentBlock = this.nextBlock - 1;
             }
           }
-          console.log(newBlockNumber, this.nextBlock)
+          console.log(this.currentBlock, this.nextBlock)
         }, 3000);
       } catch (error) {
         console.error('获取区块号失败:', error);
@@ -143,7 +143,7 @@ var postInfo = {
         // const block = await tronWeb.trx.getCurrentBlock();
         let block = await this.getBlockNum()
   
-        let newBlockNumber = block.data.data * 1 || block.block_header.raw_data.number;
+        let newBlockNumber = block.data.data * 1 + 1 || block.block_header.raw_data.number + 1;
         // console.log(this.nextBlock)
         if (newBlockNumber > this.nextBlock1) {
           this.nextBlock = newBlockNumber;
