@@ -947,11 +947,11 @@ export default {
         <div class="flex justify-between items-center text-sm text-white mx-20 mt-12">
           <div class="w-1/2 flex items-center mr-7 bg-[#141316] rounded-md pt-8 pb-6 pl-8">
             <img class="w-24 mr-15" src="@/assets/images/home/icon_balance.png" alt="">
-            {{ balance.toFixed(4).replace(/\.?0*$/, '') || 0 }}
+            {{ (balance * 1).toFixed(4).replace(/\.?0*$/, '') || 0 }}
           </div>
           <div class="w-1/2 flex items-center bg-[#141316] rounded-md pt-8 pb-6 pl-8">
             <img class="w-24 mr-15" src="@/assets/images/home/icon_win.png" alt="">
-            {{ winOrLoserAmount.toFixed(4).replace(/\.?0*$/, '') || 0 }}
+            {{ (winOrLoserAmount * 1).toFixed(4).replace(/\.?0*$/, '') || 0 }}
           </div>
         </div>
         <BetRecord
