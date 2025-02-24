@@ -104,14 +104,14 @@ var postInfo = {
         let block = await this.getBlockNum()
         // 获取最新区块
         // const block = await tronWeb.trx.getCurrentBlock();
-        this.nextBlock = block.data.data * 1 + 1 || block.block_header.raw_data.number + 1; // 最新区块号
+        this.nextBlock = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2; // 最新区块号
         this.currentBlock = this.nextBlock - 1;  // 当前区块号
 
         // 设置定时器每5秒更新一次区块号
         interval = setInterval(async () => {
           let block = await this.getBlockNum()
           // const block = await tronWeb.trx.getCurrentBlock();
-          let newBlockNumber = block.data.data * 1 + 1 || block.block_header.raw_data.number + 1;
+          let newBlockNumber = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2;
           if (newBlockNumber > this.nextBlock) {
             this.nextBlock = newBlockNumber ;
             this.currentBlock = newBlockNumber - 1;
@@ -143,7 +143,7 @@ var postInfo = {
         // const block = await tronWeb.trx.getCurrentBlock();
         let block = await this.getBlockNum()
   
-        let newBlockNumber = block.data.data * 1 + 1 || block.block_header.raw_data.number + 1;
+        let newBlockNumber = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2;
         // console.log(this.nextBlock)
         if (newBlockNumber > this.nextBlock1) {
           this.nextBlock = newBlockNumber;
