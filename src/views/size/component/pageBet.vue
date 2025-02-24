@@ -520,7 +520,7 @@ export default {
         .post(`/game/putBet`, params)
         .then(({ data }) => {
           if (data.code === 200) {
-            this.balance = data.data.balance;
+            this.balance = data.data.balance *1;
             showToast({
               type: "success",
               message: "投注成功",
@@ -597,8 +597,8 @@ export default {
           if (data.code === 200) {
             this.resultInfoList.push(...data.data.results);
             if (this.resultInfoList && this.resultInfoList.length > 0) {
-              this.balance = this.resultInfoList[this.resultInfoList.length - 1].balance;
-              this.winOrLoserAmount = this.resultInfoList[this.resultInfoList.length - 1].winOrLoserAmount;
+              this.balance = this.resultInfoList[this.resultInfoList.length - 1].balance *1;
+              this.winOrLoserAmount = this.resultInfoList[this.resultInfoList.length - 1].winOrLoserAmount *1;
             }
             this.openResultPop();
             this.getWayBill();
