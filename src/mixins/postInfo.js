@@ -83,21 +83,12 @@ var postInfo = {
       }
     },
     // 获取区块号
-    /* getBlockNum() {
-      this.$http
-        .get(`/tron/block`)
-        .then(({ data }) => {
-          if (data.code == 200) {
-            this.currentBlock = data.data.block_numbers
-            this.nextBlock = this.currentBlock + 1
-            // 设置定时器，每3秒更新区块
-            this.interval = setInterval(this.updateBlocks, 3000);
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        });
-    }, */
+    async getBlockNum() {
+      return this.$http.post(`https://sandbox-api.privatex.io/sdk/hash/getLatestBlock`,{
+        chainId: 2,
+        isSign: true,
+      })
+    },
     
     async getLatestBlock() {
       if (interval) {
@@ -105,28 +96,29 @@ var postInfo = {
       }
       try {
         // 初始化 TronWeb 实例
-        const tronWeb = new TronWeb({
+        /* const tronWeb = new TronWeb({
           fullNode: 'https://api.trongrid.io', // TRON 公共节点
           solidityNode: 'https://api.trongrid.io',
           eventServer: 'https://api.trongrid.io',
-        });
-
+        }); */
+        let block = await this.getBlockNum()
         // 获取最新区块
-        const block = await tronWeb.trx.getCurrentBlock();
-        this.nextBlock = block.block_header.raw_data.number; // 最新区块号
+        // const block = await tronWeb.trx.getCurrentBlock();
+        this.nextBlock = block.data.data * 1 + 1 || block.block_header.raw_data.number + 1; // 最新区块号
         this.currentBlock = this.nextBlock - 1;  // 当前区块号
 
         // 设置定时器每5秒更新一次区块号
         interval = setInterval(async () => {
-          const block = await tronWeb.trx.getCurrentBlock();
-          let newBlockNumber = block.block_header.raw_data.number;
+          let block = await this.getBlockNum()
+          // const block = await tronWeb.trx.getCurrentBlock();
+          let newBlockNumber = block.data.data * 1 || block.block_header.raw_data.number;
           if (newBlockNumber > this.nextBlock) {
-            this.nextBlock = newBlockNumber;
-            this.currentBlock = newBlockNumber - 1;
+            this.nextBlock = newBlockNumber + 1;
+            this.currentBlock = newBlockNumber ;
           }else{
             if(this.nextBlock - newBlockNumber >= 2){
-              this.nextBlock = newBlockNumber - 1;
-              this.currentBlock = newBlockNumber - 2;
+              this.nextBlock = newBlockNumber ;
+              this.currentBlock = newBlockNumber - 1;
             }else{
               this.nextBlock += 1
               this.currentBlock = this.nextBlock - 1;
@@ -141,16 +133,17 @@ var postInfo = {
     async updateBlocks() {
       try {
         // 初始化 TronWeb 实例
-        const tronWeb = new TronWeb({
+        /* const tronWeb = new TronWeb({
           fullNode: 'https://api.trongrid.io', // TRON 公共节点
           solidityNode: 'https://api.trongrid.io',
           eventServer: 'https://api.trongrid.io'
-        });
+        }); */
   
         // 获取最新区块
-        const block = await tronWeb.trx.getCurrentBlock();
+        // const block = await tronWeb.trx.getCurrentBlock();
+        let block = await this.getBlockNum()
   
-        let newBlockNumber = block.block_header.raw_data.number;
+        let newBlockNumber = block.data.data * 1 || block.block_header.raw_data.number;
         // console.log(this.nextBlock)
         if (newBlockNumber > this.nextBlock1) {
           this.nextBlock = newBlockNumber;

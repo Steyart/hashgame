@@ -5,6 +5,7 @@ import store from '../store/index'
 import router from '../router'
 import { getCookie } from '@/service/util.service'
 import { showToast } from "vant"
+import { generateRandomString } from '@/service/util.helper'
 let $instance = axios.create({
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
@@ -26,6 +27,7 @@ $instance.setParams = (posted = false, query = {}) => {
   } else {
     delete $instance.defaults.headers.Authorization; // 确保没有无效的Authorization头
   }
+
   return $instance.defaults.data;
 };
 
@@ -47,6 +49,14 @@ $instance.interceptors.request.use((config) => {
   }
   // 设置全局参数
   $instance.setParams(false, {});
+  
+  if(config.data && config.data.isSign){
+    config.headers.key = 'yq3igbvdknbvohnw'
+    config.headers.sign = generateRandomString(64)
+    config.headers.timestamp = new Date().getTime()
+    config.headers['Content-Type'] = 'application/json'
+    config.data.isSign = undefined
+  }
 
   // 如果是POST请求并且不是简单的请求，则可能触发预检请求
   if (config.method.toLowerCase() === 'post') {
