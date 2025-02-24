@@ -134,7 +134,7 @@ export default {
         <div
           class="flex justify-between items-center border border-[#707070] rounded-md text-xs"
         >
-          <div class="pl-7">{{ betWalletAddress }}</div>
+          <div class="pl-7 overflow-hidden text-ellipsis whitespace-nowrap">{{ betWalletAddress }}</div>
           <div
             :data-clipboard-text="betWalletAddress"
             @click="onCopyBindAddress(betWalletAddress)"
@@ -216,7 +216,10 @@ export default {
         <div v-if="userInfo.gameType == 3" class="text-xs text-beige mt-30 font-medium">
           {{ userInfo.gameType == 3 ? '注：游戏赔率会自动浮动，所有解释权归本平台所有。闲家牌型牛牛,牛九赢时返奖抽10%手续费' : '注：游戏赔率会自动浮动，所有解释权归本平台所有。' }}
         </div>
-        <div class="text-ll text-base-color mt-10 font-medium">
+        <div class="text-ll text-beige mt-10 font-medium">
+          注：游戏赔率会自动浮动，所有解释权归本平台所有。
+        </div>
+        <div class="text-ll text-base-color mt-5 font-medium">
           低于限额平台扣除，高于限额视为无效金额，平台抽取1%手续费，给予回馈。
         </div>
       </div>
