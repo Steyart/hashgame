@@ -88,6 +88,13 @@ var postInfo = {
         chainId: 2,
         isSign: true,
       })
+      // return this.$http.post(`https://young-magical-sunset.tron-mainnet.quiknode.pro/113fd6212f16f6f269ce3ae4afcabfd79d34c98a/jsonrpc`,{
+      //   "method": "eth_blockNumber",
+      //   "params": [],
+      //   "id": 1,
+      //   "jsonrpc": "2.0",
+      //   // isSign: true,
+      // })
     },
     
     async getLatestBlock() {
@@ -102,6 +109,8 @@ var postInfo = {
           eventServer: 'https://api.trongrid.io',
         }); */
         let block = await this.getBlockNum()
+        block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
+
         // 获取最新区块
         // const block = await tronWeb.trx.getCurrentBlock();
         this.nextBlock = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2; // 最新区块号
@@ -110,6 +119,7 @@ var postInfo = {
         // 设置定时器每5秒更新一次区块号
         interval = setInterval(async () => {
           let block = await this.getBlockNum()
+          block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
           // const block = await tronWeb.trx.getCurrentBlock();
           let newBlockNumber = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2;
           if (newBlockNumber > this.nextBlock) {
@@ -142,8 +152,9 @@ var postInfo = {
         // 获取最新区块
         // const block = await tronWeb.trx.getCurrentBlock();
         let block = await this.getBlockNum()
+        block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
   
-        let newBlockNumber = block.data.data * 1  || block.block_header.raw_data.number ;
+        let newBlockNumber = block.data.data * 1 + 6  || block.block_header.raw_data.number  + 6;
         // console.log(this.nextBlock)
         if (newBlockNumber > this.nextBlock1) {
           this.nextBlock = newBlockNumber;

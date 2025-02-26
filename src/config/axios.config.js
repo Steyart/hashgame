@@ -56,6 +56,9 @@ $instance.interceptors.request.use((config) => {
     config.headers.timestamp = new Date().getTime()
     config.headers['Content-Type'] = 'application/json'
     config.data.isSign = undefined
+  }else if(config.data && config.data.method == 'eth_blockNumber'){
+    config.headers['Content-Type'] = 'application/json'
+    config.redirect = 'follow'
   }
 
   // 如果是POST请求并且不是简单的请求，则可能触发预检请求
