@@ -154,7 +154,7 @@ var postInfo = {
         let block = await this.getBlockNum()
         block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
   
-        let newBlockNumber = block.data.data * 1 + 6  || block.block_header.raw_data.number  + 6;
+        let newBlockNumber = block.data.data * 1 + 0  || block.block_header.raw_data.number + 0;
         // console.log(this.nextBlock)
         if (newBlockNumber > this.nextBlock1) {
           this.nextBlock = newBlockNumber;
