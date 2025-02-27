@@ -66,7 +66,7 @@ export default {
       <div class="flex items-center justify-center">
         <video ref="videoPlayer" class="w-320" controls>
           <source
-            :src="`https://hj-hashgo.s3.ap-southeast-1.amazonaws.com/video/${userInfo.gameType}.mp4`"
+            :src="`https://hj-hashgo.s3.ap-southeast-1.amazonaws.com/video/${appColor}/${userInfo.gameType}.mp4`"
             type="video/mp4"
           />
         </video>
