@@ -110,7 +110,7 @@ var postInfo = {
         }); */
         let block = await this.getBlockNum()
         block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
-        if(block.data.data != 0){
+        if(block.data.data && block.data.data.length > 7){
           // 获取最新区块
           // const block = await tronWeb.trx.getCurrentBlock();
           this.nextBlock = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2; // 最新区块号
@@ -122,7 +122,7 @@ var postInfo = {
           let block = await this.getBlockNum()
           block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
           // const block = await tronWeb.trx.getCurrentBlock();
-          if(block.data.data != 0){
+          if(block.data.data && block.data.data.length > 7){
             let newBlockNumber = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2;
             if (newBlockNumber > this.nextBlock) {
               this.nextBlock = newBlockNumber ;
@@ -156,7 +156,7 @@ var postInfo = {
         // const block = await tronWeb.trx.getCurrentBlock();
         let block = await this.getBlockNum()
         block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
-        if(block.data.data != 0){
+        if(block.data.data && block.data.data.length > 7){
           let newBlockNumber = block.data.data * 1 + 0  || block.block_header.raw_data.number + 0;
           // console.log(this.nextBlock)
           if (newBlockNumber > this.nextBlock1) {
