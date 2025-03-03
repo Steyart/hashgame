@@ -115,32 +115,40 @@ var postInfo = {
           // const block = await tronWeb.trx.getCurrentBlock();
           this.nextBlock = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2; // 最新区块号
           this.currentBlock = this.nextBlock - 1;  // 当前区块号
-        }
+          
 
-        // 设置定时器每5秒更新一次区块号
-        interval = setInterval(async () => {
-          let block = await this.getBlockNum()
-          block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
-          // const block = await tronWeb.trx.getCurrentBlock();
-          if(block.data.data && block.data.data.length > 7){
-            let newBlockNumber = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2;
-            if (newBlockNumber > this.nextBlock) {
-              this.nextBlock = newBlockNumber ;
-              this.currentBlock = newBlockNumber - 1;
-            }else{
-              if(this.nextBlock - newBlockNumber >= 3){
-                this.nextBlock = newBlockNumber;
+          // 设置定时器每5秒更新一次区块号
+          interval = setInterval(async () => {
+            let block = await this.getBlockNum()
+            block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
+            // const block = await tronWeb.trx.getCurrentBlock();
+            if(block.data.data && block.data.data.length > 7){
+              let newBlockNumber = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2;
+              if (newBlockNumber > this.nextBlock) {
+                this.nextBlock = newBlockNumber ;
                 this.currentBlock = newBlockNumber - 1;
               }else{
-                this.nextBlock += 1
-                this.currentBlock = this.nextBlock - 1;
+                if(this.nextBlock - newBlockNumber >= 3){
+                  this.nextBlock = newBlockNumber;
+                  this.currentBlock = newBlockNumber - 1;
+                }else{
+                  this.nextBlock += 1
+                  this.currentBlock = this.nextBlock - 1;
+                }
               }
+              console.log(this.currentBlock, this.nextBlock)
             }
-            console.log(this.currentBlock, this.nextBlock)
-          }
-        }, 3000);
+          }, 3000);
+        }else{
+          throw new Error("这是一个自定义错误");
+        }
       } catch (error) {
         console.error('获取区块号失败:', error);
+        showToast({
+          type: "fail",
+          message: "获取区块号失败",
+          className: "fail-toast-box",
+        })
       }
     },
     async updateBlocks() {
@@ -164,9 +172,16 @@ var postInfo = {
             this.nextBlock1 = newBlockNumber; // 获取最新区块号
             this.currentBlock = newBlockNumber - 1;
           }
+        }else{
+          throw new Error("这是一个自定义错误");
         }
       } catch (error) {
         console.error('获取区块号失败:', error);
+        showToast({
+          type: "fail",
+          message: "获取区块号失败",
+          className: "fail-toast-box",
+        })
       }
     },
     // 获取余额
