@@ -110,31 +110,34 @@ var postInfo = {
         }); */
         let block = await this.getBlockNum()
         block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
-
-        // 获取最新区块
-        // const block = await tronWeb.trx.getCurrentBlock();
-        this.nextBlock = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2; // 最新区块号
-        this.currentBlock = this.nextBlock - 1;  // 当前区块号
+        if(block.data.data != 0){
+          // 获取最新区块
+          // const block = await tronWeb.trx.getCurrentBlock();
+          this.nextBlock = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2; // 最新区块号
+          this.currentBlock = this.nextBlock - 1;  // 当前区块号
+        }
 
         // 设置定时器每5秒更新一次区块号
         interval = setInterval(async () => {
           let block = await this.getBlockNum()
           block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
           // const block = await tronWeb.trx.getCurrentBlock();
-          let newBlockNumber = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2;
-          if (newBlockNumber > this.nextBlock) {
-            this.nextBlock = newBlockNumber ;
-            this.currentBlock = newBlockNumber - 1;
-          }else{
-            if(this.nextBlock - newBlockNumber >= 3){
-              this.nextBlock = newBlockNumber;
+          if(block.data.data != 0){
+            let newBlockNumber = block.data.data * 1 + 2 || block.block_header.raw_data.number + 2;
+            if (newBlockNumber > this.nextBlock) {
+              this.nextBlock = newBlockNumber ;
               this.currentBlock = newBlockNumber - 1;
             }else{
-              this.nextBlock += 1
-              this.currentBlock = this.nextBlock - 1;
+              if(this.nextBlock - newBlockNumber >= 3){
+                this.nextBlock = newBlockNumber;
+                this.currentBlock = newBlockNumber - 1;
+              }else{
+                this.nextBlock += 1
+                this.currentBlock = this.nextBlock - 1;
+              }
             }
+            console.log(this.currentBlock, this.nextBlock)
           }
-          console.log(this.currentBlock, this.nextBlock)
         }, 3000);
       } catch (error) {
         console.error('获取区块号失败:', error);
@@ -153,13 +156,14 @@ var postInfo = {
         // const block = await tronWeb.trx.getCurrentBlock();
         let block = await this.getBlockNum()
         block.data.data = block.data.result ? parseInt(block.data.result, 16) : block.data.data
-  
-        let newBlockNumber = block.data.data * 1 + 0  || block.block_header.raw_data.number + 0;
-        // console.log(this.nextBlock)
-        if (newBlockNumber > this.nextBlock1) {
-          this.nextBlock = newBlockNumber;
-          this.nextBlock1 = newBlockNumber; // 获取最新区块号
-          this.currentBlock = newBlockNumber - 1;
+        if(block.data.data != 0){
+          let newBlockNumber = block.data.data * 1 + 0  || block.block_header.raw_data.number + 0;
+          // console.log(this.nextBlock)
+          if (newBlockNumber > this.nextBlock1) {
+            this.nextBlock = newBlockNumber;
+            this.nextBlock1 = newBlockNumber; // 获取最新区块号
+            this.currentBlock = newBlockNumber - 1;
+          }
         }
       } catch (error) {
         console.error('获取区块号失败:', error);
