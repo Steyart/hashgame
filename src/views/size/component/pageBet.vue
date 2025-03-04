@@ -489,8 +489,8 @@ export default {
           return this.showBetError("中级场下注金额应在200至3000U之间");
         }
       }else{
-        if(this.sessionIndex==0 && (this.totalBetNum<10 || this.totalBetNum>1000)){
-          return this.showBetError("初级场下注金额应在10至1000U之间");
+        if(this.sessionIndex==0 && (this.totalBetNum<1 || this.totalBetNum>1000)){
+          return this.showBetError("初级场下注金额应在1至1000U之间");
         }
         if(this.sessionIndex==1 && (this.totalBetNum<100 || this.totalBetNum>2000)){
           return this.showBetError("中级场下注金额应在100至2000U之间");
@@ -966,7 +966,7 @@ export default {
           限红<span class="text-beige ml-9">{{
             userInfo.gameType == 3 && sessionIndex == 0 ? '100-2000U' :
                 userInfo.gameType == 3 && sessionIndex == 1 ? '200-3000U' :
-                sessionIndex == 0 ? '10-1000U' : '100-2000U'
+                sessionIndex == 0 ? '1-1000U' : '100-2000U'
           }}</span>
         </div>
       </div>
