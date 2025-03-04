@@ -77,7 +77,7 @@ export default {
         <div class="text-ll value-text-color font-medium">
           您的转账金额为：<span class="text-beige">9</span>，转账限额:<span
             class="text-beige"
-            >10 - 900 USDT</span
+            >10 - 1000 USDT</span
           >转账金额不在<span class="text-beige">规定的投注数值內</span>，
           无效投注，平台直接扣除转账金额
         </div>
