@@ -44,7 +44,7 @@ export default {
         showToast({
           type: "fail",
           message: "请输入地址",
-          icon: this.getRequireImg(`${this.appColor=='black'?'/home':'/black'}/warning.png`),
+          icon: this.getRequireImg(`${this.appColor=='black'?'home':'black'}/warning.png`),
           className: "fail-toast-box",
         });
         return;
@@ -72,7 +72,7 @@ export default {
                 showToast({
                   type: "fail",
                   message: data.message,
-                  icon: this.getRequireImg(`${this.appColor=='black'?'/home':'/black'}/warning.png`),
+                  icon: this.getRequireImg(`${this.appColor=='black'?'home':'black'}/warning.png`),
                   className: "fail-toast-box",
                 });
               }
@@ -82,7 +82,7 @@ export default {
                 showToast({
                   type: "fail",
                   message: response.data.message,
-                  icon: this.getRequireImg(`${this.appColor=='black'?'/home':'/black'}/warning.png`),
+                  icon: this.getRequireImg(`${this.appColor=='black'?'home':'black'}/warning.png`),
                   className: "fail-toast-box",
                 });
               // }

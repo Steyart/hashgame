@@ -237,7 +237,28 @@ export default {
       };
     },
   },
-  watch: {},
+  watch: {
+    showChangeGamePop(value){
+      if(!value){
+        window.parent.postMessage("hidePopup", "*"); // "*" 允许发送给任意来源
+      }
+    },
+    showMenuPop(value){
+      if(!value){
+        window.parent.postMessage("hidePopup", "*"); // "*" 允许发送给任意来源
+      }
+    },
+    showGameResultPop(value){
+      if(!value){
+        window.parent.postMessage("hidePopup", "*"); // "*" 允许发送给任意来源
+      }
+    },
+    showRulePop(value){
+      if(!value){
+        window.parent.postMessage("hidePopup", "*"); // "*" 允许发送给任意来源
+      }
+    },
+  },
   created() {
     this.reset();
     this.getLatestBlock();

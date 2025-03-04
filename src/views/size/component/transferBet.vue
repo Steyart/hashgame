@@ -48,6 +48,11 @@ export default {
       this.betWalletAddress =
         this.addressList[this.matchedAddressIndex()].address;
     },
+    showBindAddressPop(value){
+      if(!value){
+        window.parent.postMessage("hidePopup", "*"); // "*" 允许发送给任意来源
+      }
+    },
   },
   created() {
   },
@@ -110,134 +115,136 @@ export default {
 };
 </script>
 <template>
-  <div class="mt-12">
-    <div class="rounded-md pb-24 set-bg-color">
-      <div class="flex justify-between text-sm w-full label-bg-color">
-        <div
-          v-for="(item, index) in tabList"
-          :key="index"
-          @click="active = index"
-          :class="[
-            active == index ? 'label-active-color' : 'label-bg-color',
-            active == 0 ? 'rounded-l-md' : 'rounded-r-md',
-          ]"
-          class="w-1/2 text-center pt-15 pb-12 font-medium"
-        >
-          {{ item }}
-        </div>
-      </div>
-      <div class="flex items-center text-sm ml-8 mt-14 mb-9">
-        <div class="font-semibold">投注地址</div>
-        <div class="text-xs text-wathet ml-7">请使用【去中心化钱包】投注</div>
-      </div>
-      <div class="mx-11">
-        <div
-          class="flex justify-between items-center border border-[#707070] rounded-md text-xs"
-        >
-          <div class="pl-7 overflow-hidden text-ellipsis whitespace-nowrap">{{ betWalletAddress }}</div>
+  <div>
+    <div class="mt-12">
+      <div class="rounded-md pb-24 set-bg-color">
+        <div class="flex justify-between text-sm w-full label-bg-color">
           <div
-            :data-clipboard-text="betWalletAddress"
-            @click="onCopyBindAddress(betWalletAddress)"
-            class="flex items-center text-wathet border-l border-[#707070] rounded-md pt-9 pb-11 px-9 copyBtn"
+            v-for="(item, index) in tabList"
+            :key="index"
+            @click="active = index"
+            :class="[
+              active == index ? 'label-active-color' : 'label-bg-color',
+              active == 0 ? 'rounded-l-md' : 'rounded-r-md',
+            ]"
+            class="w-1/2 text-center pt-15 pb-12 font-medium"
           >
-            <img class="h-13 mr-5" src="@/assets/images/home/copy.png" alt="" />
-            复制
+            {{ item }}
           </div>
         </div>
-        <div class="relative mt-6" @click="openBindPop">
-          <img
-            class="w-319 m-auto"
-            src="@/assets/images/black/btn-bg-big.png"
-            v-if="appColor=='black'"
-          />
-          <img
-            class="w-319 m-auto"
-            src="@/assets/images/home/btn-bg-big.png"
-            v-else
-          />
-          <span
-            class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm btn-text-color font-bold"
-            >绑定钱包</span
-          >
+        <div class="flex items-center text-sm ml-8 mt-14 mb-9">
+          <div class="font-semibold">投注地址</div>
+          <div class="text-xs text-wathet ml-7">请使用【去中心化钱包】投注</div>
         </div>
-        <template v-if="userInfo.gameType == 1">
-          <HashMagnitude />
-        </template>
-        <template v-if="userInfo.gameType == 2">
-          <HashOddEven />
-        </template>
-        <template v-if="userInfo.gameType == 3">
-          <HashNiuNiu />
-        </template>
-        <template v-if="userInfo.gameType == 4">
-          <HashZhuangXian />
-        </template>
-        <template v-if="userInfo.gameType == 5">
-          <HashValueSize />
-        </template>
-        <div class="flex justify-between items-center mt-35">
-          <div class="flex items-center text-sm label-bg-color">
-            <div class="font-medium">赔率</div>
+        <div class="mx-11">
+          <div
+            class="flex justify-between items-center border border-[#707070] rounded-md text-xs"
+          >
+            <div class="pl-7 overflow-hidden text-ellipsis whitespace-nowrap">{{ betWalletAddress }}</div>
             <div
-              v-if="userInfo.gameType == 4"
-              class="text-beige value-bg-color border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
+              :data-clipboard-text="betWalletAddress"
+              @click="onCopyBindAddress(betWalletAddress)"
+              class="flex items-center text-wathet border-l border-[#707070] rounded-md pt-9 pb-11 px-9 copyBtn"
             >
-              1:1.95
-              <div class="text-center">1:8</div>
+              <img class="h-13 mr-5" src="@/assets/images/home/copy.png" alt="" />
+              复制
             </div>
-            <div
-              v-else-if="userInfo.gameType == 3"
-              class="text-beige value-bg-color border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
-            >
-            [1~10]*
-              <div class="text-center">0.95</div>
-            </div>
-            <div
+          </div>
+          <div class="relative mt-6" @click="openBindPop">
+            <img
+              class="w-319 m-auto"
+              src="@/assets/images/black/btn-bg-big.png"
+              v-if="appColor=='black'"
+            />
+            <img
+              class="w-319 m-auto"
+              src="@/assets/images/home/btn-bg-big.png"
               v-else
-              class="text-beige value-bg-color border border-[#707070] rounded-md pt-19 pb-17 pl-16 pr-26 ml-8"
+            />
+            <span
+              class="absolute w-full h-full top-0 left-0 flex items-center justify-center text-sm btn-text-color font-bold"
+              >绑定钱包</span
             >
-              1:1.95
+          </div>
+          <template v-if="userInfo.gameType == 1">
+            <HashMagnitude />
+          </template>
+          <template v-if="userInfo.gameType == 2">
+            <HashOddEven />
+          </template>
+          <template v-if="userInfo.gameType == 3">
+            <HashNiuNiu />
+          </template>
+          <template v-if="userInfo.gameType == 4">
+            <HashZhuangXian />
+          </template>
+          <template v-if="userInfo.gameType == 5">
+            <HashValueSize />
+          </template>
+          <div class="flex justify-between items-center mt-35">
+            <div class="flex items-center text-sm label-bg-color">
+              <div class="font-medium">赔率</div>
+              <div
+                v-if="userInfo.gameType == 4"
+                class="text-beige value-bg-color border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
+              >
+                1:1.95
+                <div class="text-center">1:8</div>
+              </div>
+              <div
+                v-else-if="userInfo.gameType == 3"
+                class="text-beige value-bg-color border border-[#707070] rounded-md pt-8 pb-7 pl-16 pr-26 ml-8"
+              >
+              [1~10]*
+                <div class="text-center">0.95</div>
+              </div>
+              <div
+                v-else
+                class="text-beige value-bg-color border border-[#707070] rounded-md pt-19 pb-17 pl-16 pr-26 ml-8"
+              >
+                1:1.95
+              </div>
+            </div>
+            <div class="flex items-center text-sm label-bg-color">
+              <div class="font-medium">转账限额</div>
+              <div
+                class="flex items-center text-beige value-bg-color border border-[#707070] rounded-md pt-19 pb-17 pl-15 pr-7 ml-8"
+              >
+              {{
+                  userInfo.gameType == 3 && active == 0 ? '100-2000' :
+                  userInfo.gameType == 3 && active == 1 ? '200-3000' :
+                  active == 0 ? '10-1000' : '100-2000'
+                }}
+                <div class="text-xs text-base-color ml-13">USDT</div>
+              </div>
             </div>
           </div>
-          <div class="flex items-center text-sm label-bg-color">
-            <div class="font-medium">转账限额</div>
-            <div
-              class="flex items-center text-beige value-bg-color border border-[#707070] rounded-md pt-19 pb-17 pl-15 pr-7 ml-8"
-            >
-            {{
-                userInfo.gameType == 3 && active == 0 ? '100-2000' :
-                userInfo.gameType == 3 && active == 1 ? '200-3000' :
-                active == 0 ? '10-1000' : '100-2000'
-              }}
-              <div class="text-xs text-base-color ml-13">USDT</div>
-            </div>
+          <div v-if="userInfo.gameType == 3" class="text-xs text-beige mt-30 font-medium">
+            {{ userInfo.gameType == 3 ? '注：游戏赔率会自动浮动，所有解释权归本平台所有。闲家牌型牛牛,牛九赢时返奖抽10%手续费' : '注：游戏赔率会自动浮动，所有解释权归本平台所有。' }}
           </div>
-        </div>
-        <div v-if="userInfo.gameType == 3" class="text-xs text-beige mt-30 font-medium">
-          {{ userInfo.gameType == 3 ? '注：游戏赔率会自动浮动，所有解释权归本平台所有。闲家牌型牛牛,牛九赢时返奖抽10%手续费' : '注：游戏赔率会自动浮动，所有解释权归本平台所有。' }}
-        </div>
-        <div class="text-ll text-beige mt-10 font-medium">
-          注：游戏赔率会自动浮动，所有解释权归本平台所有。
-        </div>
-        <div class="text-ll text-base-color mt-5 font-medium">
-          低于限额平台扣除，高于限额视为无效金额，平台抽取1%手续费，给予回馈。
+          <div class="text-ll text-beige mt-10 font-medium">
+            注：游戏赔率会自动浮动，所有解释权归本平台所有。
+          </div>
+          <div class="text-ll text-base-color mt-5 font-medium">
+            低于限额平台扣除，高于限额视为无效金额，平台抽取1%手续费，给予回馈。
+          </div>
         </div>
       </div>
+      <div
+        class="h-32 flex items-center justify-center set-bg-color rounded-md mt-8 mb-12"
+      >
+        <img class="w-10" src="@/assets/images/home/icon_down.png" alt="" />
+      </div>
+      <TeachingVideo />
+      <TransferBetExam />
     </div>
-    <div
-      class="h-32 flex items-center justify-center set-bg-color rounded-md mt-8 mb-12"
-    >
-      <img class="w-10" src="@/assets/images/home/icon_down.png" alt="" />
-    </div>
-    <TeachingVideo />
-    <TransferBetExam />
-  </div>
 
-  <BindAddressPop
-    :showBindAddressPop="showBindAddressPop"
-    @update:showBindAddressPop="showBindAddressPop = $event"
-    @isBindAddress="isBindAddress"
-  />
+    <BindAddressPop
+      :showBindAddressPop="showBindAddressPop"
+      @update:showBindAddressPop="showBindAddressPop = $event"
+      @isBindAddress="isBindAddress"
+    />
+  </div>
 </template>
 <style scoped>
 </style>
